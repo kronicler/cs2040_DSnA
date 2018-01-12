@@ -122,3 +122,12 @@ int main(int argc, char const *argv[])
 // C++ -> assembly code -> machine code -> executable .exe (after link id)
 
 // Declaring static types is better as it can throw and identify errors on compilation 
+
+
+/**
+For kattis questions that do not specify the num of test cases, 
+use this
+	for (i = 1; cin >> size; i++) {
+		// your code here
+	}
+*/
