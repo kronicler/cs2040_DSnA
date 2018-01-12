@@ -37,8 +37,8 @@ void dynamic_array::pop_back() {
     int* t_array = new int [this->size];
     copy(t_array);
     
-    arr = t_array;
-    delete [] t_array;
+    delete [] this->arr;
+    this->arr = t_array;
 }
 
 int dynamic_array::get(int i) {
