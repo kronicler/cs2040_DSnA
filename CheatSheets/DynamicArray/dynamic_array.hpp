@@ -14,16 +14,21 @@
 
 class dynamic_array {
 public:
-    int size = 0;
-    int* arr;
     dynamic_array();
     ~dynamic_array();
     void add (int element);
     void pop_back ();
     int get(int i);
-    //dynamic_array* operator+(dynamic_array* other); // Can be overloaded
+    int getSize();
+    void clear();
+    dynamic_array operator+(dynamic_array);
+    bool operator==(dynamic_array);
+    bool operator!=(dynamic_array);
+    
 private:
     void copy(int*);
+    int* arr;
+    int size = 0;
 };
 
 #endif /* dynamic_array_hpp */
