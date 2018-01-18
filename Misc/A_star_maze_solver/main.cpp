@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <math.h>
-#include <vector>
+#include <list>
 
 #define MAX 11
 
@@ -61,17 +61,15 @@ void print_maze (char maze[][MAX]) {
     }
 }
 
-int contains(vector<coords_t*> *arr, coords_t other) {
-    int i;
-    for (i = 0; i < arr->size(); i++) {
-        if (*arr->at(i) == other) {
-            return 1;
-        }
+int contains(list<coords_t*> *arr, coords_t other) {
+    list<coords_t*>::iterator iterator;
+    for (iterator = arr->begin(); iterator != arr->end(); ++iterator) {
+        if (**iterator == other) return 1;
     }
     return 0;
 }
 
-void scan_neighbours (vector<coords_t*> *open, vector<coords_t*> *close, char maze[][MAX],
+void scan_neighbours (list<coords_t*> *open, list<coords_t*> *close, char maze[][MAX],
                       coords_t* current, coords_t start, coords_t end) {
     // TODO: Finish up the scanning for shortest path
     int y = current->y, x = current->x;
@@ -121,40 +119,25 @@ void scan_neighbours (vector<coords_t*> *open, vector<coords_t*> *close, char ma
     }
 }
 
-void pop (vector<coords_t*> *arr, coords_t* other) {
-    int i, atIndex = 0;
-    // To search
-    for (i = 0; i < arr->size(); i++) {
-        if (arr->at(i) == other) {
-            atIndex = i;
-        }
-    }
-    // Then pop
-    for (i = atIndex; i < arr->size()-1; i++) {
-        arr->at(i) = arr->at(i+1);
-    }
-    arr->pop_back();
-}
-
-int pathfinder (vector<coords_t*> *open, vector<coords_t*> *close, coords_t start, coords_t end, char maze[][MAX]) {
+int pathfinder (list<coords_t*> *open, list<coords_t*> *close, coords_t start, coords_t end, char maze[][MAX]) {
     // Can only travel 4 directions
     while (open->size() > 0) {
         coords_t *current = open->front();
-        int i;
         // Sorting
-        for (i = 0; i < open->size(); i++) {
-            if (current->h_cost + current->g_cost > open->at(i)->h_cost + open->at(i)->g_cost) {
-                current = open->at(i); // Set current to node with the lowest f_cost
-                
-            }else if (current->h_cost + current->g_cost == open->at(i)->h_cost + open->at(i)->g_cost &&
-                      current->h_cost > open->at(i)->h_cost) {
+        list<coords_t*>::iterator iterator;
+        for (iterator = open->begin(); iterator != open->end(); ++iterator) {
+            if (current->h_cost + current->g_cost > (*iterator)->g_cost + (*iterator)->h_cost) {
+                current = *iterator; // Set current to node with the lowest f_cost
+            }else if (current->h_cost + current->g_cost == (*iterator)->g_cost + (*iterator)->h_cost &&
+                      current->h_cost > (*iterator)->h_cost) {
                 // If they have the same f_cost
-                current = open->at(i);
+                current = *iterator;
             }
         }
         
         close->push_back(current);
-        pop(open, current);
+        // pop(open, current);
+        open->remove(current);
         if (current->x == end.x && current->y == end.y) {
             return 1; // Path has been found
         }
@@ -189,8 +172,8 @@ void start_end_scan (coords_t *start, coords_t *end, char maze[][MAX]) {
 int main(int argc, const char * argv[]) {
     // insert code here...
     char maze[MAX][MAX];
-    vector<coords_t*> open;
-    vector<coords_t*> closed;
+    list<coords_t*> open;
+    list<coords_t*> closed;
     coords_t *start = new coords_t;
     coords_t *end = new coords_t;
     scan_maze(maze);
@@ -206,12 +189,13 @@ int main(int argc, const char * argv[]) {
     maze[end->y][end->x] = '*';
     coords_t* current_point;
     // Search for end point (find end node)
-    for (int i = 0; i < closed.size(); i++) {
-        if (closed.at(i)->x == end->x && closed.at(i)->y == end->y) {
-            current_point = closed.at(i);
+    list<coords_t*>::iterator iterator;
+    for (iterator = closed.begin(); iterator != closed.end(); ++iterator) {
+        if ((*iterator)->x == end->x && (*iterator)->y == end->y) {
+            current_point = *iterator;
         }
     }
-    
+    // Iterate thru the next few
     while (current_point->x != start->x || current_point->y != start->y) {
         // Continue tracing
         current_point = current_point->parent;
