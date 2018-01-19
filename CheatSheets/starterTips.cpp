@@ -118,16 +118,29 @@ int main(int argc, char const *argv[])
 }
 
 
-// Hierarchy of compilation 
-// C++ -> assembly code -> machine code -> executable .exe (after link id)
+Hierarchy of compilation 
+C++ -> assembly code -> machine code -> executable .exe (after link id)
 
-// Declaring static types is better as it can throw and identify errors on compilation 
+Declaring static types is better as it can throw and identify errors on compilation 
 
 
-/**
 For kattis questions that do not specify the num of test cases, 
 use this
 	for (i = 1; cin >> size; i++) {
 		// your code here
 	}
-*/
+
+
+
+
+Using of cin/ cout with scanf/ printf - will cause closeness 
+Maybe just use scanf/ printf 
+
+if you use cin/cout, use 
+ios_base::sync_with_stdio(false);cin.tie(NULL);
+
+Using of global variables is fine in CS2040C
+
+
+
+
