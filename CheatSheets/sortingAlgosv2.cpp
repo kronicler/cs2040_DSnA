@@ -447,3 +447,12 @@ int radixsort(int arr[], int n, int m)
     finish = clock();
 	return (int)(finish-start);
 }
+
+/**
+
+Some extra notes:
+1. In-place sorting algorithms require no extra space/ temp arrays unlike merge sort. 
+2. A sorting algorithm is called stable if the relative order of elements with the same key value is preserved by the algorithm after sorting is performed.
+   this usually affects when there are two items of the same value but different keys 
+*/
+
