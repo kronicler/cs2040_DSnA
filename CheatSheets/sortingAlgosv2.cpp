@@ -15,6 +15,11 @@ void merge (int [], int [], int [], int , int );
 int mergeSort (int [], int );
 int partition(int *arr, int i, int j);
 int quickSort (int *arr, int lowestIndex, int highestIndex);
+int countingSort (int* arr, int n, int max);
+void countSort(int arr[], int n, int exp);
+int radixsort(int arr[], int n, int m);
+
+
 
 using namespace std;
 
@@ -23,7 +28,10 @@ int main () {
 	int choice;
 	int arr1[1000], arr2[2000], arr4[4000], arr8[8000], arr16[16000];
 
-	printf("1: bubblesort, 2: insertion sort, 3: selection sort, 4: Enhanced bubblesort, 5: Shaker sort, 6: Insertion sort v2, 7: Merge sort, 8: Quick Sort\n");
+	int arr_t[16000] = {0};
+
+
+	printf("1: bubblesort\n2: insertion sort\n3: selection sort\n4: Enhanced bubblesort\n5: Shaker sort\n6: Insertion sort v2\n7: Merge sort\n8: Quick Sort\n9: Counting sort\n10: Radix sort\n");
 
 	printf("What sort you want?: ");
 	scanf("%d", &choice);
@@ -85,21 +93,27 @@ int main () {
 		break;
 		case 7: 
 		printf("Merge sort selected\n");
-		printf("size 1000 : %d \n", mergeSort(arr1, 1000));
-		printf("size 2000 : %d \n", mergeSort(arr2, 2000));
-		printf("size 4000 : %d \n", mergeSort(arr4, 4000));
-		printf("size 8000 : %d \n", mergeSort(arr8, 8000));
-		printf("size 16000 : %d \n", mergeSort(arr16, 16000));
+		printf("size 1000 : %d \n", mergeSort(arr4, 1000));
 		printf("-----O(n log(n))-----\n");
 		break;
 		case 8: 
-		printf("Merge sort selected\n");
+		printf("Quick sort selected\n");
 		printf("size 1000 : %d \n", quickSort(arr1, 0, 999));
 		printf("size 2000 : %d \n", quickSort(arr2, 0,1999));
 		printf("size 4000 : %d \n", quickSort(arr4, 0,3999));
 		printf("size 8000 : %d \n", quickSort(arr8, 0,7999));
 		printf("size 16000 : %d \n", quickSort(arr16, 0,1599));
 		printf("-----Best case: O(n log(n)), worst case: O(n^2)-----\n");
+		break;
+		case 9: 
+		printf("Counting sort selected\n");
+		printf("size 16000 : %d \n", countingSort(arr_t, 16000, 0));
+		printf("-----Best case: O(n), worst case: O(n^2)-----\n");
+		break;
+		case 10: 
+		printf("Radix sort selected\n");
+		printf("size 16000 : %d \n", radixsort(arr_t, 16000, 0));
+		printf("-----O(n)-----\n");
 		break;
 		default:
 		printf("Bubble sort selected\n");
@@ -274,8 +288,8 @@ int insertionSortV2(int arr[],int size){
 int mergeSort (int arr[], int size) {
 	clock_t start, finish;
 	start = clock();
-	int arrL[MAX] = {0};
-	int arrR[MAX] = {0};
+	int arrL[1000] = {0};
+	int arrR[1000] = {0};
 	int pivot = size/2;
 	int i, d;
 	if (size > 1) {
@@ -358,3 +372,78 @@ int quickSort (int *arr, int lowestIndex, int highestIndex) {
 	return (int)(finish-start);
 }
 
+
+/* -------------------------------- Beginning of non compare type sorting techniques -------------------------------- */
+
+/**
+	Pros: Constant O(N), worst case O(N^2)
+	Cons: Not memory efficient, need to know largest number and can only be done for +ve numbers
+*/
+
+int countingSort (int* arr, int n, int max) {
+	clock_t start, finish;
+	start = clock();
+
+	int count[16000] = {0};
+	for (int i = 0; i < n; ++i)
+	{
+		count[arr[i]] += 1;	
+	}
+	int index = 0;
+	for (int i = 0; i <= max; ++i)
+	{
+		while (count[i]) {
+			count[i]--;
+			arr[index++] = i;
+		}
+	}
+
+	finish = clock();
+	return (int)(finish-start);
+}
+
+/**
+	Pros: Constant O(N)
+	Cons: Not memory efficient, need to know largest number and can only be done for +ve numbers
+*/
+
+void countSort(int arr[], int n, int exp)
+{
+    int output[n]; // output array
+    int i, count[16000] = {0};
+ 
+    // Store count of occurrences in count[]
+    for (i = 0; i < n; i++)
+        count[ (arr[i]/exp)%10 ]++;
+ 
+    // Change count[i] so that count[i] now contains actual
+    //  position of this digit in output[]
+    for (i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+ 
+    // Build the output array
+    for (i = n - 1; i >= 0; i--)
+    {
+        output[count[ (arr[i]/exp)%10 ] - 1] = arr[i];
+        count[ (arr[i]/exp)%10 ]--;
+    }
+ 
+    // Copy the output array to arr[], so that arr[] now
+    // contains sorted numbers according to current digit
+    for (i = 0; i < n; i++)
+        arr[i] = output[i];
+}
+
+int radixsort(int arr[], int n, int m)
+{
+	clock_t start, finish;
+	start = clock();
+    // Do counting sort for every digit. Note that instead
+    // of passing digit number, exp is passed. exp is 10^i
+    // where i is current digit number
+    for (int exp = 1; m/exp > 0; exp *= 10)
+        countSort(arr, n, exp);
+
+    finish = clock();
+	return (int)(finish-start);
+}
