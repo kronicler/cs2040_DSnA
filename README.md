@@ -13,6 +13,6 @@ If you have time:
 https://projecteuler.net/
 
 
-Important date: 
+# Important date: 
 - Mid Terms: End of Feb 
 - Finals: 10-05-2018 5:00 PM
