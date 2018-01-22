@@ -27,3 +27,15 @@ void tokenise (string s) {
 	}
 	std::cout << s << endl;
 }
+
+
+
+// Number splitter 2.0 
+
+void numSplit (int num) {
+	
+	for (int exp = 1; num/exp > 0; exp *= 10) {
+		cout << (num/exp) % 10 << endl;
+		/* Perform your number operations here */
+	}
+}

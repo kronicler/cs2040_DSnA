@@ -2,6 +2,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <iostream>
+#include <list>
+
 
 #define MAX 16000
 
@@ -18,8 +20,8 @@ int quickSort (int *arr, int lowestIndex, int highestIndex);
 int countingSort (int* arr, int n, int max);
 void countSort(int arr[], int n, int exp);
 int radixsort(int arr[], int n, int m);
-
-
+void countingSort_2 (int* arr, int n, int exp);
+int radixSort_2 (int* arr, int size, int biggest);
 
 using namespace std;
 
@@ -31,7 +33,7 @@ int main () {
 	int arr_t[16000] = {0};
 
 
-	printf("1: bubblesort\n2: insertion sort\n3: selection sort\n4: Enhanced bubblesort\n5: Shaker sort\n6: Insertion sort v2\n7: Merge sort\n8: Quick Sort\n9: Counting sort\n10: Radix sort\n");
+	printf("1: bubblesort\n2: insertion sort\n3: selection sort\n4: Enhanced bubblesort\n5: Shaker sort\n6: Insertion sort v2\n7: Merge sort\n8: Quick Sort\n9: Counting sort\n10: Radix sort\n11: Radix sort (Wilson's ver)\n");
 
 	printf("What sort you want?: ");
 	scanf("%d", &choice);
@@ -113,6 +115,11 @@ int main () {
 		case 10: 
 		printf("Radix sort selected\n");
 		printf("size 16000 : %d \n", radixsort(arr_t, 16000, 0));
+		printf("-----O(n)-----\n");
+		break;
+		case 11: 
+		printf("Radix sort (Wilson's ver) selected\n");
+		printf("size 16000 : %d \n", radixSort_2(arr_t, 16000, 0));
 		printf("-----O(n)-----\n");
 		break;
 		default:
@@ -410,7 +417,7 @@ int countingSort (int* arr, int n, int max) {
 void countSort(int arr[], int n, int exp)
 {
     int output[n]; // output array
-    int i, count[16000] = {0};
+    int i, count[10] = {0};
  
     // Store count of occurrences in count[]
     for (i = 0; i < n; i++)
@@ -447,6 +454,42 @@ int radixsort(int arr[], int n, int m)
     finish = clock();
 	return (int)(finish-start);
 }
+
+
+
+// Radix sort, Wilson's version, using FIFO 
+
+void countingSort_2 (int* arr, int n, int exp) {
+	list<int> count[10]; // There exists only 10 possible lists from 0 - 9
+	// FIFO
+	// First in...
+	for (int i = 0; i < n; ++i)
+	{
+		int num = (arr[i]/exp) % 10;
+		count[num].push_back(arr[i]);
+	}
+	int index = 0;
+	// First out
+	for (int i = 0; i <= 9; ++i)
+	{
+		while (count[i].size()) {
+			arr[index++] = count[i].front(); // Throw it back to the main array
+			count[i].pop_front();
+		}
+	}
+}
+
+int radixSort_2 (int* arr, int size, int biggest) {
+	clock_t start, finish;
+	start = clock();
+	for (int exp = 1; biggest/exp > 0; exp *= 10) {
+		countingSort (arr, size, exp);
+
+	}
+	finish = clock();
+	return (int)(finish-start);
+}
+
 
 /**
 
