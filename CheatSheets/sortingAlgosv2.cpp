@@ -483,7 +483,7 @@ int radixSort_2 (int* arr, int size, int biggest) {
 	clock_t start, finish;
 	start = clock();
 	for (int exp = 1; biggest/exp > 0; exp *= 10) {
-		countingSort (arr, size, exp);
+		countingSort_2 (arr, size, exp);
 
 	}
 	finish = clock();
