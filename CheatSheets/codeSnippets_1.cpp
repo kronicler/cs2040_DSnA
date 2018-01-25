@@ -16,18 +16,26 @@ void getInput () {
 // Tokenisation for strings
 
 void tokenise (string s) {
-	std::string delimiter = " ";
+	string delimiter = " ";
 
 	size_t pos = 0;
-	std::string token;
-	while ((pos = s.find(delimiter)) != std::string::npos) {
+	string token;
+	while ((pos = s.find(delimiter)) != string::npos) {
 		token = s.substr(0, pos);
-		std::cout << token << endl;
+		cout << token << endl;
 		s.erase(0, pos + delimiter.length());
 	}
-	std::cout << s << endl;
+	cout << s << endl;
 }
 
+void tokenise_2 (string line) {
+	// Another form of str tok 
+	istringstream iss (line);
+	string token;
+	while (getline(iss, token, '-'))
+		cout << token[0]; // Perform operations here
+	cout << endl;
+}
 
 
 // Number splitter 2.0 
