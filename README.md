@@ -13,7 +13,7 @@ https://open.kattis.com/
 https://projecteuler.net/
 
 # Important date: 
-- Mid Terms: End of Feb 
+- Mid Terms: 23 Feb
 - Finals: 10-05-2018 5:00 PM
 
 ## For some help: 
