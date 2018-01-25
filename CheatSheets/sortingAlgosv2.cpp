@@ -347,7 +347,7 @@ void merge (int arrL[], int arrR[], int arr[], int left_size, int right_size) {
 
 
 /**
-	Pros: Constant O(N log N)
+	Pros: best case - O(N log N), worst case - O(n^2)
 	Cons: Not memory efficient and requires O(N) space
 */
 
