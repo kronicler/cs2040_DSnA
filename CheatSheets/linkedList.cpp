@@ -104,16 +104,19 @@ public:
     }
 
 
-    void remove (node* current) {
-    	if (head == current) {
+    void remove (int position) {
+    	node *current;
+    	if (position == 0) {
     		// Pop start
+    		current = head;
     		head = head->next;
     		size--;
     		delete current;
     		return;
     	}
 
-    	if (tail == current) {
+    	if (position == size - 1) {
+    		current = tail;
     		// Pop end 
     		// Need to keep track of the node before the last one. 
     		node *temp = head; // Start from the head first
@@ -135,12 +138,14 @@ public:
     	// Pop anywhere within the list 
     	node *temp = head; // Start from the head first
     	node *previous = head;
+    	int count = 0;
     	while (temp != NULL) {
-        	// If list is not empty 
-    		if (temp == current)
+        	// If list is not empty
+        	count++; 
+    		if (count - 1 == position)
     		{
-				previous->next = current->next;
-    			delete current; // Delete the existing tail 
+				previous->next = temp->next;
+    			delete temp; // Delete the existing tail 
     			size--;
     			return;
     		}
@@ -182,7 +187,9 @@ int main(int argc, char const *argv[])
 
 	node* removal = list.search(2);
 
-	list.remove(removal);
+	cout << "The data is-> " << removal->data << endl;
+	
+	list.remove(2);
 	list.print();
 
 	list.delete_all();
