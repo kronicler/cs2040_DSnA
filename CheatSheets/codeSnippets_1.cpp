@@ -47,3 +47,27 @@ void numSplit (int num) {
 		/* Perform your number operations here */
 	}
 }
+
+
+// Custom sorting with stl
+
+void customCompareSort (vector<int> * ) {
+	// sort using a standard library compare function object
+    std::sort(s.begin(), s.end(), std::greater<int>());
+
+
+    // sort using a custom function object
+    struct {
+        bool operator()(int a, int b) const
+        {   
+            return a < b;
+        }   
+    } customLess;
+    std::sort(s.begin(), s.end(), customLess);
+    
+
+	// sort using a lambda expression 
+    std::sort(s.begin(), s.end(), [](int a, int b) {
+        return a > b;   
+    });
+}
