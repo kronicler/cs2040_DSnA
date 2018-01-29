@@ -499,3 +499,24 @@ Some extra notes:
    this usually affects when there are two items of the same value but different keys 
 */
 
+
+/* 
+
+For some quick thinking tips: 
+
+(num comparisons)
+1. Bubble sort num comparisons = (n-1)(n/2) 
+2. Selection sort = n + n-1 + n-2 + ... + 1
+3. 
+
+(sequence after num passes) 
+1. Bubble sort = Move the greatest element to the end of the array (repeat while ignoring the moveed element)
+2. Selection sort = Start from the first element and then compare to find the smallest then swap with that. Move on to the next element after that i.e i = 1 and repeat
+3.  
+
+(num swaps)
+1. If an array is ordered, zero swaps will be made for all comparison based sorting algos 
+2. 
+
+*/
+
