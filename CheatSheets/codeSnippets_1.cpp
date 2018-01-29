@@ -69,5 +69,5 @@ void customCompareSort (vector<int> * ) {
 	// sort using a lambda expression 
     std::sort(s.begin(), s.end(), [](int a, int b) {
         return a > b;   
-    });
+    }); // Sort in descending order 
 }
