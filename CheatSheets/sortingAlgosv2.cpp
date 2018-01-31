@@ -147,9 +147,7 @@ int bubbleSort (int arr[], int n) {
 	for (int c = 0; c < n; c++) {
 		for (int d = 0; d < (n-c-1); d++) {
 			if (arr[d] > arr[d+1]) {
-				int t = arr[d+1];
-				arr[d+1] = arr[d];
-				arr[d] = t;
+				swap(arr[d], arr[d+1]);
 			}
 		}
 	}
@@ -171,10 +169,7 @@ int insertionSort (int arr[], int n) {
 	for (c = 0; c < n; c++){
 		d = c;
 		while (d > 0 && arr[d] < arr[d-1]){
-			t = arr[d];
-			arr[d] = arr[d-1];
-			arr[d-1] = t;
-
+			swap(arr[d], arr[d+1]);
 			d--;
 		}
 	}
@@ -203,9 +198,7 @@ int selectionSort (int arr[], int n) {
 			}
 		}
 		// Swaps the smallest element with the element (i) you're currently on 
-		t = arr[i];
-		arr[i] = arr[smallestIndex];
-		arr[smallestIndex] = t;
+		swap(arr[i], arr[smallestIndex]);
 	}
 
 	finish = clock();
@@ -223,9 +216,7 @@ int enhancedBubble (int arr[], int n) {
 		isNotSorted = 0;
 		for (j = 0; j < n - i - 1; j++) {
 			if (arr[j] > arr[j+1]){
-				t = arr[j];
-				arr[j] = arr[j+1];
-				arr[j+1] = t;
+				swap(arr[j], arr[j+1]);
 				isNotSorted = 1;
 			}
 		}
@@ -245,17 +236,13 @@ int shakerSort(int array[], int size) {
     	swapped = 0;
         for (int j = i; j < size - i - 1; j++) { //one way
             if (array[j] < array[j+1]) {
-                int tmp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = tmp;
+		swap(array[j], array[j+1]);
                 swapped = 1;
             }
         }
         for (int j = size - 2 - i; j > i; j--) { //and back
             if (array[j] > array[j-1]) {
-                int tmp = array[j];
-                array[j] = array[j-1];
-                array[j-1] = tmp;
+		swap(array[j], array[j+1]);
                 swapped = 1;
             }
         }
@@ -510,13 +497,11 @@ For some quick thinking tips:
 3. 
 
 (sequence after num passes) 
-1. Bubble sort = Move the greatest element to the end of the array (repeat while ignoring the moveed element)
+1. Bubble sort = Move the greatest element to the end of the array (repeat while ignoring the moved element)
 2. Selection sort = Start from the first element and then compare to find the smallest then swap with that. Move on to the next element after that i.e i = 1 and repeat
-3.  
 
 (num swaps)
 1. If an array is ordered, zero swaps will be made for all comparison based sorting algos 
-2. 
 
 */
 
