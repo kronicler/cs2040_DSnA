@@ -22,6 +22,10 @@ void countSort(int arr[], int n, int exp);
 int radixsort(int arr[], int n, int m);
 void countingSort_2 (int* arr, int n, int exp);
 int radixSort_2 (int* arr, int size, int biggest);
+int quickSort_rand (int *arr, int lowestIndex, int highestIndex);
+int partition_random(int *arr, int i, int j);
+
+
 
 using namespace std;
 
@@ -33,7 +37,7 @@ int main () {
 	int arr_t[16000] = {0};
 
 
-	printf("1: bubblesort\n2: insertion sort\n3: selection sort\n4: Enhanced bubblesort\n5: Shaker sort\n6: Insertion sort v2\n7: Merge sort\n8: Quick Sort\n9: Counting sort\n10: Radix sort\n11: Radix sort (Wilson's ver)\n");
+	printf("1: bubblesort\n2: insertion sort\n3: selection sort\n4: Enhanced bubblesort\n5: Shaker sort\n6: Insertion sort v2\n7: Merge sort\n8: Quick Sort\n9: Random quick sort\n10: Counting sort\n11: Radix sort\n12: Radix sort (Wilson's ver)\n");
 
 	printf("What sort you want?: ");
 	scanf("%d", &choice);
@@ -108,16 +112,25 @@ int main () {
 		printf("-----Best case: O(n log(n)), worst case: O(n^2)-----\n");
 		break;
 		case 9: 
+		printf("Random Quick sort selected\n");
+		printf("size 1000 : %d \n", quickSort_rand(arr1, 0, 999));
+		printf("size 2000 : %d \n", quickSort_rand(arr2, 0,1999));
+		printf("size 4000 : %d \n", quickSort_rand(arr4, 0,3999));
+		printf("size 8000 : %d \n", quickSort_rand(arr8, 0,7999));
+		printf("size 16000 : %d \n", quickSort_rand(arr16, 0,1599));
+		printf("-----Best case: O(n log(n)), worst case: O(n^2)-----\n");
+		break;
+		case 10: 
 		printf("Counting sort selected\n");
 		printf("size 16000 : %d \n", countingSort(arr_t, 16000, 0));
 		printf("-----Best case: O(n), worst case: O(n^2)-----\n");
 		break;
-		case 10: 
+		case 11: 
 		printf("Radix sort selected\n");
 		printf("size 16000 : %d \n", radixsort(arr_t, 16000, 0));
 		printf("-----O(n)-----\n");
 		break;
-		case 11: 
+		case 12: 
 		printf("Radix sort (Wilson's ver) selected\n");
 		printf("size 16000 : %d \n", radixSort_2(arr_t, 16000, 0));
 		printf("-----O(n)-----\n");
@@ -335,8 +348,8 @@ void merge (int arrL[], int arrR[], int arr[], int left_size, int right_size) {
 
 /**
 	Pros: best case - O(N log N), worst case - O(n^2)
-	Cons: Not memory efficient and requires O(N) space
 */
+
 
 int partition(int *arr, int i, int j) {
 	int p = arr[i]; // Pivot (fixed pivot)
@@ -365,6 +378,47 @@ int quickSort (int *arr, int lowestIndex, int highestIndex) {
 	finish = clock();
 	return (int)(finish-start);
 }
+
+
+
+/**
+	Pros: best case - O(N log N), worst case - O(n^2)
+	Its cool cause its random
+*/
+
+int partition_random(int *arr, int i, int j) {
+	int r = i + rand()%(j-i+1);
+	swap (arr[i], arr[r]); // Swap i with a random pivot
+
+	int p = arr[i]; // Pivot (fixed pivot)
+	int m = i; // S1 and S2 are initially empty, so potential pivot just dump it at the lowest index
+	for (int k = i+1 ; k <= j; ++k)
+	{
+		if (arr[k] < p) {
+			m++; // Increase and bring up the potential pivot point
+			swap (arr[k], arr[m]); // swap that higher than p value with the potential pivot 
+		}
+	}
+	return m; 
+}
+
+
+
+int quickSort_rand (int *arr, int lowestIndex, int highestIndex) {
+	clock_t start, finish;
+	start = clock();
+
+	if (lowestIndex < highestIndex) {
+		int pivot = partition_random(arr, lowestIndex, highestIndex); // partion and give me the pivot
+		quickSort (arr, lowestIndex, pivot-1); // Sort everything below the pivot
+		quickSort (arr, pivot+1, highestIndex); // sort everything above the pivot
+		// Note that this excludes the pivot
+	}
+	finish = clock();
+	return (int)(finish-start);
+}
+
+
 
 
 /* -------------------------------- Beginning of non compare type sorting techniques -------------------------------- */
