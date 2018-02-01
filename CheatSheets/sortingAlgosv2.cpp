@@ -548,7 +548,6 @@ For some quick thinking tips:
 (num comparisons)
 1. Bubble sort num comparisons = (n-1)(n/2) 
 2. Selection sort = n + n-1 + n-2 + ... + 1
-3. 
 
 (sequence after num passes) 
 1. Bubble sort = Move the greatest element to the end of the array (repeat while ignoring the moved element)
@@ -556,6 +555,12 @@ For some quick thinking tips:
 
 (num swaps)
 1. If an array is ordered, zero swaps will be made for all comparison based sorting algos 
+2. As for others, its best to analyse one by one. 
+
+
+(num possible pivots on first pass - quicksort) 
+Look at each number carefully, pivots can only have left side all smaller than itself.  
+
 
 */
 
