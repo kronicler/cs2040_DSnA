@@ -71,3 +71,16 @@ void customCompareSort (vector<int> * ) {
         return a > b;   
     }); // Sort in descending order 
 }
+
+// To iterate and remove elements from a list in std list 
+
+void itr_remove_from_list (list<int> mylist) {
+	for (auto i = mylist.begin(); i != mylist.end() ; /*make sure not to increment here*/)
+	{
+		if (/*your conditions here*/) {
+			i = mylist.erase(i); // This is because erasing the element will make i redundant if you dont update it.
+		}else {
+			i++; // When there's no erasing done then just increment as per normal
+		}
+	}
+}
