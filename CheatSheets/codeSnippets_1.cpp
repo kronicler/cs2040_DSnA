@@ -16,6 +16,8 @@ void getInput () {
 // Tokenisation for strings
 
 void tokenise (string s) {
+	// Use getline (cin, line) to store the line 
+
 	string delimiter = " ";
 
 	size_t pos = 0;
@@ -30,6 +32,8 @@ void tokenise (string s) {
 
 void tokenise_2 (string line) {
 	// Another form of str tok 
+	// Depends on sstream
+	// Use getline (cin, line) to store the line 
 	istringstream iss (line);
 	string token;
 	while (getline(iss, token, '-'))
@@ -128,4 +132,83 @@ int main () {
     return 0;
 }
 
+
+// Infix to postfix converter
+// Precond: string must be tokenised before insertion. Operators only include the various symbols shown in map 
+// Depends on map, stack
+
+void processPostFix (string s, string *postfix, stack<string> *opstack) {
+    map<string, int> prec;
+    prec ["+"] = 1;
+    prec ["-"] = 1;
+    prec ["*"] = 2;
+    prec ["/"] = 2;
+    // Check if its a digit first
+    if (s[0] <= '9' && s[0] >= '0' ){
+        *postfix += s;
+        *postfix += " ";
+    } else {
+        if (s[1] <= '9' && s[1] >= '0') {
+            // Negative number
+            *postfix += s;
+            *postfix += " ";
+            return;
+        }
+        if (opstack->empty()) {
+            opstack->push(s);
+        } else {
+            // Check precedence
+            if (s == "(") {
+                opstack->push(s);
+                return;
+            }
+            
+            if (s == ")") {
+                while (opstack->top() != "(") {
+                    *postfix += opstack->top();
+                    *postfix += " ";
+                    opstack->pop();
+                }
+                opstack->pop();
+                return;
+            }
+            
+            if (prec[opstack->top()] > prec[s] || opstack->top() == "(") {
+                opstack->push(s);
+            } else {
+                // popped
+                *postfix += opstack->top();
+                *postfix += " ";
+                opstack->pop();
+                opstack->push(s);
+            }
+        }
+    }
+}
+
+string postFix (string s) {
+    stack<string> opstack;
+    string delimiter = " ";
+    size_t pos = 0;
+    string token;
+    string postfix;
+    while ((pos = s.find(delimiter)) != string::npos) {
+        token = s.substr(0, pos);
+        processPostFix(token, &postfix, &opstack);
+        s.erase(0, pos + delimiter.length());
+    }
+    
+    //cout << s << endl;
+    
+    processPostFix(s, &postfix, &opstack);
+    
+    
+    
+    while (!opstack.empty()) {
+        postfix += opstack.top();
+        postfix += " ";
+        opstack.pop();
+    }
+    return postfix;
+}
 
