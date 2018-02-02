@@ -550,7 +550,7 @@ For some quick thinking tips:
 2. Selection sort = n + n-1 + n-2 + ... + 1
 
 (sequence after num passes) 
-1. Bubble sort = Move the greatest element to the end of the array (repeat while ignoring the moved element)
+1. Bubble sort = Write it out on paper
 2. Selection sort = Start from the first element and then compare to find the smallest then swap with that. Move on to the next element after that i.e i = 1 and repeat
 
 (num swaps)

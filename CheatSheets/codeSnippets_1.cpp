@@ -97,3 +97,35 @@ int main () {
 	// Type based access: 
 	string str = get<string><t>;
 }
+
+
+// Union and intersection of vectors 
+
+int main () {
+
+    vector<int> A({1,3,7,5,8});
+    vector<int> B({4,9,3,2,7});
+    vector<int> C;
+    vector<int> D;
+
+    sort(A.begin(), A.end());
+    sort(B.begin(), B.end());
+    
+    
+    auto it = set_intersection(A.begin(), A.end(), B.begin(), B.end(), back_inserter(C)); // it points to C.begin() technically 
+    
+    for (auto it = C.begin(); it != C.end(); it++) {
+        cout << *it << " "; // will print 3, 7
+    }
+    cout << endl;
+    set_union(A.begin(), A.end(), B.begin(), B.end(), back_inserter(D));
+    
+    for (auto it = D.begin(); it != D.end(); it++) {
+        cout << *it << " "; // will print 1 2 3 4 5 7 8 9
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
