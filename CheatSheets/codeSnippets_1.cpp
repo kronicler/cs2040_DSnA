@@ -84,3 +84,16 @@ void itr_remove_from_list (list<int> mylist) {
 		}
 	}
 }
+
+
+// Creation of tuples 
+
+int main () {
+	auto t = make_tuple (1, "Foo" , 3.14);
+
+	// Index based access:
+	int i = get<0><t>;
+
+	// Type based access: 
+	string str = get<string><t>;
+}
