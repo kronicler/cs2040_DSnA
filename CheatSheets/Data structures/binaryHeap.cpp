@@ -112,7 +112,11 @@ public:
         }
         
         *myVector = heap;
-    }
-    
-    // TODO: Finish my heap_Sort algo
+    }    
 };
+
+// Some notes on binary heap
+/*
+1. Vertices less than a given vertice basically just means all smaller nodes in the whole tree. 
+2. Min num comparisons made in buidHeap O(n) is just N elements - 1
+*/
