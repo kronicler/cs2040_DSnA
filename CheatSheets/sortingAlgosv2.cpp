@@ -589,7 +589,72 @@ int kthSmallest(int arr[], int l, int r, int smallestElement)
 }
 
 
+// Heap sort
+// Uses vectors for this one 
 
+void maxHeapify (int index, int maxSize, vector<int> *heap) {
+    // Compare childs
+    if (2*index+1 < heap->size() && 2*index+2 < maxSize) {
+        // Both child exist
+        if (heap->at(2*index+1) > heap->at(2*index+2)) {
+            // Left child larger than right child
+            if (heap->at(2*index+1) > heap->at(index)) {
+                int t = heap->at(index);
+                heap->at(index) = heap->at(2*index+1);
+                heap->at(2*index+1) = t;
+                maxHeapify(2*index+1, maxSize, heap);
+            }
+        }else {
+            // Left child smaller or equals to right child
+            if (heap->at(2*index+2) > heap->at(index)) {
+                int t = heap->at(index);
+                heap->at(index) = heap->at(2*index+2);
+                heap->at(2*index+2) = t;
+                maxHeapify(2*index+2, maxSize, heap);
+            }
+        }
+    }
+    else if (2*index+1 < maxSize) {
+        // Left child exist
+        if (heap->at(2*index+1) > heap->at(index)) {
+            int t = heap->at(index);
+            heap->at(index) = heap->at(2*index+1);
+            heap->at(2*index+1) = t;
+            maxHeapify(2*index+1, maxSize, heap);
+        }
+    }
+    else if (2*index+2 < maxSize) {
+        // Right child exist
+        if (heap->at(2*index+2) > heap->at(index)) {
+            int t = heap->at(index);
+            heap->at(index) = heap->at(2*index+2);
+            heap->at(2*index+2) = t;
+            maxHeapify(2*index+2, maxSize, heap);
+        }
+    }
+    else {
+        // No child left
+        return;
+    }
+    
+}
+
+void buildHeap (vector<int>* myVector) {
+    for (int i = myVector->size()/2; i >= 0; i--) {
+        maxHeapify(i, myVector->size(), myVector); // uses maxHeapify, basically start from the first half of the array and heapify from there
+        // O(N)
+    }
+}
+
+void heap_sort (vector<int> *myVector) {
+    buildHeap(myVector);
+    for (int i = 0; i < myVector->size() ; i++) {
+        int t = myVector->at(0);
+        myVector->at(0) = myVector->at(myVector->size()-1 - i);
+        myVector->at(myVector->size()-1 - i) = t;
+        maxHeapify(0, myVector->size()-1 - i, myVector);
+    }
+}
 
 
 /**
