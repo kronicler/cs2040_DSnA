@@ -1,3 +1,11 @@
+// Impt notes: 
+/*
+1. i left = 2i+1
+2. i right = 2i+2
+3. i parent = (i-1)/2 (floored)
+*/
+
+
 class binHeap {
 private:
     vector<int> heap;
