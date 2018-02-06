@@ -212,3 +212,42 @@ string postFix (string s) {
     return postfix;
 }
 
+
+// Flood fill using stack implementation 
+
+void searchNeighbours (stack<tuple<int, int>> *mystack, vector<vector<int>> thisVector, tuple<int, int> currentCoords, int paint) {
+    int x = get<0>(currentCoords);
+    int y = get<1>(currentCoords);
+    
+    if (x+1 < thisVector.at(0).size() && thisVector.at(y).at(x+1) != paint){
+        auto newCoords = make_tuple(x+1, y);
+        mystack->push(newCoords);
+    }
+    if (x-1 >= 0 && thisVector.at(y).at(x-1) != paint) {
+        auto newCoords = make_tuple(x-1, y);
+        mystack->push(newCoords);
+    }
+    if (y-1 >= 0 && thisVector.at(y-1).at(x) != paint) {
+        auto newCoords = make_tuple(x, y-1);
+        mystack->push(newCoords);
+    }
+    if (y+1 < thisVector.size() && thisVector.at(y+1).at(x) != paint) {
+        auto newCoords = make_tuple(x, y+1);
+        mystack->push(newCoords);
+    }
+}
+
+void floodFill_stacks(vector<vector<int>> *thisVector, tuple<int, int> firstCoords, int paint) {
+    stack<tuple<int, int>> myStack;
+    myStack.push(firstCoords);
+    
+    while (!myStack.empty()) {
+        auto current = myStack.top();
+        myStack.pop();
+        thisVector->at(get<1>(current)).at(get<0>(current)) = paint;
+        searchNeighbours(&myStack, *thisVector, current, paint);
+    }
+}
+
+
+
