@@ -532,63 +532,6 @@ int radixSort_2 (int* arr, int size, int biggest) {
 }
 
 
-// Quick Select sort 
-// Precond: Must find the k-th smallest number before we begin
-int partition(int arr[], int l, int r)
-{
-    int x = arr[r], i = l;
-    for (int j = l; j <= r - 1; j++) {
-        if (arr[j] <= x) {
-            int t = arr[i];
-            arr[i] = arr[j];
-            arr[j] = t;
-            i++;
-        }
-    }
-    int t = arr[i];
-    arr[i] = arr[r];
-    arr[r] = t;
-    return i;
-}
-
-
-int kthSmallest(int arr[], int l, int r, int smallestElement)
-{
-    // This function returns k'th smallest
-    // element in arr[l..r] using QuickSort
-    // based method.  ASSUMPTION: ALL ELEMENTS
-    // IN ARR[] ARE DISTINCT
-    
-    
-    // If k is smaller than number of
-    // elements in array
-    if (smallestElement > 0 && smallestElement <= r - l + 1) {
-        
-        // Partition the array around last
-        // element and get position of pivot
-        // element in sorted array
-        int index = partition(arr, l, r);
-        
-        // If position is same as k
-        if (index - l == smallestElement - 1)
-            return arr[index];
-        
-        // If position is more, recur
-        // for left subarray
-        if (index - l > smallestElement - 1)
-            return kthSmallest(arr, l, index - 1, smallestElement);
-        
-        // Else recur for right subarray
-        return kthSmallest(arr, index + 1, r,
-                           smallestElement - index + l - 1);
-    }
-    
-    // If k is more than number of
-    // elements in array
-    return INT_MAX;
-}
-
-
 // Heap sort
 // Uses vectors for this one 
 
