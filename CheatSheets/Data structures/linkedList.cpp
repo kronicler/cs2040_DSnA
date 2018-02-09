@@ -170,6 +170,23 @@ public:
     	cout << "All deleted" << endl;
     }
 
+    void bubbleSort_list () {
+        bool unsorted = true;
+        while(unsorted) {
+            unsorted = false;
+            cur = head;
+        
+            while(cur != nullptr) {
+                next = cur->next;
+                if(next < cur) {
+                    swap(cur, next)
+                    unsorted = true;
+                }
+                cur = cur->next;
+            }
+        }
+    }
+
 };
 
 
