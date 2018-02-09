@@ -325,3 +325,11 @@ int main () {
     if (low != --high) cout << "duplicates detected" << endl;
 }
 
+// Power thru bit shifting 
+
+
+int bitMasking (int power) {
+    return 1<<power; // Using bit shifting 
+}
+
+

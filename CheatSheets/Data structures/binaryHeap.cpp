@@ -97,7 +97,7 @@ public:
     void buildHeap_slow (vector<int> myVector) {
         for (auto i = myVector.begin(); i != myVector.end(); i++) {
             insert(*i); // Insert and fixTree
-            // NLog(N)
+            // O(NLogN)
         }
     }
     
@@ -112,11 +112,9 @@ public:
     void heap_sort (vector<int> *myVector) {
         heap = *myVector;
         buildHeap(heap);
-        //printVector();
         for (int i = 0; i < myVector->size() ; i++) {
             swap(heap[0], heap[heap.size()-1 - i]);
             maxHeapify(0, heap.size()-1 - i);
-            //cout << heap[0] << endl;
         }
         
         *myVector = heap;
@@ -125,6 +123,20 @@ public:
 
 // Some notes on binary heap
 /*
-1. Vertices less than a given vertice basically just means all smaller nodes in the whole tree. 
-2. Min num comparisons made in buidHeap O(n) is just N elements - 1
+    1. Vertices less than a given vertice basically just means all smaller nodes in the whole tree. 
+    2. Min num comparisons made in buidHeap O(n) is just N elements - 1
+    3. Worst case insertion: Log(N), N = height of tree
+    4. Best case insertion: O(1)
+    5. HeapSort speed is O(NlogN)
+    6. Max number of comparisons in a binHeap = num of (parent-child) * 2 for a 2 child subtree. 
 */
+
+
+
+
+
+
+
+
+
+
