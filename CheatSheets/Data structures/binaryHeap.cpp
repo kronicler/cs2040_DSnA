@@ -128,7 +128,15 @@ public:
     3. Worst case insertion: Log(N), N = height of tree
     4. Best case insertion: O(1)
     5. HeapSort speed is O(NlogN)
-    6. Max number of comparisons in a binHeap = num of (parent-child) * 2 for a 2 child subtree. 
+    6. Max number of comparisons in a binHeap = numSubTrees * numComparisons(indicated below) + 1
+        subtree:
+                            p           p
+                        3: / \      2: /
+                          c   c       c
+    7. Max swaps recorded so far for buildHeap O(N)
+        n elements: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
+                    --------------------------------------------
+             swaps: 0 1 1 3 3 4 4 6 7  8  8  9 10 11 11 13 14 16
 */
 
 
