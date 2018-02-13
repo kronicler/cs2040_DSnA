@@ -333,3 +333,30 @@ int bitMasking (int power) {
 }
 
 
+// Find longest substring that occurs more than once
+
+void longest_substr (string input) {
+    map<string, int> freq;
+    int flag = 0;
+    for (int i = (input.length())/2; i >= 1 && !flag; i--) {
+        cout << i << endl;
+        for (int d = 0; d + i + i <= input.length(); d++) {
+            if (input.substr(d, i) == input.substr(d + i, i)) {
+                
+                //cout << input.substr(d, i) << endl;
+                // How to find the most frequent substring?
+                freq[input.substr(d,i)]++;
+                flag = 1; // stop at this size
+            }
+        }
+    }
+    
+    int largest = 0;
+    //string largest;
+    auto x = max_element(freq.begin(), freq.end(),
+                              [](const pair<string, int>& p1, const pair<string, int>& p2) {
+                                  return p1.second < p2.second; });
+    cout << x->first << endl; // Will output the longest substr 
+}
+
+
