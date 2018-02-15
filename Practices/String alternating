@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+  string str = "abc1234defgh567jk89";
+  deque<char>output;
+  
+  for (int i = 0; i < (int)str.size(); i++) {
+    output.push_back(str[i]);
+  }
+  
+  for (int i = 0; i < (int)str.size(); i++) {
+    if (isalpha(output.front()) && isdigit(output.back())) {
+      cout << output.front() << output.back();
+      output.pop_front(); output.pop_back();
+    }
+    else if (isalpha(output.back()) && isdigit(output.front())) {
+      cout << output.back() << output.front();
+      output.pop_front(); output.pop_back();
+    }
+    else if ((isalpha(output.back()) && isalpha(output.front())) || (isdigit(output.back()) && isdigit(output.front())))
+      output.pop_front();
+  }
+  
+  cout << endl;
+  
+  return 0;
+}
