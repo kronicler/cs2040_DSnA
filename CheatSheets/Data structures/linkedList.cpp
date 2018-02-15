@@ -187,6 +187,21 @@ public:
         }
     }
 
+    void reverse_list () {
+        node * prev = NULL;
+        node * current = head;
+        node * next; 
+        while (current != NULL) {
+            // Basically set all the node's next to the prev while traversing down the linked list in  O(N)
+            next  = current->next;  
+            current->next = prev;   
+            prev = current;
+            current = next;
+
+        }
+        *head_ref = prev;
+    }
+
 };
 
 
