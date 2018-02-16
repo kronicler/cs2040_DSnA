@@ -359,4 +359,20 @@ void longest_substr (string input) {
     cout << x->first << endl; // Will output the longest substr 
 }
 
+// Find the middle element of a list in one traversal
 
+int middle_list (list<int> myList) {
+
+    int rabbit = 0;
+    auto tortoise = myList.begin();
+    
+    while (rabbit < myList.size()-1) {
+        rabbit += 2; // Rabbit will travel twice as fast 
+        tortoise++;
+    }
+    
+    // Tortoise will point to the middle element of the list. 
+    cout << *tortoise << endl;
+
+    return *tortoise; 
+}
