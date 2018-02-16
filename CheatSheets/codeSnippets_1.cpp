@@ -275,12 +275,12 @@ int kthSmallest(int arr[], int l, int r, int smallestElement)
     // element in arr[l..r] using QuickSort
     // based method.  ASSUMPTION: ALL ELEMENTS
     // IN ARR[] ARE DISTINCT
-    
-    
+
+
     // If k is smaller than number of
     // elements in array
     if (smallestElement > 0 && smallestElement <= r - l + 1) {
-        
+
         // Partition the array around last
         // element and get position of pivot
         // element in sorted array
@@ -297,7 +297,7 @@ int kthSmallest(int arr[], int l, int r, int smallestElement)
         
         // Else recur for right subarray
         return kthSmallest(arr, index + 1, r,
-                           smallestElement - index + l - 1);
+         smallestElement - index + l - 1);
     }
     
     // If k is more than number of
@@ -342,7 +342,7 @@ void longest_substr (string input) {
         cout << i << endl;
         for (int d = 0; d + i + i <= input.length(); d++) {
             if (input.substr(d, i) == input.substr(d + i, i)) {
-                
+
                 //cout << input.substr(d, i) << endl;
                 // How to find the most frequent substring?
                 freq[input.substr(d,i)]++;
@@ -354,8 +354,8 @@ void longest_substr (string input) {
     int largest = 0;
     //string largest;
     auto x = max_element(freq.begin(), freq.end(),
-                              [](const pair<string, int>& p1, const pair<string, int>& p2) {
-                                  return p1.second < p2.second; });
+      [](const pair<string, int>& p1, const pair<string, int>& p2) {
+          return p1.second < p2.second; });
     cout << x->first << endl; // Will output the longest substr 
 }
 
@@ -375,4 +375,35 @@ int middle_list (list<int> myList) {
     cout << *tortoise << endl;
 
     return *tortoise; 
+}
+
+
+// Multicolored Flood fill 
+
+void fill (int matrix[][1000], int x, int y, int r, int c, int paint, int current) {
+    matrix[y][x] = paint;
+    // For decimal
+    if (x+1 < c && matrix[y][x+1] == current)
+        fill (matrix, x+1, y, r, c, paint, current);
+    if (x-1 >= 0 && matrix[y][x-1] == current)
+        fill (matrix, x-1, y, r, c, paint, current);
+    if (y-1 >= 0 && matrix[y-1][x] == current)
+        fill (matrix, x, y-1, r, c, paint, current);
+    if (y+1 < r && matrix[y+1][x] == current)
+        fill (matrix, x, y+1, r, c, paint, current);
+}
+
+
+void activation () {
+    // Assuming there are only two types of terrain, we allocate anything >= 1 as positive numbers 
+    // anything <= 0 as negative numbers 
+    if (arr[y1-1][x1-1] >= 1) {
+        decimal++;
+        int current = arr[y1-1][x1-1];
+        fill(arr, x1-1, y1-1, r, c, decimal, current);
+    }else if (arr[y1-1][x1-1] <= 0){
+        binary--;
+        int current = arr[y1-1][x1-1];
+        fill(arr, x1-1, y1-1, r, c, binary, current);
+    }
 }
