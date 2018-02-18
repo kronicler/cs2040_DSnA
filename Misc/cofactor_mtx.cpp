@@ -40,7 +40,7 @@ void cofactor (int cofactor_mtx[][MAX], int input_mtx[][MAX], int size) {
     for (int i = 0; i < size; i++) {
         for (int d = 0; d < size; d++) {
             // Outer loop: set cofactor coords, pull from input_mtx
-
+            
             for (int c = 0; c < size; c++) {
                 for (int k = 0; k < size; k++) {
                     if (c != i && k != d) {
@@ -82,4 +82,15 @@ int main () {
         }
         printf("\n");
     }
+    
+    printf("adjoint: \n");
+    
+    for (int i = 0; i < size ; i++) {
+        for (int d = 0; d < size; d++) {
+            printf("%4d", cofactor_mtx[d][i]);
+        }
+        printf("\n");
+    }
+    
 }
+
