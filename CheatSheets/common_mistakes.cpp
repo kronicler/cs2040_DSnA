@@ -11,3 +11,11 @@ void insert (int v, int pos, int *arr, int* size) {
 }
 
 
+
+// Direct reference of .size() in a loop esp for item removal
+
+for (int d = 0; d < list.size(); d++) {
+	// Will only run "halfway" as each time list pops, it will update list.size()
+	cout << "Transferred: " << list.top() << endl;
+	list.pop();
+}
