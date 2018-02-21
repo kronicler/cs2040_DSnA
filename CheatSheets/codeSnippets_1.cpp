@@ -117,7 +117,8 @@ int main () {
     
     
     auto it = set_intersection(A.begin(), A.end(), B.begin(), B.end(), back_inserter(C)); // it points to C.begin() technically 
-    
+    // Back inserter inserts from the back of the vector.
+
     for (auto it = C.begin(); it != C.end(); it++) {
         cout << *it << " "; // will print 3, 7
     }
@@ -307,30 +308,55 @@ int kthSmallest(int arr[], int l, int r, int smallestElement)
 
 
 // Using upper bound and lower bound
-// TODO: Add more applications to this eg finding out if there are duplicates 
+
 int main () {
+    // Array must be sorted befor-hand
     vector<int> v({1,2,2,2,3,3,3,4});
-    auto low=std::lower_bound (v.begin(), v.end(), 2);
+    auto low = lower_bound (v.begin(), v.end(), 2);
     
     cout << (*low) << endl; // Prints 2
     cout << (low - v.begin()) << endl; // pos 1
     
-    auto high=std::upper_bound (v.begin(), v.end(), 2);
+    auto high = upper_bound (v.begin(), v.end(), 2);
     
     
     cout << (*high) << endl; // Prints 3, first number that's bigger than the one we want 
     cout << (high - v.begin()) << endl; // pos 4
 
 
-    if (low != --high) cout << "duplicates detected" << endl;
+    if (low != --high) cout << "duplicates detected" << endl; 
+    // Means that iterator obtained from lower bound is not the same as iterator obtained by upper bound - 1
 }
 
-// Power thru bit shifting 
 
+// Unique 
+
+int main () {
+    vector<int> myVec({10,20,20,20,30,30,20,20,10});
+    
+    auto it = unique(myVec.begin(), myVec.end()); 
+    // Basically compresses or factorises all the elements beside it that are the same.
+    // 20, 20, 20, 20 becomes 20.
+    
+    for (auto i = myVec.begin(); i != it; i++) { // Will print "10 20 30 20 10"
+
+        cout << *i << " ";
+    }
+    cout << endl;
+    
+    return 0;
+}
+
+
+
+// Power thru bit shifting 
 
 int bitMasking (int power) {
     return 1<<power; // Using bit shifting 
 }
+
+
+
 
 
 // Find longest substring that occurs more than once
