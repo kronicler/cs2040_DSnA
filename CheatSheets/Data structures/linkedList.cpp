@@ -190,7 +190,7 @@ public:
             prev = current;
             current = next;
         }
-        node *head_ref = prev;
+        head = prev;
     }
 };
 
