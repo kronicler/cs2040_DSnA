@@ -31,3 +31,14 @@ actual fact: harmonic series, so its Olog(n)
 Summation usually can be derived from the formula: Sn = a(1-r^n)/(1-r) for geometric progression 
 
 */
+
+
+// End iterator of a vector/ deque
+
+vector<int> myvec ({1,2,3});
+
+auto it = myvec.end();
+
+// *it is not 3, its actually the one next to 3 which is a null object  
+
+
