@@ -24,8 +24,10 @@ for (int d = 0; d < list.size(); d++) {
 // Time complexities
 /*
 
-F(n) = n + (1/2)n + (1/3)n + ... + 1 is O(2^n) easily mistaken for log(n) or O(n)
+F(n) = n + (1/2)n + (1/3)n + ... + 1 is O(2^n) easily mistaken for O(n)
 
-Summation usually can be derived from the formula: Sn = a(1-r^n)/(1-r)
+actual fact: harmonic series, so its Olog(n)
+
+Summation usually can be derived from the formula: Sn = a(1-r^n)/(1-r) for geometric progression 
 
 */

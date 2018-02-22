@@ -76,7 +76,7 @@ void customCompareSort (vector<int> * ) {
     }); // Sort in descending order 
 }
 
-// To iterate and remove elements from a list in std list 
+// To iterate and remove/ delete elements from a list in std list 
 
 void itr_remove_from_list (list<int> mylist) {
 	for (auto i = mylist.begin(); i != mylist.end() ; /*make sure not to increment here*/)
@@ -432,4 +432,29 @@ void activation () {
         int current = arr[y1-1][x1-1];
         fill(arr, x1-1, y1-1, r, c, binary, current);
     }
+}
+
+
+// Storing vector/ array of iterators 
+
+int main () {
+    vector<list<int>::iterator> myIterators;
+    list<int>::iterator arr[10];
+    int index = 0;
+    list<int> myList;
+    
+    myList.push_back(1);
+    myList.push_back(2);
+    myList.push_back(3);
+    
+    for (auto it = myList.begin(); it != myList.end(); it++) {
+        myIterators.push_back(it);
+        arr[index++] = it;
+    }
+    
+    for (int i = 0; i < myIterators.size(); i++) {
+        cout << *myIterators[i] << endl; // will print 1 2 3
+        cout << *arr[i] << endl; // will also print 1 2 3
+    }
+    
 }
