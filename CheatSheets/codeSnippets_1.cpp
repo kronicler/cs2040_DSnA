@@ -458,3 +458,32 @@ int main () {
     }
     
 }
+
+
+// Erasing an item in the list using a vector of iterators
+/* We only use this when we have no other means of randomly removing items from the list
+    or
+   When we only want to remove items in one run. 
+*/
+
+int main () {
+    list<int> mylist;
+    list<int>::iterator arr[10];
+    int index = 0;
+    
+    for (int i = 1; i <= 4; i++) {
+        mylist.push_back(i);
+    }
+    
+    for (auto it = mylist.begin(); it != mylist.end(); it++) {
+        arr[index++] = it;
+    }
+    
+    mylist.erase(arr[1]);
+    for (auto it = mylist.begin(); it != mylist.end(); it++) {
+        cout << *it << " " ;
+    }
+    // Will print 1 3 4
+    
+    cout << endl;
+}
