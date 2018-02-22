@@ -276,7 +276,13 @@ int kthSmallest(int arr[], int l, int r, int smallestElement)
     // element in arr[l..r] using QuickSort
     // based method.  ASSUMPTION: ALL ELEMENTS
     // IN ARR[] ARE DISTINCT
-
+    // Usage:
+    /*
+        1. Input your array
+        2. Input left most index (usually 0)
+        3. Input right most index (usually size -1)
+        4. Input the kth smallest element you want (note if we have 1,2,3,4 4th smallest will be 4, follow 1-based indexing)
+    */
 
     // If k is smaller than number of
     // elements in array
