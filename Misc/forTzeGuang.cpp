@@ -21,11 +21,13 @@ int main () {
         "     x  ",
         "    x   ",
         "  x     ",
-        "  x     "
+        " x      ",
+        "  *    *",
+        "    * * ",
     };
     
-    string arr2[15];
-    for (int i = 0; i < 15; i++) {
+    string arr2[17];
+    for (int i = 0; i < 17; i++) {
         //arr2[i] = arr[i];
         reverse(arr[i].begin(), arr[i].end());
 

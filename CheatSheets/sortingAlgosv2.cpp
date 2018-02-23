@@ -636,6 +636,30 @@ void heap_sort (vector<int> *myVector) {
 }
 
 
+
+// Counting sort with bucket 
+// This function sorts a string with its index in order
+
+vector<pair<char, int>> countingSort (string input, int n, int max) {
+    queue<pair<char, int>> myqueue[128];
+    vector<pair<char, int>> myvec;
+    for (int i = 0; i < n; ++i)
+    {
+        myqueue[input[i]].push(make_pair(input[i], i));
+    }
+    for (int i = 0; i <= max; ++i)
+    {
+        // Empty the bucket
+        while (!myqueue[i].empty()) {
+            myvec.push_back(myqueue[i].back());
+            myqueue[i].pop();
+        }
+    }
+    
+    return myvec;
+}
+
+
 /**
  
  Some extra notes:
