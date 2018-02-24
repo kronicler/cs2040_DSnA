@@ -76,7 +76,7 @@ void customCompareSort (vector<int> * ) {
     }); // Sort in descending order 
 }
 
-// To iterate and remove elements from a list in std list 
+// To iterate and remove/ delete elements from a list in std list 
 
 void itr_remove_from_list (list<int> mylist) {
 	for (auto i = mylist.begin(); i != mylist.end() ; /*make sure not to increment here*/)
@@ -117,7 +117,8 @@ int main () {
     
     
     auto it = set_intersection(A.begin(), A.end(), B.begin(), B.end(), back_inserter(C)); // it points to C.begin() technically 
-    
+    // Back inserter inserts from the back of the vector.
+
     for (auto it = C.begin(); it != C.end(); it++) {
         cout << *it << " "; // will print 3, 7
     }
@@ -275,7 +276,13 @@ int kthSmallest(int arr[], int l, int r, int smallestElement)
     // element in arr[l..r] using QuickSort
     // based method.  ASSUMPTION: ALL ELEMENTS
     // IN ARR[] ARE DISTINCT
-
+    // Usage:
+    /*
+        1. Input your array
+        2. Input left most index (usually 0)
+        3. Input right most index (usually size -1)
+        4. Input the kth smallest element you want (note if we have 1,2,3,4 4th smallest will be 4, follow 1-based indexing)
+    */
 
     // If k is smaller than number of
     // elements in array
@@ -307,30 +314,55 @@ int kthSmallest(int arr[], int l, int r, int smallestElement)
 
 
 // Using upper bound and lower bound
-// TODO: Add more applications to this eg finding out if there are duplicates 
+
 int main () {
+    // Array must be sorted befor-hand
     vector<int> v({1,2,2,2,3,3,3,4});
-    auto low=std::lower_bound (v.begin(), v.end(), 2);
+    auto low = lower_bound (v.begin(), v.end(), 2);
     
     cout << (*low) << endl; // Prints 2
     cout << (low - v.begin()) << endl; // pos 1
     
-    auto high=std::upper_bound (v.begin(), v.end(), 2);
+    auto high = upper_bound (v.begin(), v.end(), 2);
     
     
     cout << (*high) << endl; // Prints 3, first number that's bigger than the one we want 
     cout << (high - v.begin()) << endl; // pos 4
 
 
-    if (low != --high) cout << "duplicates detected" << endl;
+    if (low != --high) cout << "duplicates detected" << endl; 
+    // Means that iterator obtained from lower bound is not the same as iterator obtained by upper bound - 1
 }
 
-// Power thru bit shifting 
 
+// Unique 
+
+int main () {
+    vector<int> myVec({10,20,20,20,30,30,20,20,10});
+    
+    auto it = unique(myVec.begin(), myVec.end()); 
+    // Basically compresses or factorises all the elements beside it that are the same.
+    // 20, 20, 20, 20 becomes 20.
+    
+    for (auto i = myVec.begin(); i != it; i++) { // Will print "10 20 30 20 10"
+
+        cout << *i << " ";
+    }
+    cout << endl;
+    
+    return 0;
+}
+
+
+
+// Power thru bit shifting 
 
 int bitMasking (int power) {
     return 1<<power; // Using bit shifting 
 }
+
+
+
 
 
 // Find longest substring that occurs more than once

@@ -37,6 +37,7 @@ private:
                 maxHeapify(2*index+1, maxSize);
             }
         }
+        // This is redundant, left child cannot exist when right child does not exist 
         else if (2*index+2 < maxSize) {
             // Right child exist
             if (heap[2*index+2] > heap[index]) {
@@ -108,6 +109,11 @@ public:
             // O(N)
         }
     }
+    /*
+        1. Remove all the leaf nodes
+        2. start from the last parent, bubble down/ maxHeapify 
+        3. Do until the first element (index = 0)
+    */
     
     void heap_sort (vector<int> *myVector) {
         heap = *myVector;
