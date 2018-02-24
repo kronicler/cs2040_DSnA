@@ -2,50 +2,51 @@
 #include <iostream>
 #include <tuple>
 #include <unordered_map>
-#include <vector>
 
 using namespace std;
 
 int size = 0;
-unordered_map<string, int> name_index;
-tuple<int, int, string> heap[200000];
+int id_index[200001];
+tuple<int, int, string> something[200001];
 
-void maxHeapify (int index, int maxSize) {
+unordered_map<string, int> nameMap;
+
+void maxsomethingify (int index, int maxSize) {
     // Compare childs
     if (2*index+2 < maxSize) {
         // Both child exist
-        if (heap[2*index+1] > heap[2*index+2]) {
+        if (something[2*index+1] > something[2*index+2]) {
             // Left child larger than right child
-            if (heap[2*index+1] > heap[index]) {
-                swap(heap[index], heap[2*index+1]);
+            if (something[2*index+1] > something[index]) {
+                swap(something[index], something[2*index+1]);
                 
-                name_index[get<2>(heap[index])] = index;
-                name_index[get<2>(heap[2*index+1])] = 2*index+1;
-
-                maxHeapify(2*index+1, maxSize);
+                id_index[get<1>(something[index])] = index;
+                id_index[get<1>(something[2*index+1])] = 2*index+1;
+                
+                maxsomethingify(2*index+1, maxSize);
             }
         }else {
             // Left child smaller or equals to right child
-            if (heap[2*index+2] > heap[index]) {
-                swap(heap[index], heap[2*index+2]);
+            if (something[2*index+2] > something[index]) {
+                swap(something[index], something[2*index+2]);
                 
-                name_index[get<2>(heap[index])] = index;
-                name_index[get<2>(heap[2*index+2])] = 2*index+2;
-
-                maxHeapify(2*index+2, maxSize);
+                id_index[get<1>(something[index])] = index;
+                id_index[get<1>(something[2*index+2])] = 2*index+2;
+                
+                maxsomethingify(2*index+2, maxSize);
             }
         }
     }
     else if (2*index+1 < maxSize) {
         // Left child exist
-        if (heap[2*index+1] > heap[index]) {
-            swap(heap[index], heap[2*index+1]);
+        if (something[2*index+1] > something[index]) {
+            swap(something[index], something[2*index+1]);
             
-            name_index[get<2>(heap[index])] = index;
-            name_index[get<2>(heap[2*index+1])] = 2*index+1;
-
+            id_index[get<1>(something[index])] = index;
+            id_index[get<1>(something[2*index+1])] = 2*index+1;
             
-            maxHeapify(2*index+1, maxSize);
+            
+            maxsomethingify(2*index+1, maxSize);
         }
     }
     else {
@@ -56,13 +57,13 @@ void maxHeapify (int index, int maxSize) {
 }
 void shiftDown (int index) {
     // Compare parent
-    if (heap[index] > heap[(index-1)/2]) {
+    if (something[index] > something[(index-1)/2]) {
         // more than parent
-        swap(heap[index], heap[(index-1)/2]);
+        swap(something[index], something[(index-1)/2]);
         
-        name_index[get<2>(heap[index])] = index;
-        name_index[get<2>(heap[(index-1)/2])] = (index-1)/2;
-
+        id_index[get<1>(something[index])] = index;
+        id_index[get<1>(something[(index-1)/2])] = (index-1)/2;
+        
         
         shiftDown((index-1)/2);
     }else {
@@ -72,30 +73,30 @@ void shiftDown (int index) {
 
 
 void insert (tuple<int, int, string> input) {
-    name_index[get<2>(input)] = size;
-    heap[size++] = input;
+    id_index[get<1>(input)] = size;
+    something[size++] = input;
     shiftDown(size - 1);
 }
 
 string top () {
     if (!size) return "#";
-    return get<2>(heap[0]);
+    return get<2>(something[0]);
 }
 
 void removeTop () {
-    swap(heap[0], heap[size - 1]);
+    swap(something[0], something[size - 1]);
     
-    name_index[get<2>(heap[0])] = 0;
-    name_index[get<2>(heap[size-1])] = size-1;
+    id_index[get<1>(something[0])] = 0;
+    id_index[get<1>(something[size-1])] = size-1;
     size--;
     if (!size) return;
-    maxHeapify(0, size);
+    maxsomethingify(0, size);
 }
 
 
 
 int main () {
-    int count = 200000;
+    int id = 200000;
     int numCmds;
     
     
@@ -111,8 +112,9 @@ int main () {
             int dilation ;
             cin >> name;
             cin >> dilation;
-            insert(make_tuple(dilation, count, name));
-            count--;
+            insert(make_tuple(dilation, id, name));
+            nameMap[name] = id;
+            id--;
         }
         
         else if (type == 1) {
@@ -120,20 +122,31 @@ int main () {
             int dilation;
             cin >> name;
             cin >> dilation;
-            int index = name_index[name];
-            get<0>(heap[index]) += dilation;
-            maxHeapify(index, size);
+            int index = id_index[nameMap[name]]; // might take the longest
+            get<0>(something[index]) += dilation;
+            if (something[index] > something[(index-1)/2]) {
+                shiftDown(index);
+            }else {
+                maxsomethingify(index, size);
+            }
         }
         
         else if (type == 2) {
             // immediately give birth
             cin >> name;
-            int index = name_index[name];
-            get<0>(heap[index]) = 100;
-            //cout << "----- " << get<2>(mymap[name_index[name]]) << " " << get<0>(mymap[name_index[name]]) << endl;
-            //swap(mymap[0], mymap[name_index[name]]);
-            shiftDown(index);
-            //maxHeapify(mymap, 0, size);
+            int index = id_index[nameMap[name]]; // might take the longest
+            get<0>(something[index]) = 100;
+            
+            if (something[index] > something[(index-1)/2]) {
+                shiftDown(index);
+            }else {
+                maxsomethingify(index, size);
+            }
+            
+            //cout << "----- " << get<2>(something[index]) << " " << get<0>(something[index]) << endl;
+            
+            //shiftDown(index);
+            //maxsomethingify (index, size);
             //cout<< "TOP "<< get<2>(mymap[0]) << endl;
             removeTop();
         }
@@ -144,10 +157,9 @@ int main () {
                 cout << "The delivery suite is empty\n";
             }else {
                 cout << top() << endl;
-
             }
         }
         //cout << "-----------MARIA " << get<0>(mymap[name_index["MARIA"]]) << " " << top(mymap) <<endl;
-        count++;
     }
 }
+
