@@ -4,16 +4,17 @@ public:
 	// Create an empty union find data structure with N isolated sets.
     UF(int N)   {
         cnt = N;
-	id = new int[N];
-	sz = new int[N];
+    	id = new int[N];
+    	sz = new int[N];
         for(int i=0; i<N; i++)	{
-            id[i] = i;
-	    sz[i] = 1;
-	}
+           id[i] = i;
+	       sz[i] = 1;
+	    }
     }
+    
     ~UF()	{
-	delete [] id;
-	delete [] sz;
+    	delete [] id;
+    	delete [] sz;
     }
 	// Return the id of component corresponding to object p.
     int find(int p)	{
