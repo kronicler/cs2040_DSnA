@@ -1,5 +1,5 @@
+----------------------------------------------------------------------------------------------------------------------
 // Overriding insert of an array 
-
 void insert (int v, int pos, int *arr, int* size) {
 
 	for (int i = pos; i < size - 1; ++i)
@@ -11,7 +11,7 @@ void insert (int v, int pos, int *arr, int* size) {
 }
 
 
-
+----------------------------------------------------------------------------------------------------------------------
 // Direct reference of .size() in a loop esp for item removal
 
 for (int d = 0; d < list.size(); d++) {
@@ -19,7 +19,7 @@ for (int d = 0; d < list.size(); d++) {
 	cout << "Transferred: " << list.top() << endl;
 	list.pop();
 }
-
+----------------------------------------------------------------------------------------------------------------------
 
 // Time complexities
 /*
@@ -32,13 +32,21 @@ Summation usually can be derived from the formula: Sn = a(1-r^n)/(1-r) for geome
 
 */
 
-
+----------------------------------------------------------------------------------------------------------------------
 // End iterator of a vector/ deque
 
 vector<int> myvec ({1,2,3});
 
 auto it = myvec.end();
 
-// *it is not 3, its actually the one next to 3 which is a null object  
+// *it is not 3, its actually the one next to 3 which is a null object
+
+----------------------------------------------------------------------------------------------------------------------
+// Getting kth element from a std::list 
+
+// O(k) as std::list is a doubly linked list 
+
+
+// Inserting elements into the middle of the deque works 
 
 
