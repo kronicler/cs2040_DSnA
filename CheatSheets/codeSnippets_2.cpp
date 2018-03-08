@@ -40,3 +40,13 @@ int main () {
         juggle.push(out); // push it back
     }
 }
+
+
+// Convert int to string 
+
+string itos(int i)  // convert int to string
+{
+    stringstream s;
+    s << i;
+    return s.str();
+}
