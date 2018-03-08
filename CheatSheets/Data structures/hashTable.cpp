@@ -23,7 +23,7 @@ public:
 
 class HT_seperate {
 private:
-    int size;
+    int size; // Size its best to keep it to prime numbers 
     list<int> arr[1000]; // This must be a doubly linked list
     
     
@@ -71,7 +71,7 @@ class HT_open {
     
 private:
     int arr[1000] = {0};
-    int size;
+    int size; // Size its best to keep it to prime numbers 
     int threshold;
 public:
     HT_open (int input, int input2) {

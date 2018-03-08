@@ -124,7 +124,18 @@ public:
         }
         
         *myVector = heap;
-    }    
+    }
+
+    // DFS
+    void find_elements_above (int k, int index) {
+        if (index >= heap.size()) return; // So it does not traverse out of array
+        
+        cout << heap[index] << endl;
+        
+        if (heap[2*index+1] > k) find_elements_above(k, 2*index+1);
+        if (heap[2*index+2] > k) find_elements_above(k, 2*index+2);
+    }
+    
 };
 
 // Some notes on binary heap
