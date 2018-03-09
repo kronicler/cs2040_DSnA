@@ -50,3 +50,15 @@ string itos(int i)  // convert int to string
     s << i;
     return s.str();
 }
+
+
+// Add multiple actions in a while loop while only caring about the last condition
+
+int main () {
+    int n, t;
+    // This will only care about the second condition in the while loop, that is it will break when n == t
+    while (scanf("%d %d", &n, &t), (n == t)) {
+        // Perform operations here 
+    }
+}
+
