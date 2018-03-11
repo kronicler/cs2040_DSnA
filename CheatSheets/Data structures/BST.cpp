@@ -43,7 +43,10 @@ private:
     
     
     /*
-        If vertex has two children, we will find successor and replace current key with the successor's key.
+        3 cases:
+        - Vertex is a leaf = just search and remove by deleting
+        - Vertex is internal + only 1 child = We just connect this vertex's parent with its only child
+        - If vertex has two children, we will find successor and replace current key with the successor's key.
         We then call delete on the successor and it will happen recursively until it can no longer find a successor/ the other 2 cases happen.
     */
     vertex * remove_recur (vertex * curr, int key) {
@@ -117,36 +120,54 @@ public:
     int successor (int key) {
         vertex * curr = search_recur(key, root);
         if (curr == NULL) return 0;
+        // If right sub tree exists, successor will be the most left node of this right subtree
+        // This can be found using findMin
         if (curr->right != NULL) return findMin_recur(curr->right)->key;
         
+        // Else we have to consider two conditions: 
+        /*
+            1. Curr node is the right vertex of its parent 
+            2. Or left vertex of its parent
+        */
         else {
             vertex * p = curr->parent, * T = curr;
-            
+            // Keep traversing up the parent until it hits the first parent in which it is a left vertex of
             while (p != NULL && T == p->right) {
                 T = p;
                 p = T->parent;
             }
-            if (p == NULL) return -1;
-                else return p->key;
+
+            // If p is not null, that is the successor we're looking for
+            if (p == NULL) return 0; // No sucessor found
+            else return p->key;
         }
-        return -1;
+        return 0;
     }
     
     int predecessor (int key) {
         vertex * curr = search_recur(key, root);
         if (curr == NULL) return 0;
+        // If left sub tree exists, predecessor will be the most right node of this right subtree
+        // This can be found using findMax
         if (curr->left != NULL) return findMax_recur(curr->left)->key;
+
+        // Else we have to consider two conditions: 
+        /*
+            1. Curr node is the left vertex of its parent 
+            2. Or right vertex of its parent
+        */
         else {
             vertex * p = curr->parent, * T = curr;
-            
+            // Keep traversing up the parent until it hits the first parent in which it is a right vertex of
             while (p != NULL && T == p->left) {
                 T = p;
                 p = T->parent;
             }
-            if (p == NULL) return -1;
+            // If p is not null, that is the successor we're looking for
+            if (p == NULL) return 0; // No sucessor found
             else return p->key;
         }
-        return -1;
+        return 0;
     }
     
     // Commonly used for DFS
@@ -157,7 +178,7 @@ public:
     }
     
     // O(h) as we have to search first then insert if not found
-    
+    // Iterative insertion
     void insert (int key) {
         if (root == NULL) {
             vertex * temp = new vertex;
@@ -207,16 +228,7 @@ public:
         }
     }
     
-    /*
-     Removal:
-     - O(h) as we depend on search too
-     Cases:
-     - Vertex is a leaf = just search and remove by deleting
-     - Vertex is internal + only 1 child = We just connect this vertex's parent with its only child
-     - Vertex is internal + 2 children = We set itself to same value as its successor (successor means we have to keep travelling down the right subtree then leftwards),
-     then delete duplicate in right subtree (whilst moving its child along to the current vertex too)
-    */
-    
+     // O(h) as we depend on search too    
     void remove (int key) {
         root = remove_recur(root, key);
     }
@@ -237,4 +249,11 @@ public:
 
  - Lower bound: h > log2(N)
  - Upper bound: h < N
- */
+
+ - Total number of possible trees with n keys: (2n)!/((n+1)!*n!)
+
+ - Rank is the nth element in the ordered set of elements (1-based) eg. rank 1 is the smallest element
+
+
+ - Traversal techniques: https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
+*/
