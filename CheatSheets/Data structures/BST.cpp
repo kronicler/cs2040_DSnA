@@ -1,6 +1,6 @@
 class BST {
     // Precond: this BST does not store duplicates
-    // -1 is used to signify a non-existent value return
+    // 0 is used to signify a non-existent value return
     
 private:
     struct vertex {
@@ -21,16 +21,16 @@ private:
         else return search_recur(key, curr->left);
     }
 
-    int findMax_recur (vertex * curr) {
-        if (curr == NULL) return -1; // Empty
+    vertex * findMax_recur (vertex * curr) {
+        if (curr == NULL) return curr; // Empty
         if (curr->right != NULL) return findMax_recur(curr->right); // go right
-        else return curr->key;
+        else return curr;
     }
     
-    int findMin_recur (vertex * curr) {
-        if (curr == NULL) return -1; // Empty
+    vertex * findMin_recur (vertex * curr) {
+        if (curr == NULL) return curr; // Empty
         if (curr->left != NULL) return findMin_recur(curr->left); // go left
-        else return curr->key;
+        else return curr;
     }
     
     
@@ -41,30 +41,11 @@ private:
         inorder_recur(curr->right);
     }
     
-    // Will eventually return root at the end of the recursive stack
-    vertex * insert_recur (vertex * curr, int key) {
-        if (curr == NULL) {
-            // insertion point is found
-            curr = new vertex;
-            curr->key = key;
-            curr->parent = curr->left = curr->right = NULL;
-            size++;
-        }
-        
-        else if (curr->key < key) {
-            // search to the right
-            curr->right = insert_recur(curr->right, key);
-            curr->right->parent = curr; // slowly bubbling up curr to be root
-        }
-        else {
-            // search to the left
-            curr->left = insert_recur(curr->left, key);
-            curr->left->parent = curr;
-        }
-        return curr;
-    }
     
-    // Will eventually return root at the end of the recursive stack
+    /*
+        If vertex has two children, we will find successor and replace current key with the successor's key.
+        We then call delete on the successor and it will happen recursively until it can no longer find a successor/ the other 2 cases happen.
+    */
     vertex * remove_recur (vertex * curr, int key) {
         if (curr == NULL)  return curr; // cannot find the item to be deleted
         if (curr->key == key) {
@@ -119,19 +100,24 @@ public:
     // Find Min/ Max will take O(h), h = height of tree. h can be as big as N if all vertices are connected to the right
     
     int findMax () {
-        return findMax_recur(root);
+        vertex * temp = findMax_recur(root);
+        if (temp == NULL) return 0;
+        
+        return temp->key;
     }
     
     int findMin () {
-        return findMin_recur(root);
+        vertex * temp = findMin_recur(root);
+        if (temp == NULL) return 0;
+        return temp->key;
     }
     
     // Predecessor and successor will also run in O(h)
     
     int successor (int key) {
         vertex * curr = search_recur(key, root);
-        if (curr == NULL) return -1;
-        if (curr->right != NULL) return findMin_recur(curr->right);
+        if (curr == NULL) return 0;
+        if (curr->right != NULL) return findMin_recur(curr->right)->key;
         
         else {
             vertex * p = curr->parent, * T = curr;
@@ -148,8 +134,8 @@ public:
     
     int predecessor (int key) {
         vertex * curr = search_recur(key, root);
-        if (curr == NULL) return -1;
-        if (curr->left != NULL) return findMax_recur(curr->left);
+        if (curr == NULL) return 0;
+        if (curr->left != NULL) return findMax_recur(curr->left)->key;
         else {
             vertex * p = curr->parent, * T = curr;
             
@@ -173,7 +159,52 @@ public:
     // O(h) as we have to search first then insert if not found
     
     void insert (int key) {
-        root = insert_recur(root, key);
+        if (root == NULL) {
+            vertex * temp = new vertex;
+            temp->key = key;
+            temp->parent = NULL;
+            temp->left = NULL;
+            temp->right = NULL;
+            root = temp;
+            size++;
+            return;
+        }
+        vertex * temp = root;
+        while (true) {
+            if (key > temp->key) {
+                // traverse right
+                if (temp->right == NULL) {
+                    // found insertion pt
+                    vertex * insert = new vertex;
+                    insert->key = key;
+                    insert->parent = temp;
+                    insert->left = NULL;
+                    insert->right = NULL;
+                    temp->right = insert;
+                    size++;
+                    return;
+                }
+                temp = temp->right;
+            }
+            else if (key < temp->key) {
+                // traverse left
+                if (temp->left == NULL) {
+                    // found insertion pt
+                    vertex * insert = new vertex;
+                    insert->key = key;
+                    insert->parent = temp;
+                    insert->left = NULL;
+                    insert->right = NULL;
+                    temp->left = insert;
+                    size++;
+                    return;
+                }
+                temp = temp->left;
+            }
+            else{
+                return;
+            }
+        }
     }
     
     /*
@@ -190,3 +221,20 @@ public:
         root = remove_recur(root, key);
     }
 };
+
+
+/*
+ BST properties:
+ - Root vertex does not have parent
+ - Leaf vertex does not have any child
+ - Internal vertices are vertices which are not leaves
+ - We can store satellite data with the key being used to sort the BST
+ - Vertices which are greater fall on the right of parent
+ - Vertices which are smaller fall on the left of parent
+ - We have to decide if we wish to store duplicate on the left or right (optional)
+ 
+ - Dynamic data structure which is efficient even when updating vertices inside
+
+ - Lower bound: h > log2(N)
+ - Upper bound: h < N
+ */
