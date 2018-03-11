@@ -62,6 +62,7 @@ private:
             } else {
                 curr->parent->right = NULL;
             }
+            size--;
             delete curr;
         }
         else if ((curr->left != NULL && curr->right == NULL) || (curr->left == NULL && curr->right != NULL)) {
@@ -77,6 +78,7 @@ private:
                     curr->parent->right = curr->left;
                     curr->left->parent = curr->parent;
                 }
+                size--;
                 delete curr;
             }else {
                 // Right contains a child
@@ -89,6 +91,7 @@ private:
                     curr->parent->right = curr->right;
                     curr->right->parent = curr->parent;
                 }
+                size--;
                 delete curr;
             }
         }
@@ -245,6 +248,11 @@ public:
     void remove (int key) {
         remove_recur(root, key);
     }
+
+    int getSize () {
+        return size;
+    }
+
 };
 
 
