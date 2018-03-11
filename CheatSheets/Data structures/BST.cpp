@@ -49,42 +49,55 @@ private:
         - If vertex has two children, we will find successor and replace current key with the successor's key.
         We then call delete on the successor and it will happen recursively until it can no longer find a successor/ the other 2 cases happen.
     */
-    vertex * remove_recur (vertex * curr, int key) {
-        if (curr == NULL)  return curr; // cannot find the item to be deleted
-        if (curr->key == key) {
-            // 3 cases
-            if (curr->right == NULL && curr->left == NULL) {
-                // Leaf
+    void remove_recur (vertex * target, int key) {
+        
+        vertex * curr = search_recur(key, target);
+        if (curr == NULL)  return; // cannot find the item to be deleted
+        
+        if (curr->right == NULL && curr->left == NULL) {
+            // Leaf
+            // Find out which side does current belong to
+            if (curr->parent->left != NULL && curr->parent->left == curr) {
+                curr->parent->left = NULL;
+            } else {
+                curr->parent->right = NULL;
+            }
+            delete curr;
+        }
+        else if ((curr->left != NULL && curr->right == NULL) || (curr->left == NULL && curr->right != NULL)) {
+            // Only one child
+            if (curr->left != NULL) {
+                // Left contains a child
+                // Find out which side does current belong to
+                if (curr->parent->left != NULL && curr->parent->left == curr) {
+                    // Make the fusion
+                    curr->parent->left = curr->left;
+                    curr->left->parent = curr->parent;
+                } else {
+                    curr->parent->right = curr->left;
+                    curr->left->parent = curr->parent;
+                }
+                delete curr;
+            }else {
+                // Right contains a child
+                // Find out which side does current belong to
+                if (curr->parent->left != NULL && curr->parent->left == curr) {
+                    // Make the fusion
+                    curr->parent->left = curr->right;
+                    curr->right->parent = curr->parent;
+                }else {
+                    curr->parent->right = curr->right;
+                    curr->right->parent = curr->parent;
+                }
                 delete curr;
             }
-            else if ((curr->left != NULL && curr->right == NULL) || (curr->left == NULL && curr->right != NULL)) {
-                // Only one child
-                vertex * temp = curr;
-                if (curr->left != NULL) {
-                    // Left contains a child
-                    curr->left->parent = curr->parent;
-                    curr = curr->left;
-                    delete temp;
-                }else {
-                    // Right contains a child
-                    curr->right->parent = curr->parent;
-                    curr = curr->right;
-                    delete temp;
-                }
-            }
-            else {
-                // Find successor or predecessor also can
-                int successorV = successor(key);
-                curr->key = successorV; // Let current vertex key be the successor
-                curr->right = remove_recur(curr->right, successorV);
-            }
-
         }
-        // Find left and right if current vertex key is not the one we want. - search
-        else if (curr->key < key) curr->right = remove_recur(curr->right, key);
-        else curr->left = remove_recur(curr->left, key);
-        
-        return curr;
+        else {
+            // Find successor or predecessor also can
+            vertex * successor = findMin_recur(curr->right);
+            curr->key = successor->key; // Let current vertex key be the successor key
+            remove_recur(successor, successor->key); // Recurse to delete the successor
+        }
     }
     
 public:
@@ -230,7 +243,7 @@ public:
     
      // O(h) as we depend on search too    
     void remove (int key) {
-        root = remove_recur(root, key);
+        remove_recur(root, key);
     }
 };
 
