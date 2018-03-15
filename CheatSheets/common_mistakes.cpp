@@ -49,4 +49,19 @@ auto it = myvec.end();
 
 // Inserting elements into the middle of the deque works 
 
+----------------------------------------------------------------------------------------------------------------------
+// Do not call to see if a data exists in a map or set 
 
+unordered_map <int, int> myMap;
+cout << myMap.size() << endl; // Will print 0
+
+cout << myMap[3] << endl; // this will print 0 or any floating number 
+
+cout << myMap.size() << endl; // Will print 1, calling myMap[3] will somehow produce an entry there 
+
+// Always use find first 
+
+if (myMap.find(3) != myMap.end())
+	cout << myMap[3] << endl;
+
+----------------------------------------------------------------------------------------------------------------------

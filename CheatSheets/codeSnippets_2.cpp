@@ -106,6 +106,31 @@ int main () {
 
 }
 
+// Unique identification and removal in hash table
+
+void remove_key (int key, unordered_map<int, int> * myMap) {
+    // If key does not exist, return
+    if (myMap->find(key) == myMap->end()) return;
+    // Remove the key
+    myMap->at(key)--;
+    // If key turns to ZERO, completely erase it
+    if (myMap->at(key) == 0) {
+        myMap->erase(key);
+    }
+}
 
 
+int main () {
+    unordered_map<int, int> countUnique;
+    
+    for (int i = 0 ; i < 6; i++) {
+        countUnique[testcase[i]]++;
+    }
+    cout << countUnique.size() << endl; // 4 unique values
 
+    remove_key(3, &countUnique);
+    remove_key(3, &countUnique);
+
+    cout << countUnique.size() << endl; // Only 3 unique values left
+
+}

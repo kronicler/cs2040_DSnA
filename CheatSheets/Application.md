@@ -35,3 +35,6 @@
 
 - Use when we wish to retrieve/ search for data in O(1)
 - Use when we have many updates to the data set. 
+
+Note: We usually use double hashing or seperate chaining 
+
