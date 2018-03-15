@@ -132,5 +132,23 @@ int main () {
     remove_key(3, &countUnique);
 
     cout << countUnique.size() << endl; // Only 3 unique values left
+}
+
+
+// Calculate sum of numbers - without sorting 
+
+int calculate () {
+    int testcase [6] = {1,3,2,5,3,1}, number_i_want;
+    unordered_map<int, int> number_count;
+    number_i_want = 4;
+    // TODO: Write algo for determining sum of pairs using hash table
+    for (int i = 0; i < 6; i++) {
+        number_count[testcase[i]]++;
+        if (number_count.find(number_i_want - testcase[i]) != number_count.end()) {
+            cout << "Found: ";
+            cout << number_count.find(number_i_want - testcase[i])->first << " ";
+            cout << testcase[i] << endl;
+        }
+    }
 
 }
