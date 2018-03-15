@@ -31,3 +31,7 @@
 - Use when we wish to obtain the largest or smallest item in Olog(n)
 	largest/ smallest item will always float up
 
+7. Hash tables (unordered_map/ set)
+
+- Use when we wish to retrieve/ search for data in O(1)
+- Use when we have many updates to the data set. 
