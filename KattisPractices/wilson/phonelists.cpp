@@ -19,12 +19,14 @@ void calculate () {
         pq.push(input);
     }
     
+    // Get the smallest string first
     string curr = pq.top();
     pq.pop();
     while (pq.size() > 0) {
         string curr_ = pq.top();
         pq.pop();
-        if (!strncmp(curr_.c_str(), curr.c_str(), strlen(curr.c_str()))) {
+        // Just compare from start to end, increasing the size of sub_str
+        if (curr == curr_.substr(0, curr.size())) {
             cout << "NO" << endl;
             return;
         }
@@ -43,4 +45,5 @@ int main () {
         calculate();
     }
 }
+
 
