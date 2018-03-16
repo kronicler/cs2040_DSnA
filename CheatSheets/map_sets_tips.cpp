@@ -20,4 +20,30 @@ int main () {
 	myMap.erase(myMap.find("six")); 
 	cout << myMap.count("six") << endl; // Will return 0 as it no longer exists 
 
+
+    map<string, int> myMap_ordered;
+    
+    myMap_ordered["cat"] = INT_MAX;
+    myMap_ordered["dog"] = INT_MAX;
+    myMap_ordered["apple"] = INT_MAX;
+    
+    for (auto it = myMap_ordered.begin(); it != myMap_ordered.end(); ++it)
+    {
+        cout << it->first << endl; // Will print cat first then dog (in order)
+    }
+    
+    
+    /*
+        apple cat dog
+                   ^      upper bound of cat
+        apple cat dog
+               ^          lower bound of cat
+    */
+    auto it_upper = myMap_ordered.upper_bound("cat");
+    auto it_lower = myMap_ordered.lower_bound("cat");
+    cout << it_upper->first << endl; // Will print dog
+    cout << it_lower->first << endl; // Will print cat
+
+
+    
 }
