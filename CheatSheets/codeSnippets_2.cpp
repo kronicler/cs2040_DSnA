@@ -152,3 +152,20 @@ int calculate () {
     }
 
 }
+
+// Sum of bits to calculate parity 
+
+short test = 100; // 1100100
+
+int main () {
+    int bits = 8; // num of bits
+    
+    short mask = 0b1000000; // 8 bit max
+    int count = 0;
+    while (bits--, bits >= -1) {
+        if (test & mask) count++;
+        mask >>= 1;
+    }
+    cout << count << endl; // Output sum of 1's bits 
+
+}

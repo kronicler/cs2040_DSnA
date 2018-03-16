@@ -11,6 +11,7 @@ int main () {
     vector<string> word_v;
     set<string> words;
     while (cin >> input) {
+        // First input will be "" nothing
         for (auto it = word_v.begin(); it != word_v.end(); it++) {
             words.insert(*it + input);
             words.insert(input + *it);
