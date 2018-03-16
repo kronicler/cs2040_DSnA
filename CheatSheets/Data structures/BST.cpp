@@ -275,6 +275,7 @@ public:
 
  - Rank is the nth element in the ordered set of elements (1-based) eg. rank 1 is the smallest element
 
+ - Deleting an element of same value but different locations in a BST will not result in a structurally similar BST
 
  - Traversal techniques: https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
 */
