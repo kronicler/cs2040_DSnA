@@ -159,19 +159,21 @@ protected:
         else return max(getHeight(T->left), getHeight(T->right)) + 1;
     }
 
-    BSTVertex* search_lower_bound (BSTVertex* T, int v) {
-        if (T == NULL)   return T;
-        if (T->key == v) {
-            return T;
+    BSTVertex* search_lower_bound (BSTVertex* temp, int key) {
+        BSTVertex * prev = NULL;
+        // Iterative
+        while (temp != NULL) {
+            if (key < temp->key) {
+                prev = temp;
+                temp = temp->left;
+            }
+            else if (temp->key == key) return temp; // Needed to for normal search style operation
+            else {
+                temp = temp->right;
+            }
         }
-        else if (T->key < v) {
-            // If key is smaller than V
-            return search_lower_bound(T->right, v);
-        }else {
-            return T;
-        }
+        return prev;
     }
-
     
 public:
     BST() { root = NULL; }

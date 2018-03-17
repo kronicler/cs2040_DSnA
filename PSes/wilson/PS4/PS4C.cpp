@@ -16,10 +16,12 @@ struct BSTVertex {
 class BST {
 public:
     void insert(string v) {
+        size++;
         root = insert(root, v);
     }
     
     void remove(string v) {
+        if (search(root, v) != NULL) size--;
         root = remove(root, v);
     }
     
@@ -29,28 +31,37 @@ public:
     }
     
     BSTVertex * lower_bound ( string v) {
-        prev = root;
-        search_lower_bound(root, v);
-        return prev;
+        return search_lower_bound(root, v);
     }
     
     BSTVertex * moveNext (BSTVertex * curr) {
         return successor(curr);
     }
     
-    void inorder () {
-        inorder_recur(root);
-        cout << endl;
+    int getSize () {
+        return size;
     }
     
-private:
+    BST () {
+        size = 0;
+    }
     
-    BSTVertex * prev;
+    void inorder() {
+        inorder(root);
+        printf("\n");
+    }
+
+    
+    
+private:
+    BSTVertex *root = NULL;
+    
+    int size = 0;
     
     BSTVertex* search(BSTVertex* T, string v) {
-        if (T == NULL)   return T;                                // not found
+        if (T == NULL)   return T;
         else if (T->key == v) {
-             return T;
+            return T;
         }
         else if (T->key < v) {
             return search(T->right, v);
@@ -60,35 +71,21 @@ private:
         }
     }
     
-    
-    BSTVertex* search_lower_bound (BSTVertex* T, string v) {
-        if (T == NULL)   return T;
-        
-        if (T->key == v) {
-            prev = T;
-            return T;
+    BSTVertex* search_lower_bound (BSTVertex* temp, string key) {
+        BSTVertex * prev = NULL;
+        while (temp != NULL) {
+            if (key < temp->key) {
+                prev = temp;
+                temp = temp->left;
+            }
+            else if (key == temp->key) return temp;
+            else {
+                temp = temp->right;
+            }
         }
-        else if (T->key < v) {
-            // If key is smaller than V
-            prev = T;
-            return search_lower_bound(T->right, v);
-        }else {
-            prev = T;
-            return T;
-        }
+        return prev;
     }
-    
-    
-    void inorder_recur (BSTVertex * curr) {
-        if (curr == NULL) return;
-        inorder_recur(curr->left);
-        cout << curr->key << " ";
-        inorder_recur(curr->right);
-    }
-    
-    
-    BSTVertex *root;
-    
+
     // will be used in AVL lecture
     int getHeight(BSTVertex* T) {
         if (T == NULL) return -1;
@@ -102,11 +99,6 @@ private:
         else                      return findMin(T->left);         // go to the left
     }
     
-    string findMax(BSTVertex* T) {
-        if (T == NULL)        return "";            // BST is empty, no maximum
-        else if (T->right == NULL) return T->key;                 // this is the max
-        else                       return findMax(T->right);      // go to the right
-    }
     
     // Used for traversal
     BSTVertex * successor(BSTVertex* T) {
@@ -124,20 +116,6 @@ private:
         }
     }
     
-    string predecessor(BSTVertex* T) {
-        if (T->left != NULL)                        // this subtree has left subtree
-            return findMax(T->left); // the predecessor is the maximum of left subtree
-        else {
-            BSTVertex* par = T->parent;
-            BSTVertex* cur = T;
-            // if par(ent) is not root and cur(rent) is its left children
-            while ((par != NULL) && (cur == par->left)) {
-                cur = par;                                         // continue moving up
-                par = cur->parent;
-            }
-            return par == NULL ? "" : par->key;          // this is the successor of T
-        }
-    }
     
     
     int h(BSTVertex* T) { return T == NULL ? -1 : T->height; }
@@ -221,7 +199,9 @@ private:
         
         if (T->key == v) {                         // this is the node to be deleted
             if (T->left == NULL && T->right == NULL)                 // this is a leaf
+            {
                 T = NULL;                                      // simply erase this node
+            }
             else if (T->left == NULL && T->right != NULL) { // only one child at right
                 BSTVertex* temp = T;
                 T->right->parent = T->parent;
@@ -273,12 +253,58 @@ private:
         return T;                                          // return the updated BST
     }
     
+    void inorder(BSTVertex* T) {
+        if (T == NULL) return;
+        inorder(T->left);                              // recursively go to the left
+        cout << T->key << " ";
+        inorder(T->right);                            // recursively go to the right
+    }
 
+    
 };
 
 
-BST male_;
-BST female_;
+BST male_ [127] ;
+BST female_ [127];
+
+
+int count_males (string start, string end) {
+    int count = 0;
+    
+    for (int i = start[0]; i <= end[0]; i++) {
+        if (i == start[0] || i == end[0]) {
+            auto it_start = male_[i].lower_bound(start);
+            auto it_end = male_[i].lower_bound(end);
+            while (it_start != NULL && it_start != it_end) {
+                count++;
+                it_start = male_[i].moveNext(it_start);
+            }
+        }else {
+            count += male_[i].getSize();
+        }
+    }
+    
+    return count;
+}
+
+int count_females (string start, string end) {
+    int count = 0;
+    
+    for (int i = start[0]; i <= end[0]; i++) {
+        if (i == start[0] || i == end[0]) {
+            auto it_start = female_[i].lower_bound(start);
+            auto it_end = female_[i].lower_bound(end);
+            while (it_start != NULL && it_start != it_end) {
+                count++;
+                it_start = female_[i].moveNext(it_start);
+            }
+        }else {
+            count += female_[i].getSize();
+        }
+    }
+    return count;
+}
+
 
 
 
@@ -294,10 +320,10 @@ int main () {
             int gender;
             cin >> name >> gender;
             if (gender == 1) {
-                male_.insert(name);
+                male_[name[0]].insert(name);
             }
             else {
-                female_.insert(name);
+                female_[name[0]].insert(name);
             }
         }
         
@@ -305,8 +331,8 @@ int main () {
             string name;
             cin >> name;
             
-            male_.remove(name);
-            female_.remove(name);
+            male_[name[0]].remove(name);
+            female_[name[0]].remove(name);
         }
         
         else if (command == 3) {
@@ -316,48 +342,14 @@ int main () {
             cin >> start >> end >> gender;
             int count = 0;
             if (gender == 0) {
-                
-                BSTVertex * it_ = male_.lower_bound(start);
-                BSTVertex  * it2_ = male_.lower_bound(end);
-                
-                cout << it2_->key << " " << end <<endl;
-                
-                while (it_ != NULL) {
-                    if (it_ == it2_) break;
-                    count++;
-                    it_ = male_.moveNext(it_);
-                }
-                it_ = female_.lower_bound(start);
-                it2_ = female_.lower_bound(end);
-
-                while (it_ != NULL) {
-                    if (it_ == it2_) break;
-                    count++;
-                    it_ = female_.moveNext(it_);
-                }
+                count += count_males(start, end);
+                count += count_females(start, end);
             }
             else if (gender == 1) {
-                BSTVertex * it_ = male_.lower_bound(start);
-                BSTVertex  * it2_ = male_.lower_bound(end);
-                cout << it2_->key << " " << end <<endl;
-
-                // Will take O(N)
-                while (it_ != NULL) {
-                    if (it_ == it2_) break;
-                    count++;
-                    it_ = male_.moveNext(it_);
-                }
+                count += count_males(start, end);
             }
             else {
-                BSTVertex * it_ = female_.lower_bound(start);
-                BSTVertex  * it2_ = female_.lower_bound(end);
-                cout << it2_->key << " " << end <<endl;
-                // Will take O(N)
-                while (it_ != NULL) {
-                    if (it_ == it2_) break;
-                    count++;
-                    it_ = female_.moveNext(it_);
-                }
+                count  += count_females(start, end);
             }
             cout << count << endl;
         }
@@ -366,3 +358,4 @@ int main () {
     
     
 }
+
