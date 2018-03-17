@@ -123,12 +123,55 @@ protected:
             T->left = remove(T->left, v);
         return T;                                          // return the updated BST
     }
+
+    void kthLargestUtil(BSTVertex* root, int k, int &c) {
+
+        // Base cases, the second condition is important to
+        // avoid unnecessary recursive calls
+        if (root == NULL || c >= k)
+            return;
+        
+        // Follow reverse inorder traversal so that the
+        // largest element is visited first
+        kthLargestUtil(root->right, k, c);
+        
+        // Increment count of visited nodes
+        c++;
+        
+        // If c becomes k now, then this is the k'th largest
+        if (c == k)
+        {
+            cout << "K'th largest element is "
+            << root->key << endl;
+            return;
+        }
+        
+        // Recur for left subtree
+        kthLargestUtil(root->left, k, c);
+    }
+
+
+
     
     // will be used in AVL lecture
     int getHeight(BSTVertex* T) {
         if (T == NULL) return -1;
         else return max(getHeight(T->left), getHeight(T->right)) + 1;
     }
+
+    BSTVertex* search_lower_bound (BSTVertex* T, int v) {
+        if (T == NULL)   return T;
+        if (T->key == v) {
+            return T;
+        }
+        else if (T->key < v) {
+            // If key is smaller than V
+            return search_lower_bound(T->right, v);
+        }else {
+            return T;
+        }
+    }
+
     
 public:
     BST() { root = NULL; }
@@ -171,6 +214,19 @@ public:
     int getHeight() { 
         return getHeight(root); 
     }
+
+    void kthLargest(int k)
+    {
+        // Initialize count of nodes visited as 0
+        int c = 0;
+        
+        // Note that c is passed by reference
+        kthLargestUtil(root, k, c);
+    }
+
+    int lower_bound(int k) {
+        return search_lower_bound(root, k);
+    } 
 };
 
 /*
