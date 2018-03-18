@@ -174,6 +174,57 @@ protected:
         }
         return prev;
     }
+
+    int sizeof_subtree (BSTVertex * curr) {
+        int count = 0;
+        if (curr == NULL) return count; // If its NULL, dont count
+        else count++;
+        count += sizeof_subtree(curr->left);
+        count += sizeof_subtree(curr->right);
+        return count;
+    }
+    
+    int rank (BSTVertex * curr, int key) {
+        // Iterative
+        int rank = 1; // 1-based
+        while (curr != NULL) {
+            if (curr->key < key) {
+                // traverse right
+                rank += (sizeof_subtree(curr->left) + 1); // Add size of left sub tree plus parent 
+                curr = curr->right;
+            }else if (curr->key > key) {
+                // Traverse right
+                curr = curr->left;
+            }
+            else {
+                // Found the key
+                rank += sizeof_subtree(curr->left);
+                return rank;
+            }
+        }
+        return rank;
+    }
+
+    BSTVertex * select (BSTVertex * curr, int rank) {
+        int rank_ = 1;
+        while (curr != NULL) {
+            // We keep traversing right till the first instance rank is either larger or equals to the one we want
+            int temp = rank_ + sizeof_subtree(curr->left);
+            if (temp < rank) {
+                rank_ = temp + 1; // Replace rank_ with the new value + parent
+                curr = curr->right;
+            }
+            else if (temp == rank){
+                return curr; // Return immediately
+            }
+            else {
+                curr = curr->left;
+            }
+        }
+        return curr;
+    }
+
+
     
 public:
     BST() { root = NULL; }
@@ -227,8 +278,17 @@ public:
     }
 
     int lower_bound(int k) {
-        return search_lower_bound(root, k);
-    } 
+        return search_lower_bound(root, k)->key;
+    }
+
+    int rankOf (int key) {
+        return rank(root, key);
+    }
+
+    int select (int rank) {
+        return select(root, rank)->key;
+    }
+
 };
 
 /*
