@@ -281,6 +281,13 @@ public:
         return search_lower_bound(root, k)->key;
     }
 
+    int upper_bound (int k) {
+        BSTVertex * temp = search_lower_bound(root, k);
+        if (temp->key != k) return temp->key;
+        return successor(temp);
+    }
+
+
     int rankOf (int key) {
         return rank(root, key);
     }
