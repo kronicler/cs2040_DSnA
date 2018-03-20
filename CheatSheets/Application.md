@@ -35,6 +35,10 @@
 
 - Use when we wish to retrieve/ search for data in O(1)
 - Use when we have many updates to the data set. 
+- Use when we need to identify duplicates 
 
 Note: We usually use double hashing or seperate chaining 
 
+8. BSTs (ordered map/ set)
+
+- Use when we need to have a balance between retrieval of random data and finding order
