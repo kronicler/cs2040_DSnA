@@ -27,9 +27,19 @@ int main () {
     myMap_ordered["dog"] = INT_MAX;
     myMap_ordered["apple"] = INT_MAX;
     
+
+    // O (N) - there is an upper bound for traversals to find successor == O (kN)
     for (auto it = myMap_ordered.begin(); it != myMap_ordered.end(); ++it)
     {
         cout << it->first << endl; // Will print cat first then dog (in order)
+    }
+
+    auto it = myMap_ordered.begin();
+    next(it); // This is a O log(N) operation 
+
+    // Another method for traversal 
+    for (auto it: myMap_ordered) {
+        cout << *it << endl;
     }
     
     
@@ -45,5 +55,5 @@ int main () {
     cout << it_lower->first << endl; // Will print cat
 
 
-    
+    // Note: BSTs are also used in table ADT
 }

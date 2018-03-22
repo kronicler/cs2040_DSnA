@@ -42,3 +42,7 @@ Note: We usually use double hashing or seperate chaining
 8. BSTs (ordered map/ set)
 
 - Use when we need to have a balance between retrieval of random data and finding order
+
+- Keys are harder to hash eg. tuples/ pairs 
+
+- Need to use upper bound/ lower bound 

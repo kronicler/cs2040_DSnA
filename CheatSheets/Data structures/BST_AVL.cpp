@@ -311,7 +311,7 @@ public:
  - Dynamic data structure which is efficient even when updating vertices inside
  
  - Lower bound: h > log2(N)
- - Upper bound: h < N
+ - Upper bound: h <= N
  
  - Total number of possible trees with n keys: (2n)!/((n+1)!*n!)
  
@@ -320,6 +320,8 @@ public:
  - Deleting an element of same value but different locations in a BST will not result in a structurally similar BST
  
  - Traversal techniques: https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
+
+ - Tip: Inorder traversal, just flatten the tree and read from left to right 
  */
 
 
