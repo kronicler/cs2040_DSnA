@@ -427,3 +427,13 @@ void activation () {
         fill(arr, x1-1, y1-1, r, c, binary, current);
     }
 }
+
+// Converting a string to lower case 
+
+string tolower (string input) {
+    // depends on <algorithm>
+
+    transform(input.begin(), input.end(), input.begin(), ::tolower);
+    return input;
+}
+
