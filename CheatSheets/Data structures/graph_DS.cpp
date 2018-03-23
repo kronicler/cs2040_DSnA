@@ -32,7 +32,6 @@ private:
             if (arr[vertex][i] == true && visited->find(i) == visited->end()) {
                 // Not visited
                 visited->insert(make_pair(i, 1));
-                cout << i << endl;
                 q->push(i); // Push the vertices to the queue
             }
         }
@@ -86,11 +85,12 @@ public:
         queue<int> q;
         int curr = vertex;
         q.push(curr); // Initial push
-        // TODO: Fix this and implement for adjacency list as well
+        visited[curr] = 1; // Mark as visited
         while (!q.empty()) {
-            scan_neighbours(&q, curr, &visited);
             curr = q.front();
             q.pop();
+            cout << curr << endl;
+            scan_neighbours(&q, curr, &visited);
         }
         
         
@@ -132,8 +132,15 @@ private:
             }
         }
     }
-
     
+    void scan_neighbours (queue<int> *q, int vertex, unordered_map<int, int> *visited) {
+        for (auto it = AL[vertex].begin(); it != AL[vertex].end(); it++) {
+            if (visited->find(*it) == visited->end()) {
+                visited->insert(make_pair(*it, 1));
+                q->push(*it);
+            }
+        }
+    }
     
 public:
     adj_list (int numV) {
@@ -188,6 +195,20 @@ public:
         // Will create a minimum spanning tree - IE a path thru all vertices with least edges
         // when we backtrack
     }
+    
+    void BFS (int vertex) {
+        unordered_map<int, int> visited;
+        queue<int> q;
+        int curr = vertex;
+        q.push(curr); // Initial push
+        visited[curr] = 1; // Mark as visited
+        while (!q.empty()) {
+            curr = q.front();
+            q.pop();
+            cout << curr << endl;
+            scan_neighbours(&q, curr, &visited);
+        }
+    }
 };
 
 
@@ -216,3 +237,4 @@ public:
 };
 
 // TODO: Fill in more theory on graphs like acyclic or special graphs down here.
+
