@@ -2,16 +2,15 @@
 #include <vector>
 using namespace std;
 
-vector <int> v[1000];
-int visited[1000];
-int counts;
-
-//Counts the sum of the number of edges in the minimum spanning tree of
+//Counts the sum (varibale 'counts') of the number of edges in the minimum spanning tree of
 //each connected component
 
 //Outputs the difference between the number of edges in the minimum spanning tree
-//of all the endpoints with the sum of the number of edges in the minimum 
-//spanning tree of each connected component
+//of all the endpoints and the sum
+
+vector <int> v[1000];
+int visited[1000];
+int counts;
 
 void dfs(int source) {
 	visited[source] = 1;
@@ -30,6 +29,7 @@ int main () {
 	while (cities--) {
 		for (auto& i : v) i.clear();
 		for (int i = 0; i < 1000; i++) visited[i] = 0;
+		
 		counts = 0;
 		cin >> endpoints;
 		cin >> r;
@@ -40,10 +40,8 @@ int main () {
 			v[b].push_back(a);
 		}
 
-		dfs(0);
-		for (int i = 0; i < endpoints; i++) {
-			if (!visited[i]) dfs(i);
-		}
+		for (int i = 0; i < endpoints; i++) if (!visited[i]) dfs(i);
+
 		cout << endpoints-1-counts << endl;
 	}
 	return 0;
