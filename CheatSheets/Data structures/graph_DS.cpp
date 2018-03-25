@@ -111,7 +111,7 @@ public:
 
 class adj_list {
     // Space complexity: O(V+E)
-private:
+protected:
     int numV;
     int numEdges;
     list<int> AL[10]; // Push back when we wanna add new adjacent vertices
@@ -234,6 +234,80 @@ public:
     }
     
     
+};
+
+
+class sample_topo_sort : adj_list {
+private:
+    unordered_map<int, int> incoming;
+    
+    void DFS_recur (int vertex, unordered_map<int, int> *visited, list<int> * topo_list) {
+        // Mark visited
+        visited->insert(make_pair(vertex, 1));
+        // Show its visits
+        for (auto it = AL[vertex].begin(); it != AL[vertex].end(); it++) {
+            // Traverse thru the columns on the same row
+            if (visited->find(*it) == visited->end()) {
+                // unvisited vertex
+                DFS_recur(*it, visited, topo_list);
+            }
+            // Else skip it
+        }
+        // Finish DFS, add to back of list
+        topo_list->push_back(vertex);
+    }
+
+public:
+    
+    void connect (int v, int v2) {
+        AL[v].push_back(v2);
+        incoming[v2]++;
+    }
+    
+    sample_topo_sort () : adj_list(10) {
+        // Init a sample graph  CP3 4.17 DAG
+        // Override
+        connect(0, 3);
+        connect(0, 1);
+        connect(0, 2);
+        connect(1, 3);
+        connect(1, 4);
+        connect(2, 4);
+        connect(3, 4);
+    }
+    
+    list<int> topo_sort_dfs (int v) {
+        list<int> topo;
+        unordered_map<int, int> visited;
+        DFS_recur(v, &visited, &topo);
+        topo.reverse();
+        return topo;
+    }
+    
+    // Warning: This will delete all your edges
+    void topo_sort_bfs (int v) {
+        queue<int> Q;
+        // Add vertices with no incoming edges to Q
+        
+        for (int i = 0; i < 5 ; i++) {
+            if (incoming.find(i) == incoming.end()) {
+                // No incoming edges
+                Q.push(i);
+            }
+        }
+
+        int curr;
+        while (!Q.empty()) {
+            curr = Q.front(); Q.pop();
+            cout << curr << " ";
+            for (auto it = AL[curr].begin(); it != AL[curr].end(); it++) {
+                AL[curr].erase(it); // Delete the edge
+                if (incoming.find(*it) != incoming.end()) incoming[*it]--; // Remove 1 from num incoming for that neighbour
+                if (incoming[*it] == 0) Q.push(*it); // If it has no incoming edge, add it to Q
+            }
+        }
+        cout << endl;
+    }
 };
 
 // TODO: Fill in more theory on graphs like acyclic or special graphs down here.
