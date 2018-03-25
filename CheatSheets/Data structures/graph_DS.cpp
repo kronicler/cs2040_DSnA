@@ -238,6 +238,10 @@ public:
 
 
 class sample_topo_sort : adj_list {
+    
+//Topological sort of a DAG is a linear ordering of the DAG's vertices 
+//in which each vertex comes before all vertices to which it has outbound edges.
+
 private:
     unordered_map<int, int> incoming;
     
