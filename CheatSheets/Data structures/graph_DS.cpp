@@ -319,3 +319,24 @@ public:
 
 // TODO: Fill in more theory on graphs like acyclic or special graphs down here.
 
+
+// Some notes: 
+/*
+    Bipartite graphs: 
+    - A set of vertices seperated into 2 disjoint sets where vertices of the same set are not directly adjacent to each other 
+
+    DAGs: 
+    - A graph which is direct and acylic (Warning: it cannot be weighted too)
+
+    Toposort: 
+    - Consider all vertices with only outgoing edges first (smallest to largest) - visualgo 
+    - Follow same style as BFS topo sort
+
+    Edges that will always be present in min spanning tree:
+    - Basically edges to a vertex that cannot be substituted with any other (non cycles, single path)
+
+    Misc: 
+    - During BFS/ DFS always go in order of elements (smallest first) in visualgo 
+*/
+
+
