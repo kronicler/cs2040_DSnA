@@ -280,12 +280,15 @@ public:
         connect(3, 4);
     }
     
-    list<int> topo_sort_dfs (int v) {
+    void topo_sort_dfs (int v) {
         list<int> topo;
         unordered_map<int, int> visited;
         DFS_recur(v, &visited, &topo);
         topo.reverse();
-        return topo;
+        for (auto it : topo ) {
+            cout << it << " ";
+        }
+        cout << endl;
     }
     
     // Warning: This will delete all your edges
