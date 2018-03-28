@@ -317,6 +317,57 @@ public:
     }
 };
 
+
+
+// Vertex in cycle checker 
+
+class vertex_in_cycle : adj_list {
+private:
+    
+    unordered_map<int, int> degree;
+    unordered_map<int, int> is_cycle;
+
+    
+public:
+    vertex_in_cycle (int size):adj_list (size) {}
+    
+    void connect (int v, int v2) {
+        AL[v2].push_back(v); // Notice how we link up v2 to v instead of the other way round
+        // We need to traverse the other ways in this case
+        degree[v]++; // Degree is the number of outgoing edges from this vertex
+        
+        // Mark them all as part of cycle first
+        is_cycle[v] = 1;
+        is_cycle[v2] = 1;
+    }
+    
+    void search () {
+        queue<int> q;
+        // We target the vertices with no outgoing edges first
+        for (int i = 0; i < numV; i++) {
+            if (degree[i] == 0) {
+                q.push(i);
+            }
+        }
+        // When it has no outgoing arrows, it is automatically not in a cycle already.
+        while (!q.empty()) {
+            int curr = q.front();
+            q.pop();
+            is_cycle[curr] = 0;
+            for (auto it = AL[curr].begin(); it != AL[curr].end(); it++) {
+                degree[*it]--;
+                if (degree[*it] == 0) q.push(*it);
+            }
+        }
+    }
+    
+    int is_part_of_cycle (int v) {
+        return is_cycle[v];
+    }
+    
+};
+
+
 // TODO: Fill in more theory on graphs like acyclic or special graphs down here.
 
 
