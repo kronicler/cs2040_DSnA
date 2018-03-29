@@ -371,6 +371,14 @@ public:
 // TODO: Fill in more theory on graphs like acyclic or special graphs down here.
 
 
+/*
+    DAG proof: 
+    - Suppose you can reach u again through some series of directed edges 
+    - Then it violates acyclic property and cannot be a DAG 
+
+
+*/
+
 // Some notes: 
 /*
     Bipartite graphs: 
@@ -388,6 +396,8 @@ public:
 
     Misc: 
     - During BFS/ DFS always go in order of elements (smallest first) in visualgo 
+    - Complete graph has edges = v(v-1)/2,  v is num vertices 
+    - Complete directed graph has edges = v(v-1)
 */
 
 
