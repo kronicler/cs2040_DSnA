@@ -168,3 +168,92 @@ public:
     }
     
 };
+
+
+// DFS - can be used for trees only, already O (V + E) because each vertice only has one unique path 
+
+
+
+class DP {
+    // Limitations:
+    /*
+        - Only on DAGs
+    */
+    // Time complexity: O ((V+E))
+protected:
+    int numv;
+    list<pair<int, int>> EL[10];
+    unordered_map<int, int> added_weight;
+    unordered_map<int, int> predecessor;
+
+    
+    void DFS_recur (int vertex, unordered_map<int, int> *visited, list<int> * topo_list) {
+        // Mark visited
+        visited->insert(make_pair(vertex, 1));
+        // Show its visits
+        for (auto it = EL[vertex].begin(); it != EL[vertex].end(); it++) {
+            // Traverse thru the columns on the same row
+            if (visited->find(it->second) == visited->end()) {
+                // unvisited vertex
+                DFS_recur(it->second, visited, topo_list);
+            }
+            // Else skip it
+        }
+        // Finish DFS, add to back of list
+        topo_list->push_back(vertex);
+    }
+
+    
+    void relax (int v, int v2, int w) {
+        if (added_weight[v2] > added_weight[v] + w) {
+            added_weight[v2] = added_weight[v] + w;
+            predecessor[v2] = v;
+        }
+    }
+
+
+public:
+    
+    DP (int size) {
+        this->numv = size;
+    }
+    
+    
+    void connect (int v, int v2, int weight) {
+        EL[v].push_back(make_pair(weight, v2));
+        added_weight[v] = INT_MAX;
+        added_weight[v2] = INT_MAX;
+        
+    }
+    
+    void topo_sort_dfs (int v) {
+        list<int> topo;
+        unordered_map<int, int> visited;
+        DFS_recur(v, &visited, &topo);
+        topo.reverse();
+        
+        
+        added_weight[v] = 0;
+        while (!topo.empty()) {
+            // Relax all outgoing edges for curr
+            int curr = *topo.begin();
+            topo.erase(topo.begin());
+            for (auto it = EL[curr].begin(); it != EL[curr].end(); it++) {
+                relax(curr, it->second, it->first);
+            }
+        }
+    }
+    
+    
+    void get_weight (int v) {
+        cout << added_weight[v] << endl;
+    }
+    
+    int get_distance (int source, int destination) {
+        topo_sort_dfs(source);
+        return added_weight[destination];
+    }
+
+};
+
+
