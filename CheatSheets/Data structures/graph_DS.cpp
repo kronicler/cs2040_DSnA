@@ -368,6 +368,57 @@ public:
 };
 
 
+class self_labelling {
+protected:
+    list<int> AL[10];
+    unordered_map<int, int> painted;
+    int color;
+    int numv;
+    
+    void DFS_recur (int vertex) {
+        // Mark visited
+        painted.insert(make_pair(vertex, color));
+        // Show its visits
+        for (auto it = AL[vertex].begin(); it != AL[vertex].end(); it++) {
+            // Traverse thru the columns on the same row
+            if (painted.find(*it) == painted.end()) {
+                // unvisited vertex
+                DFS_recur(*it);
+            }
+        }
+    }
+
+    
+public:
+    self_labelling (int size) {this->numv = size; color = 1;}
+    
+    void connect (int v, int v2) {
+        AL[v].push_back(v2);
+        AL[v2].push_back(v);
+        // Undirected graph
+    }
+    
+    void DFS () {
+        for (int i = 0; i < numv; i++) {
+            if (painted.find(i) == painted.end()) {
+                DFS_recur(i);
+                color++;
+            }
+        }
+    }
+    
+    void get_color (int v) {
+        DFS();
+        // BFS should be similar
+        
+        // This technique can be good for counting num disjointed sets too by checking how many colors have been painted
+        cout << painted[v] << endl;
+    }
+};
+
+
+
+
 // TODO: Fill in more theory on graphs like acyclic or special graphs down here.
 
 

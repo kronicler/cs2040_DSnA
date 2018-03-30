@@ -4,17 +4,20 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 
 using namespace std;
 
+
 int main () {
     
     int TC, pax;
-    cin >> TC >> pax;
+    cin >> TC;
     while (TC--) {
-        vector<pair<unsigned long, string> > my_names;
-        
+        //vector<pair<unsigned long, string> > my_names;
+        vector<pair<unsigned long long, string >> my_names;
+        cin >> pax;
         while (pax--) {
             string name;
             string classes;
@@ -22,32 +25,40 @@ int main () {
             cin >> name >> classes >> dump;
             name[name.size()-1] = '\0';
             
+            cin.ignore();
             istringstream iss (classes);
             string token;
             string number;
             while (getline(iss, token, '-')) {
                 if (token == "upper") {
-                    number += "3";
+                    number.push_back('1');
                 }else if (token == "middle") {
-                    number += "2";
-                }else {
-                    number += "1";
+                    number.push_back('2');
+                }else if (token == "lower"){
+                    number.push_back('3');
                 }
             }
             
-            //reverse(number.begin(), number.end());
-            while (number.size() != 10) {
-                number += "2";
+            while (number.length() != 10) {
+                number.push_back('2');
             }
-            unsigned long converted_number = stoul(number);
-            my_names.push_back(make_pair(converted_number, name));
+            unsigned long long value = 0;
+            for(auto it = number.begin(); it != number.end(); ++it){
+                value *= 10;
+                value += *it-'0';
+            }
+            my_names.push_back(make_pair(value, name));
         }
         
-        sort(my_names.rbegin(), my_names.rend());
+        sort(my_names.begin(), my_names.end());
+
+        
+        // TODO: Fix the sorting of names as reversing it will only reverse the order of the names
         for (auto it : my_names) {
             cout << it.second << endl;
         }
         cout << "==============================" << endl;
-
+        
     }
 }
+
