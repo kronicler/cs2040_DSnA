@@ -1,95 +1,232 @@
-//
-//  main.cpp
-//  PS3A
-//
-//  Created by Aaryam Srivastava on 24/2/2018.
-//  Copyright © 2018 Developers. All rights reserved.
-//
-
-#include <bits/stdc++.h>
+#include <unordered_map>
+#include <iostream>
+#include <string>
+#include <unordered_map>
 using namespace std;
-typedef tuple<int, int, string> iii;
-priority_queue<iii> womaninfo; stack<iii> temp_stack;
-int woman = 0; string empty = "The delivery suite is empty";
+unordered_map<string, int> genders;
 
-void ArriveatHospital(string name, int dilation) {
-    woman++;
-    womaninfo.push(make_tuple(dilation, -woman, name));
-}
+struct AVLNode {
+    AVLNode* parent;
+    AVLNode* left;
+    AVLNode* right;
+    string babyname;
+    int height;
+};
 
-void UpdateDilation(string womanName, int increasedilation) {
-    iii tmp = womaninfo.top();
-    temp_stack.push(womaninfo.top());
-    womaninfo.pop();
+class AVL {
+private:
+    AVLNode *root;
     
-    while (1) {
-        if (get<2>(tmp) == womanName) {
-            get<0>(tmp) = get<0>(tmp) + increasedilation;
-            womaninfo.push(tmp); temp_stack.pop();
-            break;
+    string successor(AVLNode* newNode) {
+        if (newNode->right != NULL) return QueryMin(newNode->right);
+        else {
+            AVLNode* par = newNode->parent;
+            AVLNode* cur = newNode;
+            
+            while ((par != NULL) && (cur == par->right)) {
+                cur = par;
+                par = cur->parent;
+            }
+            return par == NULL ? "EMPTY" : par->babyname;
+        }
+    }
+    
+    string QueryMin(AVLNode* newNode) {
+        if (newNode == NULL) return "EMPTY";
+        else if (newNode->left == NULL) return newNode->babyname;
+        else return QueryMin(newNode->left);
+    }
+    
+    AVLNode* rotateLeft(AVLNode* newNode) {
+        if (newNode->right == NULL) return NULL;
+        
+        AVLNode* temp = newNode->right;
+        temp->parent = newNode->parent;
+        newNode->parent = temp;
+        newNode->right = temp->left;
+        if (temp->left != NULL) temp->left->parent = newNode;
+        temp->left = newNode;
+        
+        newNode->height = max(h(newNode->left), h(newNode->right)) + 1;
+        temp->height = max(h(temp->left), h(temp->right)) + 1;
+        
+        return temp;
+    }
+    
+    AVLNode* rotateRight(AVLNode* newNode) {
+        if (newNode->left == NULL) return NULL;
+        
+        AVLNode* temp = newNode->left;
+        temp->parent = newNode->parent;
+        newNode->parent = temp;
+        newNode->left = temp->right;
+        if (temp->right != NULL) temp->right->parent = newNode;
+        temp->right = newNode;
+        
+        newNode->height = max(h(newNode->left), h(newNode->right)) + 1;
+        temp->height = max(h(temp->left), h(temp->right)) + 1;
+        
+        return temp;
+    }
+    
+    AVLNode* AddSuggestion(AVLNode* newNode, string name) {
+        if (newNode == NULL) {
+            newNode = new AVLNode;
+            newNode->babyname = name;
+            newNode->parent = newNode->left = newNode->right = NULL;
+            newNode->height = 0;
+        }
+        else if (newNode->babyname < name) {
+            newNode->right = AddSuggestion(newNode->right, name);
+            newNode->right->parent = newNode;
+        }
+        else {
+            newNode->left = AddSuggestion(newNode->left, name);
+            newNode->left->parent = newNode;
         }
         
-        tmp = womaninfo.top();
-        temp_stack.push(womaninfo.top());
-        womaninfo.pop();
-    }
-    
-    while (1) {
-        if ((int)temp_stack.size() == 0) break;
-        womaninfo.push(temp_stack.top());
-        temp_stack.pop();
-    }
-}
-
-void GiveBirth(string womanName) {
-    iii tmp = womaninfo.top();
-    temp_stack.push(womaninfo.top());
-    womaninfo.pop();
-    
-    while (1) {
-        if (get<2>(tmp) == womanName) {
-            temp_stack.pop();
-            break;
+        int balance = h(newNode->left) - h(newNode->right);
+        if (balance == 2) {
+            int balance2 = h(newNode->left->left) - h(newNode->left->right);
+            if (balance2 == 1) {
+                newNode = rotateRight(newNode);
+            }
+            else {
+                newNode->left = rotateLeft(newNode->left);
+                newNode = rotateRight(newNode);
+            }
+        }
+        else if (balance == -2) {
+            int balance2 = h(newNode->right->left) - h(newNode->right->right);
+            if (balance2 == -1) {
+                newNode = rotateLeft(newNode);
+            }
+            else {
+                newNode->right = rotateRight(newNode->right);
+                newNode = rotateLeft(newNode);
+            }
         }
         
-        tmp = womaninfo.top();
-        temp_stack.push(womaninfo.top());
-        womaninfo.pop();
+        newNode->height = max(h(newNode->left), h(newNode->right)) + 1;
+        return newNode;
     }
     
-    while (1) {
-        if ((int)temp_stack.size() == 0) break;
-        womaninfo.push(temp_stack.top());
-        temp_stack.pop();
+    AVLNode* RemoveSuggestion(AVLNode* newNode, string name) {
+        if (newNode == NULL) return newNode;
+        
+        if (newNode->babyname == name) {
+            if (newNode->left == NULL && newNode->right == NULL) newNode = NULL;
+            else if (newNode->left == NULL && newNode->right != NULL) {
+                AVLNode* temp = newNode;
+                newNode->right->parent = newNode->parent;
+                newNode = newNode->right;
+                temp = NULL;
+            }
+            else if (newNode->left != NULL && newNode->right == NULL) {
+                AVLNode* temp = newNode;
+                newNode->left->parent = newNode->parent;
+                newNode = newNode->left;
+                temp = NULL;
+            }
+            else {
+                string successorINFO = successor(newNode);
+                newNode->babyname = successorINFO;
+                newNode->right = RemoveSuggestion(newNode->right, successorINFO);
+            }
+        }
+        else if (newNode->babyname < name) newNode->right = RemoveSuggestion(newNode->right, name);
+        else newNode->left = RemoveSuggestion(newNode->left, name);
+        
+        if (newNode != NULL) {
+            int balance = h(newNode->left) - h(newNode->right);
+            if (balance == 2) {
+                int balance2 = h(newNode->left->left) - h(newNode->left->right);
+                if (balance2 == 1) {
+                    newNode = rotateRight(newNode);
+                }
+                else {
+                    newNode->left = rotateLeft(newNode->left);
+                    newNode = rotateRight(newNode);
+                }
+            }
+            else if (balance == -2) {
+                int balance2 = h(newNode->right->left) - h(newNode->right->right);
+                if (balance2 == -1)
+                    newNode = rotateLeft(newNode);
+                else {
+                    newNode->right = rotateRight(newNode->right);
+                    newNode = rotateLeft(newNode);
+                }
+            }
+            
+            newNode->height = max(h(newNode->left), h(newNode->right)) + 1;
+        }
+        return newNode;
     }
-}
-
-string Query() {
-    if ((int)womaninfo.size() == 0) return empty;
-    iii tmp = womaninfo.top();
-    return get<2>(tmp);
-}
+    
+    int Count(AVLNode* newNode, string start, string end, int gender) {
+        if (!newNode) return 0;
+        
+        if (newNode->babyname < end && newNode->babyname == start) {
+            return 1;
+        }
+        
+        if (newNode->babyname < end && newNode->babyname >= start) {
+            if (gender == 0) {
+                return 1 + Count(newNode->left, start, end, gender) + Count(newNode->right, start, end, gender);
+            }
+            else if (genders[newNode->babyname] != gender) {
+                return 0 + Count(newNode->left, start, end, gender) + Count(newNode->right, start, end, gender);
+            }
+            else {
+                return 1 + Count(newNode->left, start, end, gender) + Count(newNode->right, start, end, gender);
+            }
+        }
+        else if (newNode->babyname >= end) {
+            return Count(newNode->left, start, end, gender);
+        }
+        else return Count(newNode->right, start, end, gender);
+    }
+    
+public:
+    AVL() {root = NULL;}
+    
+    int h(AVLNode* Node) { return Node == NULL ? -1 : Node->height;}
+    
+    void AddSuggestion(string name, int gender) {
+        root = AddSuggestion(root, name);
+    }
+    
+    void RemoveSuggestion(string name) {
+        root = RemoveSuggestion(root, name);
+    }
+    
+    int Query(string start, string end, int gender) {
+        return Count(root, start, end, gender);
+    }
+};
 
 int main(void) {
-    int commands; cin >> commands;
-    int oper, dilation, increase; string name;
-    for (int i = 0; i < commands; i++) {
-        cin >> oper;
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+    AVL* A = new AVL();
+    
+    int oper, gender; string name, start, end;
+    while (1) {
+        cin >> oper; if (oper == 0) break;
         switch (oper) {
-            case 0:
-                cin >> name >> dilation;
-                ArriveatHospital(name, dilation);
-                break;
             case 1:
-                cin >> name >> increase;
-                UpdateDilation(name, increase);
+                cin >> name >> gender;
+                genders[name] = gender;
+                A->AddSuggestion(name, gender);
                 break;
             case 2:
                 cin >> name;
-                GiveBirth(name);
+                genders.erase(name);
+                A->RemoveSuggestion(name);
                 break;
             default:
-                cout << Query() << endl;
+                cin >> start >> end >> gender;
+                cout << A->Query(start, end, gender) << endl;
                 break;
         }
     }
