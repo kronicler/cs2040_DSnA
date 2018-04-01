@@ -1,5 +1,6 @@
 class bellman_ford_graph {
     // Time complexity: O (V * E)
+    // Allow -ve weights 
 protected:
     list<pair<int, int> > EL[10];
     unordered_map<int, int> added_weight;
@@ -26,9 +27,9 @@ public:
         added_weight[v2] = INT_MAX;
     }
     
-    void bellman_ford () {
-        added_weight[0] = 0; // The source should have zero weight
-        // Must always start from the source
+    void bellman_ford (int s) {
+        added_weight[s] = 0; // The source should have zero weight
+
         for (int i = 0; i < numv; i++) {
             for (auto it = EL[i].begin(); it != EL[i].end(); it++) {
                 relax(i, it->second, it->first);
@@ -119,17 +120,12 @@ class djikstra {
     // Time complexity: O ((V+E) logV)
 protected:
     list<pair<int, int> > EL[10];
-    unordered_map<int, int> added_weight;
+    vector<int> added_weight;
+
     unordered_map<int, int> predecessor;
     int numv;
     
     
-    void relax (int v, int v2, int w) {
-        if (added_weight[v2] > added_weight[v] + w) {
-            added_weight[v2] = added_weight[v] + w;
-            predecessor[v2] = v;
-        }
-    }
 public:
     djikstra (int size) {
         this->numv = size;
@@ -140,12 +136,13 @@ public:
         // This one uses an edge list
         
         // Need to initialise them all to int maximum
-        added_weight[v] = INT_MAX;
-        added_weight[v2] = INT_MAX;
     }
     
     
     void perform_djikstra (int source) {
+        // Init a vector of sized numv all with values of INT_MAX
+        vector<int> added_weight(numv, INT_MAX);
+
         priority_queue<pair<int, int> > q;
         // Init source to 0
         added_weight[source] = 0;
@@ -155,12 +152,18 @@ public:
             int current = q.top().second;
             q.pop();
             for (auto it = EL[current].begin(); it != EL[current].end(); it++) {
-                relax(current, it->second, it->first); // Update the added_weights
+
+                // Relax 
+                if (added_weight[it->second] > added_weight[current] + it->first) {
+                    added_weight[it->second] = added_weight[current] + it->first;
+                    predecessor[it->second] = current;
+                    q.push(make_pair(added_weight[it->second], it->second));
+                }
                 // Update PQ - sorta
                 // Greedy
-                q.push(make_pair(added_weight[it->second], it->second));
             }
         }
+        this->added_weight = added_weight;
     }
     
     void get_weight (int v) {

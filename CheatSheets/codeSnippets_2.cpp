@@ -169,3 +169,43 @@ int main () {
     cout << count << endl; // Output sum of 1's bits 
 
 }
+
+
+// Cutting edges that exceed a certain k-val using BFS 
+
+void BFS (int vertex, int k, int dest) {
+    AL = AL_prime; // We do not wish to affect the original graph
+    unordered_map<int, int> visited;
+    queue<int> q;
+    int curr = vertex;
+    q.push(curr); // Initial push
+    visited[curr] = 1; // Mark as visited
+    vector<int> distances (V, 1);
+    
+    while (!q.empty()) {
+        curr = q.front();
+        q.pop();
+        visited[curr] = 1;
+        //cout << curr << " " << distances[curr] << endl;
+        if (distances[curr] + 1 >= k) {
+            for (auto it = AL[curr].begin(); it != AL[curr].end();) {
+                if (it->second != dest || distances[curr] + 1 > k) {
+                    cout << "cut: " << curr << " " << it->second << endl;
+                    it = AL[curr].erase(it);
+                }else {
+                    it++;
+                }
+            }
+            
+        }else {
+            for (auto it = AL[curr].begin(); it != AL[curr].end(); it++) {
+                if (visited.find(it->second) == visited.end()) {
+                    distances[it->second] = distances[curr] + 1;
+                    q.push(it->second);
+                }
+            }
+        }
+    }    
+}
+
+
