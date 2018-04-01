@@ -1,10 +1,10 @@
 class bellman_ford_graph {
     // Time complexity: O (V * E)
     // Allow -ve weights
-    // Limitations: 
+    // Limitations:
     /*
-        - Can contain -ve weights but not -ve cycles
-    */
+     - Can contain -ve weights but not -ve cycles
+     */
 protected:
     list<pair<int, int> > EL[10];
     unordered_map<int, int> predecessor;
@@ -22,28 +22,49 @@ public:
     
     int bellman_ford (int s, int d) {
         // Init them all to max
-        vector<int> added_weight (numv, INT_MAX);
+        vector<int> added_weight (numv, 1000000);
         
         added_weight[s] = 0; // The source should have zero weight
-        
-        for (int i = 0; i < numv; i++) {
-            int v = i; // current vertex
-            for (auto it = EL[i].begin(); it != EL[i].end(); it++) {
-                int v2 = it->second;
-                int w = it->first;
-                
-                // Relax
-                if (added_weight[v2] > added_weight[v] + w) {
-                    added_weight[v2] = added_weight[v] + w;
-                    predecessor[v2] = v;
-                }
 
+        // 3 for loops :o 
+        for (int i = 0; i < numv - 1; i++) { // Relax the edges numv - 1 times
+            for (int d = 0; d < numv; ++d)
+            {
+                int v = d;
+                for (auto it = EL[d].begin(); it != EL[d].end(); it++) {
+
+                    int v2 = it->second;
+                    int w = it->first;
+                    
+                    // Relax
+                    if (added_weight[v2] > added_weight[v] + w) {
+                        added_weight[v2] = added_weight[v] + w;
+                        predecessor[v2] = v;
+                    }
+                    
+                }
+                
             }
         }
+        // Neg cycles checker
+        bool hasNegativeCycle = false;
+        for (int u = 0; u < numv; u++) {                         
+            // one more pass to check
+            for (auto it : EL[u]) {
+                if (added_weight[it.second] > added_weight[u] + it.first) {               
+                    // should be false
+                    hasNegativeCycle = true;     // but if true, then negative cycle exists
+                }
+            }
+        }
+        
+        if (hasNegativeCycle) cout << "Contains -ve cycles" << endl;
+        
         return added_weight[d];
     }
     // Bellman_ford can be used to detect if there are negative edges too by checking if at least one value in added_weight [v] fails to converge
 };
+
 
 
 class bfs {
@@ -74,7 +95,7 @@ public:
     int BFS (int source, int dest) {
         queue<int> q;
         q.push(source);
-        vector<int> added_weight (numv, INT_MAX);
+        vector<int> added_weight (numv, 1000000);
         added_weight[source] = 0;
 
         while (!q.empty()) {
@@ -84,7 +105,7 @@ public:
             
             for (auto it = EL[current].begin(); it != EL[current].end(); it++) {
                 // Notice this is impt, we only push in unvisited vertices
-                if (added_weight[it->second] == INT_MAX) {
+                if (added_weight[it->second] == 1000000) {
                     // Unvisited
                     // Relax
                     int v = current;
@@ -131,8 +152,8 @@ public:
     
     
     void perform_djikstra (int source) {
-        // Init a vector of sized numv all with values of INT_MAX
-        vector<int> added_weight(numv, INT_MAX);
+        // Init a vector of sized numv all with values of 1000000
+        vector<int> added_weight(numv, 1000000);
 
         priority_queue<pair<int, int> > q;
         // Init source to 0
@@ -192,8 +213,8 @@ public:
     
     
     void perform_djikstra (int source) {
-        // Init a vector of sized numv all with values of INT_MAX
-        vector<int> added_weight(numv, INT_MAX);
+        // Init a vector of sized numv all with values of 1000000
+        vector<int> added_weight(numv, 1000000);
         
         // Notice we use a BST instead for this one
         set<pair<int, int> > q;
@@ -282,8 +303,8 @@ public:
     
     void connect (int v, int v2, int weight) {
         EL[v].push_back(make_pair(weight, v2));
-        added_weight[v] = INT_MAX;
-        added_weight[v2] = INT_MAX;
+        added_weight[v] = 1000000;
+        added_weight[v2] = 1000000;
         
     }
     
@@ -317,4 +338,12 @@ public:
 
 };
 
+
+
+// Some notes: 
+
+/* 
+    1. Negative cycles can be a mixed cycle of positive weights and -ve weights. As long as it has -ve weights 
+
+*/
 
