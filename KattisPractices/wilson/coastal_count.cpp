@@ -12,7 +12,7 @@ void flood (char arr[][MAX], int x, int y, int row, int col) {
     if (y + 1 < row && arr[y+1][x] == '1') count_perim++;
     if (x + 1 < col && arr[y][x+1] == '1') count_perim++;
     if (y - 1 >= 0 && arr[y-1][x] == '1') count_perim++;
-    if (x + 1 >= 0 && arr[y][x+1] == '1') count_perim++;
+    if (x - 1 >= 0 && arr[y][x-1] == '1') count_perim++;
 
     if (y + 1 < row && arr[y+1][x] != '*' && arr[y+1][x] != '1') {
         flood (arr, x, y+1, row, col);

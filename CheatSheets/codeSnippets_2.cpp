@@ -209,3 +209,20 @@ void BFS (int vertex, int k, int dest) {
 }
 
 
+// Search surroundings - without repeating yourself 
+
+void search_surrounding (int arr[MAX][MAX], int x, int y) {
+    int i, d;
+    for (i = -1; i < 2; i++) {
+        for (d = -1; d < 2; d++) {
+            if (x+d < col && x+d >= 0 && y+d < row && x+d >= 0) {
+                if (i == 0 && d == 0) {
+                // position is at original coords
+                }else {
+                    printf("%d ", arr[y+i][x+d]);
+                }
+            }
+        }
+    }
+    printf("\n");
+}

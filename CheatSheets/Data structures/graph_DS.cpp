@@ -189,6 +189,9 @@ public:
         // Will only traverse as many as number of neighbour the node V has
     }
     
+    // Time complexities
+    // O (V + E)
+    // If everything is not connected: O (V + E)
     void DFS (int vertex) {
         unordered_map<int, int> visited;
         DFS_recur(vertex, &visited);
@@ -196,6 +199,7 @@ public:
         // when we backtrack
     }
     
+    // O (V + E)
     void BFS (int vertex) {
         unordered_map<int, int> visited;
         queue<int> q;
@@ -241,6 +245,9 @@ class sample_topo_sort : adj_list {
     
 //Topological sort of a DAG is a linear ordering of the DAG's vertices 
 //in which each vertex comes before all vertices to which it has outbound edges.
+
+// Min: When its only a straight line from front to end 
+// Max: All unconnected components, V! 
 
 private:
     unordered_map<int, int> incoming;
@@ -367,6 +374,9 @@ public:
     
 };
 
+
+
+// Count connected components 
 
 class self_labelling {
 protected:
