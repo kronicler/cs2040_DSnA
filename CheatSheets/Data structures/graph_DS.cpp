@@ -141,6 +141,24 @@ protected:
             }
         }
     }
+
+    bool isCyclicUtil(long long v, bool visited[], bool *recStack)
+    {
+        if(visited[v] == false) {
+            // Mark the current node as visited and part of recursion stack
+            visited[v] = true;
+            recStack[v] = true;
+            
+            for(auto i = AL[v].begin(); i != AL[v].end(); ++i) {
+                if ( !visited[*i] && isCyclicUtil(*i, visited, recStack) )
+                    return true;
+                else if (recStack[*i])
+                    return true;
+            }
+        }
+        recStack[v] = false;  // remove the vertex from recursion stack
+        return false;
+    }
     
 public:
     adj_list (int numV) {
@@ -213,6 +231,28 @@ public:
             scan_neighbours(&q, curr, &visited);
         }
     }
+
+    // Check for cycle 
+    bool isCyclic() {
+        // Mark all the vertices as not visited and not part of recursion
+        // stack
+        bool *visited = new bool[n];
+        bool *recStack = new bool[n];
+        for(int i = 0; i < n; i++)
+        {
+            visited[i] = false;
+            recStack[i] = false;
+        }
+        
+        // Call the recursive helper function to detect cycle in different
+        // DFS trees
+        for(int i = 0; i < n; i++)
+            if (isCyclicUtil(i, visited, recStack))
+                return true;
+        
+        return false;
+    }
+
 };
 
 
