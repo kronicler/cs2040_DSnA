@@ -17,33 +17,35 @@ int mtx[600][600], mtx_prime[600][600];
 int col, row;
 
 
-bool join (int x, int y) {
-    mtx_prime[y][x] = 0; // temp marking
-    bool move = false;
-    int dx [4] = {0, 1, 0, -1};
-    int dy [4] = {1, 0, -1, 0};
-    for (int i = 0; i < 4; i++) {
-        if (x + dx[i] < col && y + dy[i] < row && x + dx[i] >= 0 && y + dy[i] >= 0) {
-            if (mtx[y][x] == mtx[y + dy[i]][x + dx[i]] && mtx_prime[y + dy[i]][x + dx[i]] == -1) {
-                if (join(x + dx[i], y + dy[i])) {
-                    move = true;
-                }else if (mtx[y][x] > mtx[y + dy[i]][x + dx[i]]) {
-                    move = true;
+bool check (stack<pair<int, int> > * check_points, stack<pair<int, int> > *converted_checkpoints, int number) {
+    bool lower = false;
+    while (!check_points->empty()) {
+        converted_checkpoints->push(check_points->top());
+        pair<int, int> curr = check_points->top();
+        check_points->pop();
+        mtx_prime[curr.second][curr.first] = 0;
+        //cout << mtx[curr.second][curr.first] << endl;
+        int x = curr.first;
+        int y = curr.second;
+        int dx [4] = {0, 1, 0, -1};
+        int dy [4] = {1, 0, -1, 0};
+        for (int i = 0; i < 4; i++) {
+            if (x + dx[i] < col && y + dy[i] < row && x + dx[i] >= 0 && y + dy[i] >= 0) {
+                if (mtx[y+dy[i]][x+dx[i]] == number && mtx_prime[y+dy[i]][x+dx[i]] == -1) {
+                    check_points->push(make_pair(x+dx[i], y + dy[i]));
+                }else if (mtx[y+dy[i]][x+dx[i]] < number) {
+                    lower = true;
                 }
-            }else if (mtx[y][x] == mtx[y + dy[i]][x + dx[i]] && mtx_prime[y + dy[i]][x + dx[i]] == 0) {
-                move = true;
             }
         }
     }
-    if (!move) {
-        mtx_prime[x][y] = 1;
-    }
-    
-    return move;
+    //lower ? cout << "true" << endl : cout << "false" << endl;
+    return lower;
 }
 
 
-bool dfs_recur (int x, int y) {
+
+void dfs_recur (int x, int y) {
     mtx_prime[y][x] = 0; // 0 means visited but not collection point
     int dx [4] = {0, 1, 0, -1};
     int dy [4] = {1, 0, -1, 0};
@@ -56,8 +58,20 @@ bool dfs_recur (int x, int y) {
                     dfs_recur(x + dx[i], y + dy[i]);
                 }
             }else if (mtx[y][x] == mtx[y + dy[i]][x + dx[i]] && mtx_prime[y + dy[i]][x + dx[i]] == -1) {
-                // need to have proper condition here
-                // TODO: Add a flood fill which floods all elements of the same while checking if it can flow anywhere else. 
+                
+                // Found a similar node, flood fill that to find out if its a dead end or it can flow elsewhere :/
+                
+                stack< pair<int, int> > check_points, converted_checkpoints;
+                check_points.push(make_pair(x, y));
+                if (check(&check_points, &converted_checkpoints, mtx[y][x]) == false) {
+                    while (!converted_checkpoints.empty()) {
+                        pair<int, int> curr = converted_checkpoints.top();
+                        converted_checkpoints.pop();
+                        mtx_prime[curr.second][curr.first] = 1;
+                    }
+                }else{
+                    moves = true;
+                }
             }
         }
     }
@@ -65,7 +79,6 @@ bool dfs_recur (int x, int y) {
     if (!moves) {
         mtx_prime[y][x] = 1;
     }
-    return moves;
 }
 
 
@@ -94,26 +107,15 @@ int main() {
             }
         }
     }
-    cout << endl;
-    for (int i = 0; i < row; i++) {
-        for (int d = 0; d < col; d++) {
-            if (mtx_prime[i][d] == 1) {
-                cout << "x ";
-            }else {
-                cout << mtx[i][d] << " ";
-            }
-        }
-        cout << endl;
-    }
-    cout << endl;
-    for (int i = 0; i < row; i++) {
-        for (int d = 0; d < col; d++) {
-            cout << mtx_prime[i][d] << " ";
-        }
-        cout << endl;
-    }
-
     
+    // Count number of 1s
+    int count = 0;
+    for (int i = 0; i < row; i++) {
+        for (int d = 0; d < col; d++) {
+            if (mtx_prime[i][d] == 1) count++;
+        }
+    }
+    cout << count << endl;
     
 }
 
