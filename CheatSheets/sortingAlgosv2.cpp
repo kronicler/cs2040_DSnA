@@ -673,21 +673,23 @@ vector<pair<char, int>> countingSort (string input, int n, int max) {
  
  For some quick thinking tips:
  
- (num comparisons)
- 1. Bubble sort num comparisons = (n-1)(n/2)
+ (num comparisons)***** - hardest
+ 1. Bubble sort num comparisons = (n-1)(n/2) iff no breaks 
  2. Selection sort = n + n-1 + n-2 + ... + 1
- 
- (sequence after num passes)
- 1. Bubble sort = Write it out on paper
- 2. Selection sort = Start from the first element and then compare to find the smallest then swap with that. Move on to the next element after that i.e i = 1 and repeat
- 
+  
  (num swaps)
  1. If an array is ordered, zero swaps will be made for all comparison based sorting algos
  2. As for others, its best to analyse one by one.
  
  
+ (content of array after n passes)
+ 1. Bubble sort - have to manually trace 
+ 2. Selection sort - draw a line at the last index to be sorted, trace from start to there (swap necessarily)
+ 3. Insertion sort - draw a line at the last index to be sorted, all those before this line will be sorted properly
+
+
  (num possible pivots on first pass - quicksort)
- Look at each number carefully, pivots can only have left side all smaller than itself.
+ Look at each number carefully, pivots can only have left side all smaller than itself and right side all bigger or equals to itself. 
  
  
  */
