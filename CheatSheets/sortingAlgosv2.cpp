@@ -676,6 +676,14 @@ vector<pair<char, int>> countingSort (string input, int n, int max) {
  (num comparisons)***** - hardest
  1. Bubble sort num comparisons = (n-1)(n/2) iff no breaks 
  2. Selection sort = n + n-1 + n-2 + ... + 1
+ 3. Insertion sort (with break;)
+    Steps: 
+    1. Identify first one from the left that needs to swap, 
+    2. If (number does not shift to back most) Count number of indexes it needs to travel + 1 
+    3. Else count number of indexes to the last one 
+    4. The rest except (0th index) give it 1 comparison 
+  
+
   
  (num swaps)
  1. If an array is ordered, zero swaps will be made for all comparison based sorting algos

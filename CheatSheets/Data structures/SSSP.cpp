@@ -62,6 +62,47 @@ public:
         
         return added_weight[d];
     }
+
+
+    void modified_bellman_ford (int s, int d) {
+        int added_weight_2 [numv][numv];
+        for (int i = 0; i < numv; i++) {
+            for (int d = 0; d < numv; d++) {
+                added_weight_2[i][d] = 1000000;
+            }
+        }
+
+        added_weight_2[0][s] = 0; // Source should have zero weight
+
+
+        for (int i = 1; i < numv - 1; i++) { // Relax the edges numv - 1 times
+            for (int d = 0; d < numv; ++d)
+            {
+                int v = d;
+                for (auto it = EL[d].begin(); it != EL[d].end(); it++) {
+                    
+                    int v2 = it->second;
+                    int w = it->first;
+                    
+                    // Relax
+                    if (added_weight_2[i][v2] > added_weight_2[i-1][v] + w) {
+                        added_weight_2[i][v2] =  added_weight_2[i-1][v] + w;
+                    }
+                    
+                }
+                
+            }
+        }
+
+        // This will print out the matrix to help visualise where its possible to travel to shortest path within k nodes
+        for (int i = 0; i < numv; i++) {
+            for (int d = 0; d < numv; d++) {
+                cout << added_weight_2[i][d] << " ";
+            }
+            cout << endl;
+        }
+    }
+
     // Bellman_ford can be used to detect if there are negative edges too by checking if at least one value in added_weight [v] fails to converge
 };
 
