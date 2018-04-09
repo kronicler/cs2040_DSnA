@@ -177,4 +177,14 @@ public:
  Minimize clustering,
  Give different probe sequences when 2 different keys collide,
  Fast, O(1).
+
  */
+
+
+
+// Tip for visualgo, 
+/*
+    If faced with quadratic probing or secondary hashing, try to simplify the formula and count from there 
+*/
+
+

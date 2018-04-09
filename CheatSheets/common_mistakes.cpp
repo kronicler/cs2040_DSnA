@@ -65,3 +65,20 @@ if (myMap.find(3) != myMap.end())
 	cout << myMap[3] << endl;
 
 ----------------------------------------------------------------------------------------------------------------------
+// Time comlpexity of inserting into priority queue/ AVL tree is not exactly Nlog(N)
+// There are only a somewhat fixed number of swaps as the element is inserted
+
+priority_queue <int> pq; 
+int n = 10;
+
+while(n--) {
+    pq.insert(n);
+}
+/* vs */
+n = 10;
+vector<int> v;
+
+while(n--) {
+	v.push_back(n);    
+}
+----------------------------------------------------------------------------------------------------------------------

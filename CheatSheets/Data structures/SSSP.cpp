@@ -75,7 +75,7 @@ public:
         added_weight_2[0][s] = 0; // Source should have zero weight
 
 
-        for (int i = 1; i < numv - 1; i++) { // Relax the edges numv - 1 times
+        for (int i = 1; i < numv; i++) { // Relax the edges numv - 1 times
             for (int d = 0; d < numv; ++d)
             {
                 int v = d;
