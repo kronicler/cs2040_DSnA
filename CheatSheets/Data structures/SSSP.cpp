@@ -386,5 +386,14 @@ public:
 /* 
     1. Negative cycles can be a mixed cycle of positive weights and -ve weights. As long as it has -ve weights 
 
+
+    2. Sequence of vertices such that when all the outgoing edges of these vertices are relaxed in this order using One-Pass Bellman-Ford's algorithm, 
+       the SSSP problem can be solved in O(V+E) time.
+       - Use topological sort kahn's technique to find. (Basically tackle those with no incoming edges first then delete edges and repeat step)
+    
+
+    3. Find D[V] after how many passes of bellman ford 
+        - If the graph contains -ve edges to get to V then its infinity 
+        - Else the num of passes correspond to the number of vertices allowed to trvaverse 
 */
 
