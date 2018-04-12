@@ -674,7 +674,7 @@ vector<pair<char, int>> countingSort (string input, int n, int max) {
  For some quick thinking tips:
  
  (num comparisons)***** - hardest
- 1. Bubble sort num comparisons = (n-1)(n/2) iff no breaks 
+ 1. Bubble sort num comparisons = (n-1)(n/2) iff no breaks else find out at which pass it broke. 
  2. Selection sort = n + n-1 + n-2 + ... + 1
  3. Insertion sort (with break;)
     Steps: 

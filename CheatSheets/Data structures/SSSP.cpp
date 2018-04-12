@@ -27,7 +27,9 @@ public:
         added_weight[s] = 0; // The source should have zero weight
 
         // 3 for loops :o 
-        for (int i = 0; i < numv - 1; i++) { // Relax the edges numv - 1 times
+        for (int i = 0; i < numv - 1; i++) { 
+            // Relax the edges numv - 1 times (max number of possible edges is numv - 1)
+            
             for (int d = 0; d < numv; ++d)
             {
                 int v = d;

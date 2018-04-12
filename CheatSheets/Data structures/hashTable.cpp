@@ -96,7 +96,7 @@ public:
         int base = data%size;
         int step = 0;
         while (true) {
-            int i = (base * step) % size;
+            int i = (base + step) % size;
             /*
              int i = (base + step*step) % size; // Quadratic probing
              

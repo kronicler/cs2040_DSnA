@@ -499,6 +499,18 @@ public:
     - During BFS/ DFS always go in order of elements (smallest first) in visualgo 
     - Complete graph has edges = v(v-1)/2,  v is num vertices 
     - Complete directed graph has edges = v(v-1)
+
+    Adjacency lists 
+    - used for large vertices where v*v is beyond memory size
+    - Also used when neighbours are frequently enumerated 
+
+    Adjacency matrix 
+    - used when the vertice and its neighbours are randomly accessed 
+    - When size permits 
+
+    Edge list 
+    - Used when we need the edges to be sorted 
+    - Usually stored in the PQ of djikstra 
 */
 
 
