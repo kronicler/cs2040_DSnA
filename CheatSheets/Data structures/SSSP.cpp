@@ -396,7 +396,7 @@ public:
 
     3. Find D[V] after how many passes of bellman ford 
         - If the graph contains -ve edges to get to V then its infinity 
-        - Else the num of passes correspond to the number of vertices allowed to trvaverse
+        - Else identify the number of possible paths to the destination from source first and see which one takes priority 
 
     4. Bellman ford killer 
         - Straight line L-shaped graph where 0th vertex connects to last vertex 
