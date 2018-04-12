@@ -29,7 +29,7 @@ public:
         // 3 for loops :o 
         for (int i = 0; i < numv - 1; i++) { 
             // Relax the edges numv - 1 times (max number of possible edges is numv - 1)
-            
+
             for (int d = 0; d < numv; ++d)
             {
                 int v = d;
@@ -396,6 +396,12 @@ public:
 
     3. Find D[V] after how many passes of bellman ford 
         - If the graph contains -ve edges to get to V then its infinity 
-        - Else the num of passes correspond to the number of vertices allowed to trvaverse 
+        - Else the num of passes correspond to the number of vertices allowed to trvaverse
+
+    4. Bellman ford killer 
+        - Straight line L-shaped graph where 0th vertex connects to last vertex 
+
+    5. Djikstra killer 
+        - Triangles graph   
 */
 
