@@ -193,7 +193,7 @@ public:
         // Need to initialise them all to int maximum
     }
     
-    
+    // O((V+E)logV)
     void perform_djikstra (int source) {
         // Init a vector of sized numv all with values of 1000000
         vector<int> added_weight(numv, 1000000);
@@ -297,8 +297,6 @@ public:
 
 // DFS - can be used for trees only, already O (V + E) because each vertice only has one unique path 
 
-
-
 class DP {
     // Limitations:
     /*
@@ -307,7 +305,7 @@ class DP {
     // Time complexity: O ((V+E))
 protected:
     int numv;
-    list<pair<int, int>> EL[10];
+    list<pair<int, int>> AL[10];
     unordered_map<int, int> added_weight;
     unordered_map<int, int> predecessor;
 
@@ -316,7 +314,7 @@ protected:
         // Mark visited
         visited->insert(make_pair(vertex, 1));
         // Show its visits
-        for (auto it = EL[vertex].begin(); it != EL[vertex].end(); it++) {
+        for (auto it = AL[vertex].begin(); it != AL[vertex].end(); it++) {
             // Traverse thru the columns on the same row
             if (visited->find(it->second) == visited->end()) {
                 // unvisited vertex
@@ -345,7 +343,7 @@ public:
     
     
     void connect (int v, int v2, int weight) {
-        EL[v].push_back(make_pair(weight, v2));
+        AL[v].push_back(make_pair(weight, v2));
         added_weight[v] = 1000000;
         added_weight[v2] = 1000000;
         
@@ -357,13 +355,13 @@ public:
         DFS_recur(v, &visited, &topo);
         topo.reverse();
         
-        
+        // One pass bellman ford 
         added_weight[v] = 0;
         while (!topo.empty()) {
             // Relax all outgoing edges for curr
             int curr = *topo.begin();
             topo.erase(topo.begin());
-            for (auto it = EL[curr].begin(); it != EL[curr].end(); it++) {
+            for (auto it = AL[curr].begin(); it != AL[curr].end(); it++) {
                 relax(curr, it->second, it->first);
             }
         }

@@ -53,3 +53,14 @@ BFS/ DFS:
 - Identifying, counting and labelling connected components 
 - Topological sort 
 
+
+
+10. Shortest Path usage
+- For Trees use DFS and BFS would be faster, the rest would be correct too 
+- For small general graphs with cycles - use djikstra and modified djikstra 
+- To solve many SP ending at vertex 2 - use Djikstra and modified Djikstra 
+- Graphs with same edge weights - cannot use DFS (as its not a tree), BFS would be fastest 
+- Negative cycle detection - use Bellman ford 
+- Cycle detection - use BFS, check if visit the same source again 
+Theory: 
+Bellman ford runs at v - 1 passes to account for all lengths to reach each dest
