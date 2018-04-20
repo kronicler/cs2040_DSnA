@@ -401,5 +401,10 @@ public:
 
     5. Djikstra killer 
         - Triangles graph   
+        
+    6. Djikstra Appliaction
+        - If you have two sets, set A and set B, and you are required to find the shortest distance from any node in set A to ANY node in set B,
+        - Set a virtual node, called node V, and have it such that the weight from node V to every single node in set B is 0
+        - Then run Djikstra from this virtual node V to find the shortest path
 */
 
