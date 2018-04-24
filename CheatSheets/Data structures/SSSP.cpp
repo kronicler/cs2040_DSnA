@@ -204,14 +204,21 @@ public:
         q.push(make_pair(0, source));
         
         while (!q.empty()) {
-            int current = q.top().second;
+            pair<int, int> curr = q.top();
+            int current = curr.second;
             q.pop();
+
+            // If added weight is smaller than weight itself, don't process
+            if (added_weight[current] < curr.first) continue; 
+
+
             for (auto it = EL[current].begin(); it != EL[current].end(); it++) {
 
                 // Relax 
                 if (added_weight[it->second] > added_weight[current] + it->first) {
                     added_weight[it->second] = added_weight[current] + it->first;
                     predecessor[it->second] = current;
+                    // Keeps pushing into the pq, may contain duplicates
                     q.push(make_pair(added_weight[it->second], it->second));
                 }
                 // Update PQ - sorta
@@ -235,7 +242,7 @@ class djikstra_original {
     */
     // Time complexity: O ((V+E) logV)
 protected:
-    list<pair<int, int> > EL[10];
+    list<pair<int, int> > AL[10];
     vector<int> added_weight;
     
     unordered_map<int, int> predecessor;
@@ -248,7 +255,7 @@ public:
     }
     
     void connect (int v, int v2, int weight) {
-        EL[v].push_back(make_pair(weight, v2));
+        AL[v].push_back(make_pair(weight, v2));
         // This one uses an edge list
         
         // Need to initialise them all to int maximum
@@ -266,10 +273,15 @@ public:
         q.insert(make_pair(0, source));
         
         while (!q.empty()) {
-            int current = q.begin()->second;
+            pair<int, int> curr = q.begin();
+            int current = curr.second;
+
             q.erase(q.begin());
+
+            // This line is impt 
+            if (added_weight[current] < curr.first) continue; 
             
-            for (auto it = EL[current].begin(); it != EL[current].end(); it++) {
+            for (auto it = AL[current].begin(); it != AL[current].end(); it++) {
                 
                 // Relax
                 int v = it->second;

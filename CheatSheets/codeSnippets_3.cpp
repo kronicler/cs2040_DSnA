@@ -31,6 +31,7 @@ void perform_djikstra (int source, int numv, int dest) {
 
 
 // Floyd warshall algo
+// Time complexity: O(V^3) constant
 void floydWarshall (int graph[][V])
 {
     /* dist[][] will be the output matrix that will finally have the shortest 
@@ -69,6 +70,91 @@ void floydWarshall (int graph[][V])
     // Print the shortest distance matrix
     printSolution(dist);
 }
+
+
+// Dijkstra on a grid mtx where you have to derive your own weights 
+
+void perform_dijkstra (char mtx[][20], int row, int col) {
+    int direction_mtx[row][col];
+    int addedweights[row][col];
+    for (int i = 0; i < row; i++) {
+        for (int d = 0; d < col; d++) {
+            direction_mtx[i][d] = -1;
+            addedweights[i][d] = 1000000; // inf
+        }
+    }
+    
+    priority_queue<pair<int, pair<int, int> >, vector<pair<int, pair<int , int> > >, greater<>> q;
+    direction_mtx[0][0] = 1; // Robot's initial direction is facing west
+    addedweights[0][0] = 0;
+    q.push(make_pair(0, make_pair(0, 0)));
+    while (!q.empty()) {
+        int dx[4] = {0,1,0,-1};
+        int dy[4] = {-1,0,1,0};
+        pair<int, pair<int, int>> curr = q.top();
+        q.pop();
+        int curr_x = curr.second.first;
+        int curr_y = curr.second.second;
+        for (int i = 0; i < 4; i++) {
+            if (curr_x + dx[i] >= 0 && curr_x + dx[i] < col && curr_y + dy[i] >= 0 && curr_y + dy[i] < row) {
+                // Termination conditions: if node is visited before, if node is an obstacle
+                if (direction_mtx[curr_y + dy[i]][curr_x + dx[i]] > -1) continue;
+                if (mtx[curr_y + dy[i]][curr_x + dx[i]] == '#') continue;
+                // Constraint, robot can only rotate rightwards
+                int rotation = 0;
+                if (i > direction_mtx[curr_y][curr_x]) rotation = i - direction_mtx[curr_y][curr_x];
+                else if (i < direction_mtx[curr_y][curr_x]) rotation = (4 - direction_mtx[curr_y][curr_x]) + i;
+                
+                if (addedweights[curr_y + dy[i]][curr_x + dx[i]] > addedweights[curr_y][curr_x] + rotation*2 + 3) {
+                    direction_mtx[curr_y + dy[i]][curr_x + dx[i]] = i;
+                    addedweights[curr_y + dy[i]][curr_x + dx[i]] = addedweights[curr_y][curr_x] + rotation*2 + 3;
+                    q.push(make_pair(addedweights[curr_y][curr_x] + abs(i - direction_mtx[curr_y][curr_x])*2 + 3,
+                                     make_pair(curr_x + dx[i], curr_y + dy[i])));
+                }
+            }
+        }
+    }
+    
+    cout << addedweights[row-1][col-1] << endl;
+    
+}
+
+
+// DFS/ BFS with limits
+list<int> AL[10];
+unordered_set<int> visited;
+int limit;
+
+void dfs (int v, int dist) {
+    if (visited.find(v) != visited.end()) return;
+    if (dist >= limit) return;
+    visited.insert(v);
+
+    for (auto it : AL[v])
+    {
+        dfs(v, dist + 1);
+    }
+}
+
+void bfs (int v, int limits) {
+    queue<pair<int, int> > q;
+    q.push(make_pair(v, 0));
+
+    while(!q.empty()) {
+        pair<int, int> curr = q.front();
+
+        if (curr.second >= limit) continue;
+
+        visited.insert(curr.first);
+
+        for (auto it : AL[curr.first])
+        {
+            if (visited.find(it) == visited.end()) 
+                q.push(make_pair(it, curr.second + 1));
+        }
+    }
+}
+
 
 
 
