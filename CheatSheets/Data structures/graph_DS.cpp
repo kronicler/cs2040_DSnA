@@ -9,7 +9,7 @@ private:
     int numEdges, numV;
     
     // BFS is a queue, DFS is a stack/ implicit stack
-    
+    // O (V + E)
     void DFS_recur (int vertex, unordered_map<int, int> *visited) {
         // Mark visited
         visited->insert(make_pair(vertex, 1));
@@ -79,7 +79,8 @@ public:
         // Will create a minimum spanning tree - IE a path thru all vertices with least edges
         // when we backtrack
     }
-    
+
+    // O (V + E)
     void BFS (int vertex) {
         unordered_map<int, int> visited;
         queue<int> q;
@@ -499,6 +500,7 @@ public:
     - During BFS/ DFS always go in order of elements (smallest first) in visualgo 
     - Complete graph has edges = v(v-1)/2,  v is num vertices 
     - Complete directed graph has edges = v(v-1)
+
 
     Adjacency lists 
     - used for large vertices where v*v is beyond memory size

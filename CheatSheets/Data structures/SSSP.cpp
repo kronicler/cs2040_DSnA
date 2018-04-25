@@ -6,7 +6,7 @@ class bellman_ford_graph {
      - Can contain -ve weights but not -ve cycles
      */
 protected:
-    list<pair<int, int> > EL[10];
+    list<pair<int, int> > AL[10];
     unordered_map<int, int> predecessor;
     int numv;
     
@@ -16,7 +16,7 @@ public:
     }
     
     void connect (int v, int v2, int weight) {
-        EL[v].push_back(make_pair(weight, v2));
+        AL[v].push_back(make_pair(weight, v2));
         // This one uses an edge list
     }
     
@@ -33,7 +33,7 @@ public:
             for (int d = 0; d < numv; ++d)
             {
                 int v = d;
-                for (auto it = EL[d].begin(); it != EL[d].end(); it++) {
+                for (auto it = AL[d].begin(); it != AL[d].end(); it++) {
 
                     int v2 = it->second;
                     int w = it->first;
@@ -52,7 +52,7 @@ public:
         bool hasNegativeCycle = false;
         for (int u = 0; u < numv; u++) {                         
             // one more pass to check
-            for (auto it : EL[u]) {
+            for (auto it : AL[u]) {
                 if (added_weight[it.second] > added_weight[u] + it.first) {               
                     // should be false
                     hasNegativeCycle = true;     // but if true, then negative cycle exists
@@ -81,7 +81,7 @@ public:
             for (int d = 0; d < numv; ++d)
             {
                 int v = d;
-                for (auto it = EL[d].begin(); it != EL[d].end(); it++) {
+                for (auto it = AL[d].begin(); it != AL[d].end(); it++) {
                     
                     int v2 = it->second;
                     int w = it->first;
@@ -118,7 +118,7 @@ class bfs {
      */
     // Time complexity: O (V + E)
 protected:
-    list<pair<int, int> > EL[10];
+    list<pair<int, int> > AL[10];
     unordered_map<int, int> predecessor; // only used for tracking
     int numv;
     
@@ -130,7 +130,7 @@ public:
     }
     
     void connect (int v, int v2, int weight) {
-        EL[v].push_back(make_pair(weight, v2));
+        AL[v].push_back(make_pair(weight, v2));
         // This one uses an edge list
     }
     
@@ -146,7 +146,7 @@ public:
             q.pop();
             
             
-            for (auto it = EL[current].begin(); it != EL[current].end(); it++) {
+            for (auto it = AL[current].begin(); it != AL[current].end(); it++) {
                 // Notice this is impt, we only push in unvisited vertices
                 if (added_weight[it->second] == 1000000) {
                     // Unvisited
@@ -174,7 +174,7 @@ class djikstra {
     */
     // Time complexity: O ((V+E) logV)
 protected:
-    list<pair<int, int> > EL[10];
+    list<pair<int, int> > AL[10];
     vector<int> added_weight;
 
     unordered_map<int, int> predecessor;
@@ -187,7 +187,7 @@ public:
     }
     
     void connect (int v, int v2, int weight) {
-        EL[v].push_back(make_pair(weight, v2));
+        AL[v].push_back(make_pair(weight, v2));
         // This one uses an edge list
         
         // Need to initialise them all to int maximum
@@ -212,7 +212,7 @@ public:
             if (added_weight[current] < curr.first) continue; 
 
 
-            for (auto it = EL[current].begin(); it != EL[current].end(); it++) {
+            for (auto it = AL[current].begin(); it != AL[current].end(); it++) {
 
                 // Relax 
                 if (added_weight[it->second] > added_weight[current] + it->first) {
@@ -286,6 +286,8 @@ public:
                 // Relax
                 int v = it->second;
                 int weight_curr = added_weight[current];
+
+                // We cannot flip this to find longest path algo, it will result in an infinite loop when there are +ve cycles
                 if (added_weight[v] > weight_curr + it->first) {
                     added_weight[v] = weight_curr + it->first;
                     predecessor[v] = current;
