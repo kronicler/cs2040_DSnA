@@ -64,3 +64,9 @@ BFS/ DFS:
 - Cycle detection - use BFS, check if visit the same source again 
 Theory: 
 Bellman ford runs at v - 1 passes to account for all lengths to reach each dest
+
+All pairs shortest: 
+- Use when we need to find multiple distances from multiple sources to multiple destinations 
+
+Virtual node: 
+- Use when we need to pre-compute existing weight from current node (eg. arriving at any node has an additional weight imposed)
