@@ -292,6 +292,7 @@ INF INF INF INF INF INF INF INF INF INF
 
 
 // Topo sort DFS + One pass bellman ford - find longest path (DAG)
+// O (V + 2E)
 list<pair<int, int> > AL[10000];
 
 void DFS_recur (int vertex, unordered_map<int, int> *visited, list<int> * topo_list) {
