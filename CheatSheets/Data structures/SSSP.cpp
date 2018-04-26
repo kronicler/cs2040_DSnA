@@ -398,7 +398,8 @@ public:
 // Some notes: 
 
 /* 
-    1. Negative cycles can be a mixed cycle of positive weights and -ve weights. As long as it has -ve weights 
+    1. Negative cycles can be a mixed cycle of positive weights and -ve weights. However, it is only a negative cycle when the sum of 
+       all the weights in the cycle is NEGATIVE. If the sum of all the weights is greater than or equal to 0, it is just a regular cycle.
 
 
     2. Sequence of vertices such that when all the outgoing edges of these vertices are relaxed in this order using One-Pass Bellman-Ford's algorithm, 
