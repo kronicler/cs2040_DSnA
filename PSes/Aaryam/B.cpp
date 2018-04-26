@@ -1,64 +1,92 @@
 #include <iostream>
-#include <stdio.h>
-#include <string>
-#include <set>
+#include <vector>
+#include <queue>
+#include <unordered_set>
+#include <unordered_map>
+#define INF 1000000000
 using namespace std;
 
-int main(void) {
-    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    //two sets to keep track of male and female baby names
-    set<string>male; set<string> female;
-    int oper;
+// write your matric number here: A0177603A
+// write your name here: Aaryam Srivastava
+// write list of collaborators here: n/a
+// year 2017 Sem2 hash code: WxxVfOfqw6Be7Cyq2acb (do NOT delete this line)
+
+typedef pair<int, int> ii;
+int V;
+int Q;
+vector<vector<ii>> AdjList;
+// A 2D array to represent the shortest paths to every other node from every single possible source
+vector<vector<int>> source_weight;
+
+int Query(int s, int t, int k) {
+    int ans = -1;
+    if (source_weight[s][t] != INF) ans = source_weight[s][t];
+    return ans;
+}
+
+//I used djikstra's algorithm to pre-calculate all of the shortest paths to every single node
+//from every possible source node
+void Djikstra() {
+    //clear the 2D array each time for a new test case
+    source_weight.assign(min(V,10), vector<int>());
+    priority_queue<ii, vector<ii>, greater<ii>> pq;
+    //perform Djikstra's algorithm for every single source, which is calculated by min(V, 1000) as there
+    // are potentially 1000 different sources
+    for (int i = 0; i < min(V,10); i++) {
+        source_weight[i].assign(V, INF);
+        source_weight[i][i] = 0; pq.push(ii(0,i));
+        //standard djikstra's algorithm
+        while (!pq.empty()) {
+            ii front = pq.top(); pq.pop();
+            int d = front.first, u = front.second;
+            //if statement for time efficiency
+            if (d > source_weight[i][u]) continue;
+            for (auto &j : AdjList[u]) {
+                ii v = j;
+                if (source_weight[i][u] + v.second < source_weight[i][v.first]) {
+                    source_weight[i][v.first] = source_weight[i][u] + v.second;
+                    pq.push(ii(source_weight[i][v.first], v.first));
+                }
+            }
+        }
+    }
     
-    while (1) {
-        cin >> oper; if (oper == 0) break;
-        //insert a new baby name depending on its gender
-        if (oper == 1) {
-            int gender; string name;
-            cin >> name >> gender;
-            if (gender == 1) male.insert(name);
-            else female.insert(name);
-        }
-        //delete a baby name depending on its gender
-        else if (oper == 2) {
-            string name; cin >> name;
-            auto mexist = male.find(name);
-            auto fexist = female.find(name);
-            
-            if (mexist != male.end()) male.erase(mexist);
-            if (fexist != female.end()) female.erase(fexist);
-        }
-        //counts the number of babies that satisfy [start, end)
-        //lower_bound used as upper_bound will give the next element from the element that's desired
-        //i.e. lower_bound is [ whereas upper_bound is )
-        else {
-            string start, end; int gender;
-            cin >> start >> end >> gender;
-            //keeps track of how many baby names satisfy the condition
-            int babies = 0;
-            
-            //gender neutral, we need to count from both sets
-            if (gender == 0) {
-                //find no. of babies from male set
-                auto m1 = male.lower_bound(start); auto m2 = male.lower_bound(end);
-                for (auto i = m1; i != m2; i++) babies++;
-                
-                //find no. of babies from female set
-                auto f1 = female.lower_bound(start); auto f2 = female.lower_bound(end);
-                for (auto i = f1; i != f2; i++) babies++;
+    //debugging code
+    /*for (int i = 0; i < V; i++) {
+     for (int d = 0; d < V; d++) {
+     if (source_weight[i][d] == INF) cout << "INF\t";
+     else cout << source_weight[i][d] << "\t";
+     }
+     cout << endl;
+     } */
+}
+
+int main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    int TC; cin >> TC;
+    
+    while (TC--) {
+        int j, k, w;
+        cin >> V;
+        // clear the graph and read in a new graph as Adjacency List
+        AdjList.assign(V, vector<ii>());
+        for (int i = 0; i < V; i++) {
+            cin >> k;
+            while (k--) {
+                cin >> j >> w;
+                AdjList[i].emplace_back(j, w); // edge (road) weight (in minutes) is stored here
             }
-            //only need to look at the male set
-            else if (gender == 1) {
-                auto m1 = male.lower_bound(start); auto m2 = male.lower_bound(end);
-                for (auto i = m1; i != m2; i++) babies++;
-            }
-            //only need to look at the female set
-            else {
-                auto f1 = female.lower_bound(start); auto f2 = female.lower_bound(end);
-                for (auto i = f1; i != f2; i++) babies++;
-            }
-            cout << babies << endl;
         }
+        //perform Djikstra for every single source
+        Djikstra();
+        int source, destination, required_k;
+        cin >> Q;
+        //simply output result from the 2D array in O(1)
+        while (Q--) {
+            cin >> source >> destination >> required_k;
+            cout << Query(source, destination, required_k) << endl;
+        }
+        if (TC) cout << endl;
     }
     return 0;
 }
