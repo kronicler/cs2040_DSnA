@@ -289,3 +289,42 @@ INF INF INF INF INF INF INF INF INF INF
 INF INF INF INF INF INF INF INF INF INF 
 INF INF INF INF INF INF INF INF INF INF     
 */
+
+
+// Topo sort DFS + One pass bellman ford - find longest path (DAG)
+list<pair<int, int> > AL[10000];
+
+void DFS_recur (int vertex, unordered_map<int, int> *visited, list<int> * topo_list) {
+    // Mark visited
+    visited->insert(make_pair(vertex, 1));
+    // Show its visits
+    for (auto it : AL[vertex]) {
+        if (visited->find(it.second) == visited->end()) {
+            DFS_recur(it.second, visited, topo_list);
+        }
+    }
+    // Finish DFS, add to back of list
+    topo_list->push_back(vertex);
+}
+
+list<int> topo_sort_dfs (int v) {
+    list<int> topo;
+    unordered_map<int, int> visited;
+    DFS_recur(v, &visited, &topo);
+    topo.reverse();
+    return topo;
+}
+
+void one_pass (list<int> sorted, int V) {
+    vector<int> added_weights (V, -100000); // We use negative INF instead
+    added_weights[0] = 0;
+    
+    for (auto curr : sorted) {
+        for (auto it2 : AL[curr]) {
+            // To find the max of combined weights
+            if (added_weights[it2.second] < added_weights[curr] + it2.first) {
+                added_weights[it2.second] = added_weights[curr] + it2.first;
+            }
+        }
+    }
+}

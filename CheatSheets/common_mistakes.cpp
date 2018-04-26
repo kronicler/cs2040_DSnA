@@ -82,3 +82,14 @@ while(n--) {
 	v.push_back(n);    
 }
 ----------------------------------------------------------------------------------------------------------------------
+// Modifying dijkstra to perform longest path algos in the following ways will not work: 
+
+1.Directly use “max” operations instead of “min” operations.
+2.Convert all positive weights to be negative. Then find the shortest path.
+3.Give a very large positive number M. If the weight of an edge is w, now M-w is used to replace w. Then find the shortest path.
+
+// However, dijkstra can still be applied to a DAG to find longest path, it will be more inefficient compared to toposort + one pass 
+----------------------------------------------------------------------------------------------------------------------
+
+
+

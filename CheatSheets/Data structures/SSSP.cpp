@@ -115,6 +115,7 @@ class bfs {
     /*
      - All weights must be constant
      - Means can't use on graph with negative edges too
+     - If used without constant weights, will produce WA 
      */
     // Time complexity: O (V + E)
 protected:
