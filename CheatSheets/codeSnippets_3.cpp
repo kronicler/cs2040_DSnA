@@ -1,5 +1,5 @@
 // Dikjstra largest factor algorithm 
-void perform_djikstra (int source, int numv, int dest) {
+void perform_dijkstra (int source, int numv, int dest) {
         // Init a vector of sized numv all with values of 1000000
     vector<long double> added_weight(numv, 1000000);
 
@@ -217,3 +217,75 @@ void Bipartite_checker (int v, list<int> AL[]) {
 
 }
 
+
+// BFS to find shortest path in a maze/ grid 
+// O (V + E) (faster than dijkstra as no operations needed to extract from a pq)
+
+// Assuming grid size is 10 by 10
+void bfs_maze (char grid[10][10], pair<int, int> start, pair<int, int> end) {
+    queue<pair<int, int> > q;
+    q.push(start);
+    vector<vector<int> > added_weights(10, vector<int> (10, 100000));
+    
+    added_weights[start.second][start.first] = 0;
+    
+    while (!q.empty()) {
+        pair<int, int> curr = q.front();
+        q.pop();
+        int dx [4] = {0,1,0,-1};
+        int dy [4] = {1,0,-1,0};
+        for (int i = 0; i < 4; i++) {
+            if (curr.first + dx[i] < 10 && curr.first + dx[i] >= 0 && curr.second + dy[i] >= 0 && curr.second + dy[i] < 10) {
+                // If it is an obstable, ignore everything
+                if (mtx[curr.second + dy[i]][curr.first + dx[i]] == '#' ) continue;
+                
+                if (added_weights[curr.second + dy[i]][curr.first + dx[i]] == 100000) {
+                    // unvisited and not an obstable
+                    if (added_weights[curr.second + dy[i]][curr.first + dx[i]] > added_weights[curr.second][curr.first] + 1) {
+                        // Relax
+                        added_weights[curr.second + dy[i]][curr.first + dx[i]] = added_weights[curr.second][curr.first] + 1;
+                        q.push(make_pair(curr.first + dx[i], curr.second + dy[i]));
+                    }
+                }
+            }
+        }
+    }
+    
+    for (auto it : added_weights) {
+        for (auto it2 : it) {
+            if (it2 == 100000) cout << "INF";
+            else cout << it2;
+            cout << "\t";
+        }
+        cout << endl;
+    }
+
+    cout << added_weights[end.second][end.first] << endl;
+}
+// Input: 
+/*
+..........
+..........
+.s........
+......e...
+..........
+##########
+..........
+..........
+..........
+..........
+*/
+
+// Output: 
+/*
+3   2   3   4   5   6   7   8   9   10  
+2   1   2   3   4   5   6   7   8   9   
+1   0   1   2   3   4   5   6   7   8   
+2   1   2   3   4   5   6   7   8   9   
+3   2   3   4   5   6   7   8   9   10  
+INF INF INF INF INF INF INF INF INF INF 
+INF INF INF INF INF INF INF INF INF INF 
+INF INF INF INF INF INF INF INF INF INF 
+INF INF INF INF INF INF INF INF INF INF 
+INF INF INF INF INF INF INF INF INF INF     
+*/

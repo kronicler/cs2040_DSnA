@@ -167,7 +167,7 @@ public:
     }
 };
 
-class djikstra {
+class dijkstra {
     // Limitations:
     /*
         - Must have no negative edge cycles at all, it will cause infinite loop
@@ -182,7 +182,7 @@ protected:
     
     
 public:
-    djikstra (int size) {
+    dijkstra (int size) {
         this->numv = size;
     }
     
@@ -194,7 +194,7 @@ public:
     }
     
     // O((V+E)logV)
-    void perform_djikstra (int source) {
+    void perform_dijkstra (int source) {
         // Init a vector of sized numv all with values of 1000000
         vector<int> added_weight(numv, 1000000);
 
@@ -235,7 +235,7 @@ public:
 };
 
 
-class djikstra_original {
+class dijkstra_original {
     // Limitations:
     /*
         - Must have no negative edge weights at all
@@ -250,7 +250,7 @@ protected:
     
     
 public:
-    djikstra_original (int size) {
+    dijkstra_original (int size) {
         this->numv = size;
     }
     
@@ -262,7 +262,7 @@ public:
     }
     
     
-    void perform_djikstra (int source) {
+    void perform_dijkstra (int source) {
         // Init a vector of sized numv all with values of 1000000
         vector<int> added_weight(numv, 1000000);
         

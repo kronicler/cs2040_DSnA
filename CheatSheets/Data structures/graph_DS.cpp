@@ -512,7 +512,7 @@ public:
 
     Edge list 
     - Used when we need the edges to be sorted 
-    - Usually stored in the PQ of djikstra 
+    - Usually stored in the PQ of dijkstra 
 */
 
 

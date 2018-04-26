@@ -57,7 +57,7 @@ BFS/ DFS:
 
 10. Shortest Path usage
 - For Trees use DFS and BFS would be faster, the rest would be correct too 
-- For small general graphs with cycles - use djikstra and modified djikstra 
+- For small general graphs with cycles - use dijkstra and modified dijkstra 
 - To solve many SP ending at vertex 2 - use Djikstra and modified Djikstra 
 - Graphs with same edge weights - cannot use DFS (as its not a tree), BFS would be fastest 
 - Negative cycle detection - use Bellman ford 
