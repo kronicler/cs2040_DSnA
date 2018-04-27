@@ -329,3 +329,101 @@ void one_pass (list<int> sorted, int V) {
         }
     }
 }
+
+
+// Next permutation
+void permutation () {
+    int arr[5] = {1,2,3,4,5};
+    
+    int count = 0;
+    while (next_permutation(arr, arr + 5)) {
+        for (auto it :  arr) {
+            cout << it << " ";
+        }
+        cout << endl;
+        count++;
+    }
+    // Will output every permutation of this array 
+    cout << count << endl; // Total permutation = 120 (5P5)
+}
+
+
+// Partial sort 
+int main () {
+    vector<int> myints ({5,4,3,2,1,1,2,3});
+    
+    partial_sort(myints.begin(), myints.begin()+ 2, myints.end());
+    for (auto it : myints) {
+        cout << it << " ";
+    }
+    cout << endl;
+    // Output: 1 1 5 4 3 2 2 3
+    // Only the first 2 elements got sorted and swapped
+    
+    /////////////////////////////////////////////////////////////
+    sort(myints.begin(), myints.begin() + 2);
+    for (auto it : myints) {
+        cout << it << " ";
+    }
+    cout << endl;
+    // Output: 4 5 3 2 1 1 2 3
+    // Only the first 2 elements got sorted without taking into account the entire array
+}
+
+
+
+// Water jug problem 
+void bfs_everchanging (int target, int a, int b, int c) {
+    tuple<int, int, int> initial ({0,0,0});
+    set<tuple<int, int, int> > visited;
+    queue<tuple<int, int, int> > q;
+    map<tuple<int, int, int>, int> steps;
+    steps[initial] = 0;
+    q.push(initial);
+    
+    while (!q.empty()) {
+        tuple<int, int, int> curr = q.front();
+        q.pop();
+        visited.insert(curr);
+        int curr_a = get<0>(curr);
+        int curr_b = get<1>(curr);
+        int curr_c = get<2>(curr);
+        
+        int da[12] =  {0, curr_a, curr_a, a, curr_a, curr_a, curr_a-curr_b, curr_b+curr_a, curr_a-curr_c, curr_c+curr_a, curr_a, curr_a};
+        int db[12] =  {curr_b, 0, curr_b, curr_b, b, curr_b, curr_a+curr_b, curr_b-curr_a, curr_b, curr_b, curr_b-curr_c, curr_c+curr_b};
+        int dc[12] =  {curr_c, curr_c, 0, curr_c, curr_c, c, curr_c, curr_c, curr_a+curr_c, curr_c-curr_a, curr_b+curr_c, curr_c-curr_b};
+        
+        // Focal point: Nodes were not defined at the start, they were defined only while it is BFS-ing. This allows for an expanding graph of possibilities
+        // Wont run into infinite loop as we have a visited set to keep track.
+        for (int i = 0; i < 12; i++) {
+            // Duplication point        
+            if (i == 6){
+                if (da[i] < 0 && db[i] > b) {
+                    da[i] = db[i]-b;
+                } else if (da[i] < 0) {
+                    db[i] += da[i];
+                    da[i] = 0;
+                } else if (db[i] > b) {
+                    da[i] = db[i] - b;
+                    db[i] = b;
+                }
+            }
+            // Now write the rest for the transfer of other jugs....
+
+
+            tuple<int, int, int> modified ({da[i], db[i], dc[i]});
+            if (visited.find(modified) == visited.end()) {
+                q.push(modified);
+                steps[modified] = steps[curr] + 1;
+            }else if (steps[modified] > steps[curr] + 1) {
+                q.push(modified);
+                steps[modified] = steps[curr] + 1;
+            }
+
+        }
+
+    }
+    // Search and find those with a == d and print out the one with the smallest steps[].
+    // If visited set does not conntain any tuple with a == d, means its not possible 
+}
+
