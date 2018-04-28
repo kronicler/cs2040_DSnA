@@ -427,3 +427,69 @@ void bfs_everchanging (int target, int a, int b, int c) {
     // If visited set does not conntain any tuple with a == d, means its not possible 
 }
 
+
+// Multiple shortest paths - (unproven)
+list<pair<int, int> > AL[300];
+int numv;
+
+
+void perform_dijkstra (int source) {
+    // Init a vector of sized numv all with values of 1000000
+    vector<stack<int> > added_weight(numv);
+    for (int i = 0; i < numv; i++) {
+        added_weight[i].push(1000000);
+    }
+    
+    priority_queue<pair<int, int> > q;
+    // Init source to 0
+    added_weight[source].push(0);
+    q.push(make_pair(0, source));
+    
+    while (!q.empty()) {
+        pair<int, int> curr = q.top();
+        int current = curr.second;
+        q.pop();
+        
+        // If added weight is smaller than weight itself, don't process
+        if (added_weight[current].top() < curr.first) continue;
+        
+        for (auto it = AL[current].begin(); it != AL[current].end(); it++) {
+            // Relax
+            if (added_weight[it->second].top() > added_weight[current].top() + it->first) {
+                added_weight[it->second].pop(); // Pop out the older value
+                added_weight[it->second].push(added_weight[current].top() + it->first);
+                // Keeps pushing into the pq, may contain duplicates
+                q.push(make_pair(added_weight[it->second].top(), it->second));
+            }else if (added_weight[it->second].top() == added_weight[current].top() + it->first) {
+                // Dont need to pop off here.
+                added_weight[it->second].push(added_weight[current].top() + it->first);
+                // Keeps pushing into the pq, may contain duplicates - to handle negative weights as well
+                q.push(make_pair(added_weight[it->second].top(), it->second));
+            }
+        }
+    }
+    
+    cout << added_weight['F'].size() << endl; // 2 shortest paths detected
+    while (!added_weight['F'].empty()) {
+        cout << added_weight['F'].top() << " ";
+        added_weight['F'].pop();
+    }
+    // Output: 15, 15
+    cout << endl;
+}
+
+
+int main () {
+    // Simulating two paths with same total weights
+    numv = 300;
+    AL['A'].push_back(make_pair(5, 'B'));
+    AL['A'].push_back(make_pair(5, 'D'));
+    AL['B'].push_back(make_pair(5, 'C'));
+    AL['C'].push_back(make_pair(5, 'F'));
+    AL['D'].push_back(make_pair(5, 'E'));
+    AL['E'].push_back(make_pair(5, 'F'));
+    AL['A'].push_back(make_pair(30, 'F')); // Another path from A -> F of larger weights 
+    AL['F'].push_back(make_pair(0, 'A')); // Cycle from F -> A
+    
+    perform_dijkstra('A'); // A is our source
+}
