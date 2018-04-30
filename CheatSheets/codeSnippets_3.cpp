@@ -73,7 +73,8 @@ void floydWarshall (int graph[][V])
 
 
 // Dijkstra on a grid mtx where you have to derive your own weights 
-
+// This cannot be substituted by BFS as the vertices are grid points and they do not account for rotation.
+// Rotation and moving forward is used as edges which could vary when transitioning between vertices
     void perform_dijkstra (char mtx[][20], int row, int col) {
         int direction_mtx[row][col];
         int addedweights[row][col];
@@ -492,4 +493,81 @@ int main () {
     AL['F'].push_back(make_pair(0, 'A')); // Cycle from F -> A
     
     perform_dijkstra('A'); // A is our source
+}
+
+
+
+
+// Double flood fill 
+int mtx[600][600], mtx_prime[600][600];
+int col, row;
+
+
+bool check (stack<pair<int, int> > * check_points, stack<pair<int, int> > *converted_checkpoints, int number) {
+    bool lower = false;
+    while (!check_points->empty()) {
+        converted_checkpoints->push(check_points->top());
+        pair<int, int> curr = check_points->top();
+        check_points->pop();
+        mtx_prime[curr.second][curr.first] = 0;
+        //cout << mtx[curr.second][curr.first] << endl;
+        int x = curr.first;
+        int y = curr.second;
+        int dx [4] = {0, 1, 0, -1};
+        int dy [4] = {1, 0, -1, 0};
+        for (int i = 0; i < 4; i++) {
+            if (x + dx[i] < col && y + dy[i] < row && x + dx[i] >= 0 && y + dy[i] >= 0) {
+                if (mtx[y+dy[i]][x+dx[i]] == number && mtx_prime[y+dy[i]][x+dx[i]] == -1) {
+                    check_points->push(make_pair(x+dx[i], y + dy[i]));
+                }else if (mtx[y+dy[i]][x+dx[i]] < number) {
+                    lower = true;
+                }
+            }
+        }
+    }
+    //lower ? cout << "true" << endl : cout << "false" << endl;
+    return lower;
+}
+
+
+
+void dfs_recur (int x, int y) {
+    mtx_prime[y][x] = 0; // 0 means visited but not collection point
+    int dx [4] = {0, 1, 0, -1};
+    int dy [4] = {1, 0, -1, 0};
+    bool moves = false;
+    for (int i = 0; i < 4; i++) {
+        if (x + dx[i] < col && y + dy[i] < row && x + dx[i] >= 0 && y + dy[i] >= 0) {
+            if (mtx[y][x] > mtx[y+dy[i]][x+dx[i]]) {
+                moves = true;
+                if (mtx_prime[y + dy[i]][x + dx[i]] == -1) {
+                    dfs_recur(x + dx[i], y + dy[i]);
+                }
+            }else if (mtx[y][x] == mtx[y + dy[i]][x + dx[i]] && mtx_prime[y + dy[i]][x + dx[i]] == -1) {
+                
+                // Found a similar node, flood fill that to find out if its a dead end or it can flow elsewhere :/ *******
+                
+                stack< pair<int, int> > check_points, converted_checkpoints;
+                check_points.push(make_pair(x, y));
+                if (check(&check_points, &converted_checkpoints, mtx[y][x]) == false) {
+                    while (!converted_checkpoints.empty()) {
+                        pair<int, int> curr = converted_checkpoints.top();
+                        converted_checkpoints.pop();
+                        mtx_prime[curr.second][curr.first] = 1;
+                    }
+                }else{
+                    moves = true;
+                }
+            }
+        }
+    }
+    
+    if (!moves) {
+        mtx_prime[y][x] = 1;
+    }
+}
+
+
+void dfs (int x, int y) {
+    dfs_recur(x, y);
 }

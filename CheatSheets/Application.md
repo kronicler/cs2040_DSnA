@@ -71,12 +71,8 @@ All pairs shortest:
 Virtual node: 
 - Use when we need to pre-compute existing weight from current node (eg. arriving at any node has an additional weight imposed)
 
-Longest path in unweighted graph: 
-- 
-
 Longest path in DAG (can be weighted, can have negative weights): 
 - Use topological sort and then one-pass bellman ford (see code_snippets3)
-
 
 Longest path in weighted graph:
 - Cannot modify dijkstra to use max instead of min as it will result in infinite loop with positive weight cycles (see common mistakes)

@@ -148,7 +148,7 @@ public:
             
             
             for (auto it = AL[current].begin(); it != AL[current].end(); it++) {
-                // Notice this is impt, we only push in unvisited vertices
+                // Notice this is impt, we only push in unvisited vertices, removing it will cause infinite loop
                 if (added_weight[it->second] == 1000000) {
                     // Unvisited
                     // Relax
