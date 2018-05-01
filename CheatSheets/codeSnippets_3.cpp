@@ -571,3 +571,93 @@ void dfs_recur (int x, int y) {
 void dfs (int x, int y) {
     dfs_recur(x, y);
 }
+
+
+// DAG Maker 
+// Total time complexity: O(V+E)
+
+list<pair<int, int> > AL[500];
+list<pair<int, int> > AL_backup[500]; // To backup the original AL
+list<pair<int, int> > AL_dag[500];
+
+// O (V+E)
+void dag_maker (int v, int dest) {
+    unordered_set<int> visited;
+    stack<int> s;
+    s.push(v);
+
+    while (!s.empty()) {
+        int curr = s.top();
+        //cout << (char)curr << endl;
+        s.pop();
+        visited.insert(curr);
+        
+        // In this case we do not need to iterate thru all the neighbours and push to stack
+        if (!AL[curr].empty()) {
+            // Just get the first edge we see from curr node. 
+            
+            auto it = AL[curr].front();
+            if (visited.find(it.second) == visited.end()) {
+                s.push(it.second);
+
+                AL_dag[curr].push_back(make_pair(it.first, it.second));
+                AL[curr].erase(AL[curr].begin()); // This will erase parts of the original graph so make sure to keep a copy
+                if (it.second == dest) return; // Return the moment we find destination
+            }
+        }
+    }
+}
+
+void dag_handler (int src, int dest) {
+    // Copy first
+    for (int i = 0; i < 500; i++) {
+        AL_backup[i] = AL[i];
+    }
+    
+    // If the src still has any edges left 
+    while (!AL[src].empty())
+        dag_maker (src, dest);
+
+}
+
+
+
+// Topo sort DFS + One pass bellman ford - find shortest path with < k nodes (DAG)
+// O(V+E)
+void dfs_topo (int vertex, unordered_set<int> *visited, list<int> * topo_list) {
+    // Mark visited
+    visited->insert(vertex);
+    // Show its visits
+    // Find AL_dag from the algo above
+    for (auto it : AL_dag[vertex]) {
+        if (visited->find(it.second) == visited->end()) {
+            dfs_topo(it.second, visited, topo_list);
+        }
+    }
+    // Finish DFS, add to back of list
+    topo_list->push_back(vertex);
+}
+
+void one_pass (int source, int dest, int k) {
+    unordered_set<int> visited;
+    list<int> topo_list;
+    vector<int> added_weight (500, 1000000);
+    
+    dfs_topo(source, &visited, &topo_list);
+    topo_list.reverse();
+    
+    added_weight[source] = 0;
+    
+    // Limit this one pass to < k nodes
+    for (int i = 0; i < k; i++) {
+        int curr = topo_list.front();
+        topo_list.pop_front();
+        for (auto it : AL[curr]) {
+            // Relax
+            if (added_weight[it.second] > added_weight[curr] + it.first) {
+                added_weight[it.second] = added_weight[curr] + it.first;
+            }
+        }
+    }
+    cout << added_weight[dest] << endl;
+}
