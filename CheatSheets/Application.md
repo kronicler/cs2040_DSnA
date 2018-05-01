@@ -67,14 +67,17 @@ Bellman ford runs at v - 1 passes to account for all lengths to reach each dest
 
 All pairs shortest: 
 - Use when we need to find multiple distances from multiple sources to multiple destinations 
+- When source and destination is not explicitly specified
 
 Virtual node: 
 - Use when we need to pre-compute existing weight from current node (eg. arriving at any node has an additional weight imposed)
 
-Longest path in DAG (can be weighted, can have negative weights): 
+Longest path (can be weighted, can have negative weights) (Only DAG): 
 - Use topological sort and then one-pass bellman ford (see code_snippets3)
+- If have to, convert the graph to DAG first using dag converter
+- Note: Cannot modify dijkstra to use max instead of min as it will result in infinite loop with positive weight cycles (see common mistakes)
 
-Longest path in weighted graph:
-- Cannot modify dijkstra to use max instead of min as it will result in infinite loop with positive weight cycles (see common mistakes)
-
+Shortest path under k junctions (nodes)
+- Top down bellman ford
+- Convert graph to DAG and then use one-pass bellman ford under k passes
 
