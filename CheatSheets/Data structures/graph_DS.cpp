@@ -10,6 +10,7 @@ private:
     
     // BFS is a queue, DFS is a stack/ implicit stack
     // O (V + E)
+    // O (VE) in edge list as we have to traverse the entire edge list on every vertex
     void DFS_recur (int vertex, unordered_map<int, int> *visited) {
         // Mark visited
         visited->insert(make_pair(vertex, 1));
@@ -81,6 +82,7 @@ public:
     }
 
     // O (V + E)
+    // O (VE) in edge list as we have to traverse the entire edge list on every vertex
     void BFS (int vertex) {
         unordered_map<int, int> visited;
         queue<int> q;
