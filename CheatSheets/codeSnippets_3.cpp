@@ -661,3 +661,16 @@ void one_pass (int source, int dest, int k) {
     }
     cout << added_weight[dest] << endl;
 }
+
+
+// Path tracing on a 2D grid 
+void pathfinding () {
+    int added_weights [R][C];
+    pair<int, int> predecessor [R][C]; // We use a pair 2D matrix of predecessors 
+    // so that each cell can store the coords of its predecessors 
+
+    ////////////// Rest of BFS code 
+
+    // Process the predecessor 2D grid to trace back 
+}
+
