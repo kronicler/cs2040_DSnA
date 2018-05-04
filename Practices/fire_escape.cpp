@@ -33,10 +33,10 @@ void spread (int layer) {
     for (auto it : fire_coords[layer-1]) {
         int curr_x = it.second;
         int curr_y = it.first;
-        int dx[4] = {0,1,0,-1};
-        int dy[4] = {1,0,-1,0};
+        int dx[4] = {0,1,0,-1, 0};
+        int dy[4] = {1,0,-1,0, 0};
         
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             fire_coords[layer].insert({curr_y + dy[i], curr_x + dx[i]});
         }
     }
