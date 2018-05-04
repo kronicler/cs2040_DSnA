@@ -11,6 +11,7 @@ private:
     // BFS is a queue, DFS is a stack/ implicit stack
     // O (V + E)
     // O (VE) in edge list as we have to traverse the entire edge list on every vertex
+    // O (V^2) in AM
     void DFS_recur (int vertex, unordered_map<int, int> *visited) {
         // Mark visited
         visited->insert(make_pair(vertex, 1));
@@ -213,6 +214,7 @@ public:
     // Time complexities
     // O (V + E)
     // If everything is not connected: O (V + E)
+    // O (V^2) in AM
     void DFS (int vertex) {
         unordered_map<int, int> visited;
         DFS_recur(vertex, &visited);
@@ -295,6 +297,7 @@ class sample_topo_sort : adj_list {
 private:
     unordered_map<int, int> incoming;
     
+    // Note: The ordering of operations here is very impt. We need to only push back to the list after iterating thru all of its neighbours
     void DFS_recur (int vertex, unordered_map<int, int> *visited, list<int> * topo_list) {
         // Mark visited
         visited->insert(make_pair(vertex, 1));

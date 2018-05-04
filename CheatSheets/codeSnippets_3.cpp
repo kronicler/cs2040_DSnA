@@ -430,6 +430,7 @@ void bfs_everchanging (int target, int a, int b, int c) {
 
 
 // Multiple shortest paths - (unproven)
+// Can only find equal shortest paths
 list<pair<int, int> > AL[300];
 int numv;
 
@@ -441,7 +442,7 @@ void perform_dijkstra (int source) {
         added_weight[i].push(1000000);
     }
     
-    priority_queue<pair<int, int> > q;
+    priority_queue<pair<int, int>, vector<int, int>, greater<> > q;
     // Init source to 0
     added_weight[source].push(0);
     q.push(make_pair(0, source));
@@ -575,7 +576,7 @@ void dfs (int x, int y) {
 
 // DAG Maker 
 // Total time complexity: O(V+E)
-
+// Limitations: Cannot be used to find multiple paths, esp when there are two edges from node A -> B
 list<pair<int, int> > AL[500];
 list<pair<int, int> > AL_backup[500]; // To backup the original AL
 list<pair<int, int> > AL_dag[500];
@@ -585,7 +586,7 @@ void dag_maker (int v, int dest) {
     unordered_set<int> visited;
     stack<int> s;
     s.push(v);
-
+    
     while (!s.empty()) {
         int curr = s.top();
         //cout << (char)curr << endl;
@@ -594,15 +595,16 @@ void dag_maker (int v, int dest) {
         
         // In this case we do not need to iterate thru all the neighbours and push to stack
         if (!AL[curr].empty()) {
-            // Just get the first edge we see from curr node. 
-            
-            auto it = AL[curr].front();
-            if (visited.find(it.second) == visited.end()) {
-                s.push(it.second);
-
-                AL_dag[curr].push_back(make_pair(it.first, it.second));
-                AL[curr].erase(AL[curr].begin()); // This will erase parts of the original graph so make sure to keep a copy
-                if (it.second == dest) return; // Return the moment we find destination
+            for (auto it : AL[curr]) {
+                // Attempt to find the first non visited node from the list of edges here
+                if (visited.find(it.second) == visited.end()) {
+                    s.push(it.second);
+                    
+                    AL_dag[curr].push_back(it.second);
+                    AL[curr].erase(AL[curr].begin()); // This will erase parts of the original graph so make sure to keep a copy
+                    if (it.second == dest) return; // Return the moment we find destination
+                    break;
+                }
             }
         }
     }

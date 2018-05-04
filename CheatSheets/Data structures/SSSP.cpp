@@ -199,7 +199,7 @@ public:
         // Init a vector of sized numv all with values of 1000000
         vector<int> added_weight(numv, 1000000);
 
-        priority_queue<pair<int, int> > q;
+        priority_queue<pair<int, int>, vector<int, int>, greater<> > q; // Becareful of this
         // Init source to 0
         added_weight[source] = 0;
         q.push(make_pair(0, source));
