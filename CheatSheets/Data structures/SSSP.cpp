@@ -398,6 +398,33 @@ public:
 
 // Some notes: 
 
+/* Raw outline of all the graph algorithms we've learnt:
+    DFS:
+        1. Graph Traversal Algorithm
+        2. Can be used for SSSP on weighted tree
+        3. Used to count number of CCs, sizes of those CCs, Topological Sort on DAG
+        4. Can check if we can reach from one source to destination
+        5. Using AL: O (V + E), AM: O (V^2), EL: O(VE)
+    BFS:
+        1. Another Graph Traversal Algorithm
+        2. Used for flood fill, number and size of CCs, Bipartite Graph Check
+        3. Can solved SSSP on unweighted graph
+        4. Can check if we can reach from one source to destination
+        5. Using AL: O (V + E), AM: O (V^2), EL: O(VE)
+    Modified Dijkstra:
+        1. SSSP on Weighted Graph with negative weight
+        2. Greedy Algorithm
+        3. Uses a priority queue to store pairs of vertex information, employs Lazy Deletion
+        4. Calculates shortest path from source vertex to all the other vertices reachable in the graph
+        5. O ((V+E) log V)
+    Bellman Ford:
+        1. SSSP on Weighted Graph with negative weight cycle
+        2. Can be used to detect presence of negative cycle
+        3. Calculates shortest path from source vertex to all the other vertices reachable in the graph
+        4. If Graph is a DAG, we can find toposort order using DFS, then run a one-pass Bellman Ford O (V + E) 
+        5. O(VE)
+
+*/
 /* 
     1. Negative cycles can be a mixed cycle of positive weights and -ve weights. However, it is only a negative cycle when the sum of 
        all the weights in the cycle is NEGATIVE. If the sum of all the weights is greater than or equal to 0, it is just a regular cycle.
