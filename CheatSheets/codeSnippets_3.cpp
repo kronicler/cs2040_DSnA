@@ -429,7 +429,7 @@ void bfs_everchanging (int target, int a, int b, int c) {
 }
 
 
-// Multiple shortest paths - (unproven)
+// Multiple shortest paths 
 // Can only find equal shortest paths
 list<pair<int, int> > AL[300];
 int numv;
@@ -716,5 +716,5 @@ void dfs_handler () {
 }
 
 // Note there are inifnite paths in a graph with cycle
-
+// We can also use BFS to count number of paths to a point 
 
