@@ -678,6 +678,7 @@ void pathfinding () {
 
 
 // Count possible paths WARNING: Only applies to DAG as it does not use a visited set
+
 void dfs_count (int vertex, unordered_map<int, int> *count) {
     for (auto it : AL_dag[vertex]) {
         // Notice no visited set 
@@ -713,4 +714,7 @@ void dfs_handler () {
 
     cout << unordered_map['A'] << endl;
 }
+
+// Note there are inifnite paths in a graph with cycle
+
 
