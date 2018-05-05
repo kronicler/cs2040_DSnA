@@ -676,3 +676,41 @@ void pathfinding () {
     // Process the predecessor 2D grid to trace back 
 }
 
+
+// Count possible paths WARNING: Only applies to DAG as it does not use a visited set
+void dfs_count (int vertex, unordered_map<int, int> *count) {
+    for (auto it : AL_dag[vertex]) {
+        // Notice no visited set 
+        count->operator[](it)++;
+        dfs_topo(it, visited, topo_list, count);
+    }
+}
+
+void dfs_handler () {
+    unordered_map<int, int> count;
+    dfs_count('A', &count);
+
+    cout << unordered_map['A'] << endl;
+}
+
+// To make it visit only unique paths (Do not visit the same vertex twice)
+void dfs_topo (int vertex, unordered_set<int> *visited, unordered_map<int, int> *count) {
+    // Mark visited
+    visited->insert(vertex);
+    for (auto it : AL_dag[vertex]) {
+        count->operator[](it)++;
+        // So it will only go thru each vertex once, discarding all paths that go thru the same vertex
+        if (visited->find(it) == visited->end())
+            dfs_topo(it, visited, topo_list, count);
+    }
+}
+
+
+void dfs_handler () {
+    unordered_map<int, int> count;
+    unordered_set<int> visited;
+    dfs_count('A', &visited,  &count);
+
+    cout << unordered_map['A'] << endl;
+}
+
