@@ -61,6 +61,27 @@ public:
         }
         
         if (hasNegativeCycle) cout << "Contains -ve cycles" << endl;
+
+
+        // To precisely find out exactly which one contains the neg cycle
+        unordered_set<int> neg_cycle;
+        bool ch = true;
+        while (ch) {
+            ch = false;
+            for (int u = 0; u < numv; u++) {
+                // one more pass to check
+                if (added_weight[u] >= INF) continue;
+                for (auto it : AL[u]) {
+                    if (added_weight[it.second] > added_weight[u] + it.first && neg_cycle.find(it.second) == neg_cycle.end()) {
+                        // should be false
+                        //neg_cycle->insert(u);
+                        added_weight[it.second] = -INF;
+                        ch = true;
+                        neg_cycle.insert(it.second);
+                    }
+                }
+            }
+        }
         
         return added_weight[d];
     }
