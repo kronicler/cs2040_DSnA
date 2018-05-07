@@ -124,6 +124,7 @@ protected:
         return T;                                          // return the updated BST
     }
 
+    // O(k) not O(klogN)
     void kthLargestUtil(BSTVertex* root, int k, int &c) {
 
         // Base cases, the second condition is important to
@@ -322,6 +323,9 @@ public:
  - Traversal techniques: https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
 
  - Tip: Inorder traversal, just flatten the tree and read from left to right 
+
+ - Traversal to read the tree in sorted order will just take O (N) as finding successor wont take more than h iterations
+
  */
 
 

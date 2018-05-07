@@ -579,7 +579,7 @@ void dfs (int x, int y) {
 // Limitations: Cannot be used to find multiple paths, esp when there are two edges from node A -> B
 list<pair<int, int> > AL[500];
 list<pair<int, int> > AL_backup[500]; // To backup the original AL
-list<pair<int, int> > AL_dag[500];
+list<int > AL_dag[500]; // unweighted DAG
 
 // O (V+E)
 void dag_maker (int v, int dest) {

@@ -18,7 +18,7 @@ const long long INF = 2000000000000;
 using namespace std;
 
 
-void bellman_ford (int s, vector<long long> *added_weight, list<pair<int, int> > AL[],  unordered_set<int> *neg_cycle, int numv) {
+void bellman_ford (int s, vector<long long> *added_weight, list<pair<long long, int> > AL[],  unordered_set<int> *neg_cycle, int numv) {
     
     added_weight->operator[](s) = 0;
     // 3 for loops :o
@@ -31,7 +31,7 @@ void bellman_ford (int s, vector<long long> *added_weight, list<pair<int, int> >
             for (auto it = AL[d].begin(); it != AL[d].end(); it++) {
                 
                 int v2 = it->second;
-                int w = it->first;
+                long long w = it->first;
                 
                 // Relax
                 if (added_weight->operator[](v2) > added_weight->operator[](v) + w) {
@@ -71,7 +71,7 @@ int main () {
         int numv;
         cin >> numv;
 
-        list<pair<int, int> > AL[numv + 10];
+        list<pair<long long, int> > AL[numv + 10];
         vector<long long> added_weight (numv + 10, INF);
         unordered_set<int> neg_cycle;
 
@@ -81,7 +81,7 @@ int main () {
         while (m--) {
             int u, v, w;
             cin >> u >> v >> w;
-            AL[u].push_back(make_pair(w, v));
+            AL[u].push_back(make_pair((long long)w, v));
         }
         
         bellman_ford(s, &added_weight, AL, &neg_cycle, numv);
