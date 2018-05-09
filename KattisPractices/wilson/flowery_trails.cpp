@@ -76,6 +76,7 @@ int main () {
     
     for (int i = 0; i < v; i++) {
         for (auto it : AL[i]) {
+            // Check whether layer 0 weight corresponds && whether it adds up to the total weight to the end point (since there can only be similar shortest paths)
             if (added_weight[0][i] + it.first == added_weight[0][it.second] && added_weight[0][i] + it.first + added_weight[1][it.second] == added_weight[0][v - 1]) {
                 ans += it.first;
             }

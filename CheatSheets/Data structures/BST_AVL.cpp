@@ -502,6 +502,8 @@ public:
  - If height balancing is satisfied, total height will always be < 2*log2(N)
  - Nh > 2 ^ (h/2),  Nh = number of vertices we can fit into height h
  - Minimum number of nodes we can fit in a tree of height H: S(h) = S(h-1) + S(h-2) + 1
+ - Max number of rotations during insertion <= 1
+ - Max number of rotations during deletion O(log(n)) where log(n) is the height of the tree
 
  Examples:
  
