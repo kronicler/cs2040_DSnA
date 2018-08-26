@@ -12,9 +12,6 @@ https://open.kattis.com/
 ## If you have time:
 https://projecteuler.net/
 
-# Important date:
-- Finals: 10-05-2018 5:00 PM
-
 # Topics tested:
 1. Sorting
     1. Bubble, Insertion, Selection, Radix (Counting), Merge, Quick
@@ -35,6 +32,3 @@ https://projecteuler.net/
     1. Floyd Warshall 
 8. Special Graphs
     1. Directed Acyclic Graph, Tree, Eulerian Graph (path which visits each edge of the graph exactly once), Bipartite Graph
-
-## For some help: 
-Add @chinchin519bot on telegram
