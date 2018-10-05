@@ -194,7 +194,7 @@ protected:
                 rank += (sizeof_subtree(curr->left) + 1); // Add size of left sub tree plus parent 
                 curr = curr->right;
             }else if (curr->key > key) {
-                // Traverse right
+                // Traverse left
                 curr = curr->left;
             }
             else {
